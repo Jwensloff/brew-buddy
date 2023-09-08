@@ -10,16 +10,11 @@ function App() {
   return (
     <div className='App'>
       <header className='mainHeader'>
-        <Search setBreweries={setBreweries}/>
+        <Search setBreweries={setBreweries} />
       </header>
 
       <Routes>
-        <Route
-          path='/'
-          element={
-            <Homepage breweries={breweries} />
-          }
-        />
+        <Route path='/' element={<Homepage breweries={breweries} />} />
       </Routes>
     </div>
   );
