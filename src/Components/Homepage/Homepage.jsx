@@ -2,10 +2,10 @@ import './Homepage.scss';
 import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Map from '../Map/Map';
 
-function Homepage({ breweries }) {
+function Homepage() {
   return (
     <main className='homepage'>
-      <BreweryContainer breweries={breweries} />
+      <BreweryContainer />
       <Map />
     </main>
   );
