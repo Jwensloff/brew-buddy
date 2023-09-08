@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import './Search.scss';
-import getBreweries from '../../apiCalls';
+import { useBreweries } from '../Context/BreweryContext';
 
-function Search({ setBreweries }) {
+function Search() {
   const [location, setLocation] = useState('');
+
+  const { obtainBreweries } = useBreweries();
 
   async function submitForm(e) {
     e.preventDefault();
-    const data = await getBreweries(location);
-    setBreweries(data);
+    obtainBreweries(location);
   }
 
   return (
@@ -19,7 +20,7 @@ function Search({ setBreweries }) {
         name='location-search'
         value={location}
         placeholder='location'
-        onChange={e => setLocation(e.target.value)}
+        onChange={(e) => setLocation(e.target.value)}
       />
       <input id='searchBtn' type='submit' className='btn' />
     </form>

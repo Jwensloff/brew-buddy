@@ -1,14 +1,30 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useState } from 'react';
+import getBreweries from '../../apiCalls';
 
-const BreweryContext = createContext()
 
-function useBreweries(){
+export const BreweryContext = createContext(null);
+
+export function BreweryContextProvider({ children }) {
+
+  const [breweries, setBreweries] = useState([]);
+
+  async function obtainBreweries(city) {
+    const breweryData = await getBreweries(city);
+    setBreweries(breweryData)
+  }
+
+  return (
+    <BreweryContext.Provider value={{breweries, obtainBreweries}}>
+      {children}
+    </BreweryContext.Provider>
+  );
+}
+
+export function useBreweries(){
   const breweries = useContext(BreweryContext)
-  console.log('breweries',breweries)
   if(!breweries){
-    throw new Error ('useBreweries must be used within a provider.')
+    throw new Error ('useBreweries must be used within BreweryProvider.')
   }
   return breweries
 }
 
-export  { BreweryContext, useBreweries }
