@@ -1,8 +1,12 @@
 @import '../../index.scss';
 
 .breweryCard {
-  background-color: #E0CC99;
+  background-color: #e0cc99;
   min-height: 5rem;
   width: 100%;
   padding: 1rem;
+
+  .card-a {
+    cursor: pointer;
+  }
 }

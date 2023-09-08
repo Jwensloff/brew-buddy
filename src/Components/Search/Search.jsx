@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import './Search.scss';
+import getBreweries from '../../apiCalls';
 
-function Search() {
+function Search({ setBreweries }) {
   const [location, setLocation] = useState('');
 
+  async function submitForm(e) {
+    e.preventDefault();
+    const data = await getBreweries(location);
+    setBreweries(data);
+  }
+
   return (
-    <form className='searchBar'>
+    <form className='searchBar' onSubmit={submitForm}>
       <input
         id='searchInput'
         type='search'
@@ -14,7 +21,7 @@ function Search() {
         placeholder='location'
         onChange={e => setLocation(e.target.value)}
       />
-      <input id='searchBtn' type='submit' className='btn' onClick={e => e.preventDefault()} />
+      <input id='searchBtn' type='submit' className='btn' />
     </form>
   );
 }
