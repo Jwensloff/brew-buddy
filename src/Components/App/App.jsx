@@ -1,10 +1,19 @@
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import './App.scss';
+import Homepage from '../Homepage/Homepage';
+import Search from '../Search/Search';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <header className='mainHeader'>
+        <Search/>
       </header>
+
+      <Routes>
+        <Route path='/' element={<Homepage/>}/>
+      </Routes>
     </div>
   );
 }

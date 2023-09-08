@@ -1,0 +1,7 @@
+@import '../../index.scss';
+
+.homepage {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
