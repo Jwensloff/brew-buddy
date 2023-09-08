@@ -1,5 +1,8 @@
+@import '../../index.scss';
+
 .breweryContainer {
-  background-color: aliceblue;
   display: grid;
   grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
 }

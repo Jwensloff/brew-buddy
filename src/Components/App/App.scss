@@ -6,10 +6,10 @@
   background-position: center;
   min-height: 20vh;
   border-bottom: 2rem solid $primaryColor;
-
+  padding: 1rem;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: end;
 }
-
