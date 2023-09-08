@@ -1,7 +1,12 @@
 @import '../../index.scss';
 
-.mapContainer {
-  background-color: aqua;
+.map__container{
+  height: 400px;
   grid-column: 2 / span 3;
   height: 100%;
+}
+
+.leaflet-container {
+  width: auto;
+  height: 400px;
 }
