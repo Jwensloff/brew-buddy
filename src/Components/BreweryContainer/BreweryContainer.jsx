@@ -1,7 +1,7 @@
 import './BreweryContainer.scss';
 
 function BreweryContainer() {
-  return <section>Container</section>;
+  return <section className='breweryContainer'>Container</section>;
 }
 
 export default BreweryContainer;

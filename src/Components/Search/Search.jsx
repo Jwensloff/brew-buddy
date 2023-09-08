@@ -5,15 +5,16 @@ function Search() {
   const [location, setLocation] = useState('');
 
   return (
-    <form>
+    <form className='searchBar'>
       <input
+        id='searchInput'
         type='search'
         name='location-search'
         value={location}
         placeholder='location'
         onChange={e => setLocation(e.target.value)}
       />
-      <input type='submit' onClick={e => e.preventDefault()} />
+      <input id='searchBtn' type='submit' className='btn' onClick={e => e.preventDefault()} />
     </form>
   );
 }

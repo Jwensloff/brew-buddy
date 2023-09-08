@@ -1,7 +1,7 @@
 import './Map.scss';
 
 function Map() {
-  return <div>map</div>;
+  return <div className='mapContainer'>map</div>;
 }
 
 export default Map;

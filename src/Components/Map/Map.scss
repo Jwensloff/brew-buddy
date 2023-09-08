@@ -1,1 +1,7 @@
-@import '../../index.scss'
+@import '../../index.scss';
+
+
+.mapContainer {
+  background-color: aqua;
+  grid-column: 2 / span 3;
+}
