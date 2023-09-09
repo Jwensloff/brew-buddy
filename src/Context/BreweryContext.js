@@ -6,9 +6,11 @@ export const BreweryContext = createContext(null);
 export function BreweryContextProvider({ children }) {
   const [breweries, setBreweries] = useState([]);
 
-  async function obtainBreweries(city) {
+  async function obtainBreweries(city, state) {
     const breweryData = await getBreweries(city);
-    setBreweries(breweryData);
+    const filteredBreweryData = breweryData.filter(brewery => brewery.state === state)
+    console.log('filtered',filteredBreweryData)
+    setBreweries(filteredBreweryData);
   }
 
   return (

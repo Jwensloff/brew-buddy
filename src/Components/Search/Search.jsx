@@ -21,7 +21,7 @@ function Search() {
 
   async function submitForm(e) {
     e.preventDefault();
-    obtainBreweries(city);
+    obtainBreweries(city, state);
     console.log(state);
   }
 
