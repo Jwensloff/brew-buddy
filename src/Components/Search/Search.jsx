@@ -5,27 +5,57 @@ import { useBreweries } from '../../Context/BreweryContext';
 function Search() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
+  const [noState, setNoState] = useState(false);
 
   const { obtainBreweries } = useBreweries();
 
   const states = require('us-state-converter');
   const listOfStates = states();
 
-  const dropdownList = listOfStates.map((state) => {
-    return <option value={state.name}><span>{state.usps}</span></option>;
+  const noDuplicates = () => {
+    let noDuplicateStatesArray = [];
+    let stateNames = [];
+
+    listOfStates.forEach((state) => {
+      if (stateNames.includes(state.name)) {
+        return;
+      }
+      stateNames.push(state.name);
+      noDuplicateStatesArray.push(state);
+    });
+    return noDuplicateStatesArray;
+  };
+
+  const filteredStates = noDuplicates();
+  const dropdownList = filteredStates.map((state) => {
+    return (
+      <option className='dropdown-item' key={state.name} value={state.name}>
+        {state.usps}
+      </option>
+    );
   });
 
   async function submitForm(e) {
     e.preventDefault();
+    console.log('state', state);
+    console.log('city', city);
+    if (!state) {
+      setNoState(true);
+      return;
+    }
     obtainBreweries(city, state);
+    setNoState(false);
     console.log(state);
   }
 
   return (
+    <>
+    {noState && <p className='state-error-message'>Please select a state.</p>}
     <form className='searchBar' onSubmit={submitForm}>
       <input
         id='searchInput'
         type='search'
+        key='search'
         name='city-search'
         value={city}
         placeholder='City'
@@ -39,11 +69,15 @@ function Search() {
         value={state}
         onChange={(e) => setState(e.target.value)}
       >
-        <option className='dropdown-item'> Select State </option>
+        <option className='dropdown-item' key={'select-state'}>
+          {' '}
+          Select State{' '}
+        </option>
         {dropdownList}
       </select>
       <input id='searchBtn' type='submit' className='btn' />
     </form>
+    </>
   );
 }
 

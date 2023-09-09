@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import getBreweries from '../apiCalls';
+import { getBreweries, getBreweriesByState } from '../apiCalls';
 
 export const BreweryContext = createContext(null);
 
@@ -7,10 +7,21 @@ export function BreweryContextProvider({ children }) {
   const [breweries, setBreweries] = useState([]);
 
   async function obtainBreweries(city, state) {
-    const breweryData = await getBreweries(city);
-    const filteredBreweryData = breweryData.filter(brewery => brewery.state === state)
-    console.log('filtered',filteredBreweryData)
-    setBreweries(filteredBreweryData);
+    console.log('city', city);
+    console.log('state', state);
+    let stateBreweryDate = [];
+    let breweryData = [];
+    let filteredBreweryData = [];
+    if (!city) {
+      stateBreweryDate = await getBreweriesByState(state);
+      setBreweries(stateBreweryDate);
+    } else {
+      breweryData = await getBreweries(city);
+      filteredBreweryData = breweryData.filter(
+        (brewery) => brewery.state === state
+      );
+      setBreweries(filteredBreweryData);
+    }
   }
 
   return (
