@@ -5,6 +5,7 @@ export const BreweryContext = createContext(null);
 
 export function BreweryContextProvider({ children }) {
   const [breweries, setBreweries] = useState([]);
+  const [noResults, setNoResults]= useState(false);
 
   async function obtainBreweries(city, state) {
     console.log('city', city);
@@ -15,17 +16,24 @@ export function BreweryContextProvider({ children }) {
     if (!city) {
       stateBreweryDate = await getBreweriesByState(state);
       setBreweries(stateBreweryDate);
+      setNoResults(false)
     } else {
       breweryData = await getBreweries(city);
       filteredBreweryData = breweryData.filter(
         (brewery) => brewery.state === state
       );
-      setBreweries(filteredBreweryData);
+      if(filteredBreweryData.length === 0){
+        setNoResults(true)
+      } else {
+        setNoResults(false)
+      setBreweries(filteredBreweryData)
+      }
     }
+
   }
 
   return (
-    <BreweryContext.Provider value={{ breweries, obtainBreweries }}>
+    <BreweryContext.Provider value={{ breweries, obtainBreweries, noResults, setNoResults }}>
       {children}
     </BreweryContext.Provider>
   );

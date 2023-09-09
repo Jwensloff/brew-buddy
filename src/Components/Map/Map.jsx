@@ -12,6 +12,7 @@ function Map() {
   
   
   useEffect(() =>{
+  
   const filteredBreweries = breweries.filter(brewery => brewery.latitude && brewery.longitude)
     setValidBreweries(filteredBreweries)
     if(filteredBreweries.length > 0 && mapRef.current){

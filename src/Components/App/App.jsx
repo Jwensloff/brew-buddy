@@ -8,6 +8,7 @@ import { BreweryContextProvider } from '../../Context/BreweryContext';
 function App() {
   const [favorites, setFavorites] = useState([]);
 
+  
   const addFavorites = (newFavorite) => {
     setFavorites([...favorites, newFavorite]);
   };
