@@ -3,20 +3,27 @@ import './App.scss';
 import Homepage from '../Homepage/Homepage';
 import Search from '../Search/Search';
 import { useState } from 'react';
+import { BreweryContextProvider } from '../../Context/BreweryContext';
 
 function App() {
-  const [breweries, setBreweries] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+
+  const addFavorites = (newFavorite) => {
+    setFavorites([...favorites, newFavorite]);
+  };
 
   return (
-    <div className='App'>
-      <header className='mainHeader'>
-        <Search setBreweries={setBreweries} />
-      </header>
+    <BreweryContextProvider >
+        <div className='App'>
+          <header className='mainHeader'>
+            <Search /> 
+          </header>
 
-      <Routes>
-        <Route path='/' element={<Homepage breweries={breweries} />} />
-      </Routes>
-    </div>
+          <Routes>
+            <Route path='/' element={<Homepage/>} />
+          </Routes>
+        </div>
+    </BreweryContextProvider>
   );
 }
 
