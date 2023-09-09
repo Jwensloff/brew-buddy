@@ -1,5 +1,5 @@
 import './Map.scss';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Pane} from 'react-leaflet';
 import { useBreweries } from '../../Context/BreweryContext';
 import {useEffect, useState, useRef} from 'react'
 
@@ -12,18 +12,32 @@ function Map() {
   
   
   useEffect(() =>{
-  
   const filteredBreweries = breweries.filter(brewery => brewery.latitude && brewery.longitude)
+    console.log("Filtered breweries", filteredBreweries)
     setValidBreweries(filteredBreweries)
     if(filteredBreweries.length > 0 && mapRef.current){
-      const firstBrewery = filteredBreweries[0];
-      const {latitude,longitude} = firstBrewery;
-      mapRef.current.flyTo([latitude,longitude], 10)
+      const center = calculateCenter(filteredBreweries)
+      mapRef.current.flyTo([center.latCenter,center.longCenter], 10)
       
     }
     
   },[breweries])
 
+  function calculateCenter (filteredBreweries){
+    let longSum = 0;
+    let latSum = 0;
+    filteredBreweries.forEach(brewery => {
+      latSum += Number(brewery.latitude);
+      longSum += Number(brewery.longitude);
+    })
+    console.log("LONG SUM",longSum)
+    console.log("LAT SUM", latSum)
+    let mapCenter = {
+      latCenter : latSum/(filteredBreweries.length),
+      longCenter : longSum/(filteredBreweries.length)
+    }
+    return mapCenter;
+  }
 
 
   const mapPoints = validBreweries.map((brewery) => {
@@ -47,3 +61,4 @@ function Map() {
 }
 
 export default Map;
+
