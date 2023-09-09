@@ -12,12 +12,8 @@ function Search() {
   const listOfStates = states();
 
   const dropdownList = listOfStates.map((state) => {
-    return <option value={state.name}> {state.usps} </option>;
+    return <option value={state.name}><span>{state.usps}</span></option>;
   });
-
-  // console.log(stateID)
-
-  // <option value="none">None</option>
 
   async function submitForm(e) {
     e.preventDefault();
@@ -36,23 +32,20 @@ function Search() {
         onChange={(e) => setCity(e.target.value)}
       />
 
-      <select id='dropdown' name='dropdown' value={state} onChange={(e) => setState(e.target.value)}>
-        <option> Select State </option>
+      <select
+        id='dropdown'
+        name='dropdown'
+        className='dropdown'
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+      >
+        <option className='dropdown-item'> Select State </option>
         {dropdownList}
       </select>
       <input id='searchBtn' type='submit' className='btn' />
     </form>
   );
 }
-
-
-
-{/* <select id="dropdown" onChange={assignFilter} name='dropdown' value={filterValue} className={`filter-dropdown-selection ${filterValue}`}>
-<option value="none">None</option> 
-<option value="low">Low   1-5</option>
-<option value="med" className='med-option'>Medium   5-7</option>
-<option value="high">High   7-10</option>
-</select> */}
 
 export default Search;
 

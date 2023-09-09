@@ -13,8 +13,6 @@
 #searchInput {
   margin-right: 1rem;
   width: 16rem;
-
-
 }
 
 #searchBtn {
@@ -24,4 +22,8 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.dropdown{
+  margin-right: 1rem;
 }
