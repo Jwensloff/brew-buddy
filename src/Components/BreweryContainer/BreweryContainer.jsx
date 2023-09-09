@@ -13,7 +13,7 @@ function BreweryContainer() {
   return (
     <>
       {noResults ? <section className='no-results-message'>
-        'We're sorry, we didn't find any breweries.'
+        We're sorry, we didn't find any breweries.
         </section>
        : (
         <section className='breweryContainer'>

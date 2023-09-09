@@ -24,9 +24,10 @@ export function BreweryContextProvider({ children }) {
       );
       if(filteredBreweryData.length === 0){
         setNoResults(true)
+        setBreweries(filteredBreweryData)
       } else {
         setNoResults(false)
-      setBreweries(filteredBreweryData)
+        setBreweries(filteredBreweryData)
       }
     }
 

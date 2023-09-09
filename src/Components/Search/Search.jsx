@@ -7,11 +7,14 @@ function Search() {
   const [state, setState] = useState('');
   const [noState, setNoState] = useState(false);
   const [noLocation, setNoLocation] = useState(false);
+  const [validInput, setValidInput] = useState(true);
 
+  
   const { obtainBreweries } = useBreweries();
 
   const states = require('us-state-converter');
   const listOfStates = states();
+  const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
     let noDuplicateStatesArray = [];
@@ -40,16 +43,25 @@ function Search() {
     e.preventDefault();
     console.log('state', state);
     console.log('city', city);
+    if(!city.match(regex)){
+      setValidInput(false);
+      setNoState(false);
+      setNoLocation(false);
+      return
+    }
     if (city && !state) {
+      setValidInput(true)
       setNoState(true);
       setNoLocation(false);
       return;
     }
     if (!state && !city) {
+      setValidInput(true)
       setNoLocation(true);
       setNoState(false);
       return;
     }
+    
     obtainBreweries(city, state);
     setNoLocation(false);
     setNoState(false);
@@ -64,6 +76,11 @@ function Search() {
       {noLocation && (
         <p className='location-error-message'>
           Please specify a location to get started.
+        </p>
+      )}
+      {!validInput && (
+        <p className='location-error-message'>
+          Please enter a valid city.
         </p>
       )}
 
