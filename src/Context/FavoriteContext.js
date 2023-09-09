@@ -7,9 +7,8 @@ export function FavoriteContextProvider({ children }) {
 
   function toggleFavorite(brewery) {
     if (favorites.includes(brewery)) {
-      setFavorites(
-        favorites.filter(favBrewery => favBrewery.id !== brewery.id),
-      );
+      const arrayoffav = favorites.filter(favBrewery => favBrewery.id !== brewery.id)
+      setFavorites(arrayoffav);
     } else {
       setFavorites([...favorites, brewery]);
     }
