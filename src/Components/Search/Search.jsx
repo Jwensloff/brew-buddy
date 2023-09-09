@@ -6,6 +6,7 @@ function Search() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [noState, setNoState] = useState(false);
+  const [noLocation, setNoLocation] = useState(false);
 
   const { obtainBreweries } = useBreweries();
 
@@ -39,44 +40,59 @@ function Search() {
     e.preventDefault();
     console.log('state', state);
     console.log('city', city);
-    if (!state) {
+    if (city && !state) {
       setNoState(true);
+      setNoLocation(false);
+      return;
+    }
+    if (!state && !city) {
+      setNoLocation(true);
+      setNoState(false);
       return;
     }
     obtainBreweries(city, state);
+    setNoLocation(false);
     setNoState(false);
     console.log(state);
   }
 
   return (
     <>
-    {noState && <p className='state-error-message'>Please select a state.</p>}
-    <form className='searchBar' onSubmit={submitForm}>
-      <input
-        id='searchInput'
-        type='search'
-        key='search'
-        name='city-search'
-        value={city}
-        placeholder='City'
-        onChange={(e) => setCity(e.target.value)}
-      />
+      {noState && (
+        <p className='location-error-message'>Please select a state to get started.</p>
+      )}
+      {noLocation && (
+        <p className='location-error-message'>
+          Please specify a location to get started.
+        </p>
+      )}
 
-      <select
-        id='dropdown'
-        name='dropdown'
-        className='dropdown'
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      >
-        <option className='dropdown-item' key={'select-state'}>
-          {' '}
-          Select State{' '}
-        </option>
-        {dropdownList}
-      </select>
-      <input id='searchBtn' type='submit' className='btn' />
-    </form>
+      <form className='searchBar' onSubmit={submitForm}>
+        <input
+          id='searchInput'
+          type='search'
+          key='search'
+          name='city-search'
+          value={city}
+          placeholder='City'
+          onChange={(e) => setCity(e.target.value)}
+        />
+
+        <select
+          id='dropdown'
+          name='dropdown'
+          className='dropdown'
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        >
+          <option className='dropdown-item' key={'select-state'}>
+            {' '}
+            Select State{' '}
+          </option>
+          {dropdownList}
+        </select>
+        <input id='searchBtn' type='submit' className='btn' />
+      </form>
     </>
   );
 }
