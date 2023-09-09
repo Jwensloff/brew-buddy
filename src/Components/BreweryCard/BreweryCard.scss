@@ -5,8 +5,35 @@
   min-height: 5rem;
   width: 100%;
   padding: 1rem;
+  position: relative;
+
+  .name {
+    margin-right: 2rem;
+  }
 
   .card-a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: .5rem;
+    height: 2rem;
+    width: 5rem;
+
+    background-color: $primaryColor;
+    color: antiquewhite;
+    text-decoration: none;
     cursor: pointer;
+  }
+
+  .card-a-box {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .breweryCard-favorites-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }

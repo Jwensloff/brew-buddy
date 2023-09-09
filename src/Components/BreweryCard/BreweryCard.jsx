@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBookmark } from '@fortawesome/free-solid-svg-icons'
+import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
 
 function BreweryCard({ brewery }) {
   const { name, street, phone, brewery_type, website_url, city } = brewery;
   const directionsURL = `https://www.google.com/maps/dir/${name},${street}+${city}`;
   const { toggleFavorite, favorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
-  let className;
+
+  useEffect(() => {
+    if (favorites.find(favBrewery => favBrewery.id === brewery.id)) {
+      setIsFavorite(true);
+    }
+  }, []);
 
   function toggleIsFavorite() {
     if (isFavorite) {
@@ -17,35 +25,41 @@ function BreweryCard({ brewery }) {
     }
   }
 
-  const favoriteStyles = {
-    backgroundColor: isFavorite ? '#000' : '#fff',
-  };
-
   return (
     <article className='breweryCard'>
-      <p className='card-text name'>{name}</p>
+      <h3 className='card-text name'>{name}</h3>
       <p className='card-text'>{street}</p>
       <p className='card-text'>{phone}</p>
       <p className='card-text'>{brewery_type}</p>
-      <a className='card-a' href={website_url} target='_blank' rel='noreferrer'>
-        Website
-      </a>
-      <a
-        className='card-a'
-        href={directionsURL}
-        target='_blank'
-        rel='noreferrer'
-      >
-        Directions
-      </a>
+      <div className='card-a-box'>
+        {website_url && (
+          <a
+            className='card-a'
+            href={website_url}
+            target='_blank'
+            rel='noreferrer'
+          >
+            Website
+          </a>
+        )}
+        <a
+          className='card-a'
+          href={directionsURL}
+          target='_blank'
+          rel='noreferrer'
+        >
+          Directions
+        </a>
+      </div>
       <button
-        style={favoriteStyles}
+        className='breweryCard-favorites-btn'
         onClick={() => {
           toggleFavorite(brewery);
           toggleIsFavorite();
         }}
       >
-        fav
+             {isFavorite ? <FontAwesomeIcon icon={faBookmark} /> : <FontAwesomeIcon icon={farBookmark} />}
+
       </button>
     </article>
   );

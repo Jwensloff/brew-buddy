@@ -4,11 +4,11 @@ export const FavoriteContext = createContext(null);
 
 export function FavoriteContextProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
-
   function toggleFavorite(brewery) {
     if (favorites.includes(brewery)) {
-      const arrayoffav = favorites.filter(favBrewery => favBrewery.id !== brewery.id)
-      setFavorites(arrayoffav);
+      setFavorites(
+        favorites.filter(favBrewery => favBrewery.id !== brewery.id),
+      );
     } else {
       setFavorites([...favorites, brewery]);
     }

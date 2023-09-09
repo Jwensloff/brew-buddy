@@ -5,7 +5,6 @@ import { useBreweries } from '../../Context/BreweryContext';
 function BreweryContainer() {
   const { breweries } = useBreweries();
 
-  console.log(breweries);
   const cards = breweries.map((brewery) => {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
