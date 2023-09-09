@@ -1,12 +1,12 @@
 import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
-import { useBreweries } from '../Context/BreweryContext';
+import { useBreweries } from '../../Context/BreweryContext';
 
 function BreweryContainer() {
   const { breweries } = useBreweries();
 
-  console.log(breweries)
-  const cards = breweries.map(brewery => {
+  console.log(breweries);
+  const cards = breweries.map((brewery) => {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
 

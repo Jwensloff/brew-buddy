@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Search.scss';
-import { useBreweries } from '../Context/BreweryContext';
+import { useBreweries } from '../../Context/BreweryContext';
 
 function Search() {
   const [location, setLocation] = useState('');

@@ -3,7 +3,7 @@ import './App.scss';
 import Homepage from '../Homepage/Homepage';
 import Search from '../Search/Search';
 import { useState } from 'react';
-import { BreweryContextProvider } from '../Context/BreweryContext';
+import { BreweryContextProvider } from '../../Context/BreweryContext';
 
 function App() {
   const [favorites, setFavorites] = useState([]);
