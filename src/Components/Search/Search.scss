@@ -10,11 +10,16 @@
   border-radius: 5px;
 }
 
+.location-error-message{
+  padding: .5rem;
+  border: .5rem solid $primaryColor;
+  background-color: white;
+  margin-bottom: 0.5rem ;
+}
+
 #searchInput {
   margin-right: 1rem;
   width: 16rem;
-
-
 }
 
 #searchBtn {
@@ -24,4 +29,8 @@
   &:hover {
     cursor: pointer;
   }
+}
+.dropdown{
+  margin-right: 1rem;
+  width: 6.5rem;
 }
