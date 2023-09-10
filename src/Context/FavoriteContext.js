@@ -10,7 +10,7 @@ export function FavoriteContextProvider({ children }) {
         favorites.filter(favBrewery => favBrewery.id !== brewery.id),
       );
     } else {
-      setFavorites([...favorites, brewery]);
+      setFavorites((prev) => [...prev, brewery]);
     }
   }
 
