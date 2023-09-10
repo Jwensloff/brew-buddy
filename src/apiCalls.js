@@ -17,8 +17,6 @@ async function getBreweries(city) {
 }
 
 async function getBreweriesByState(state) {
-  // 50 results is the default 'per_page' param
-  // You must indicate whether you want to return more
   state = state.split(' ').reduce((acc, curr) => acc + `_${curr}`);
   try {
     const response = await fetch(

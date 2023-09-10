@@ -10,12 +10,12 @@ function Homepage() {
   const { error } = useBreweries();
   const navigate = useNavigate();
 
-  useEffect(()=> {
-    console.log('error', error)
-    if(error){
-      navigate('/error')
+  useEffect(() => {
+    console.log('error', error);
+    if (error) {
+      navigate('/error');
     }
-  }, [error])
+  }, [error]);
 
   return (
     <>

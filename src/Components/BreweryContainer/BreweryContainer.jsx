@@ -2,7 +2,6 @@ import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
-
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
 
@@ -13,10 +12,11 @@ function BreweryContainer() {
 
   return (
     <>
-      {noResults ? <section className='no-results-message'>
-        We're sorry, we didn't find any breweries.
+      {noResults ? (
+        <section className='no-results-message'>
+          We're sorry, we didn't find any breweries.
         </section>
-       : (
+      ) : (
         <section className='breweryContainer'>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>

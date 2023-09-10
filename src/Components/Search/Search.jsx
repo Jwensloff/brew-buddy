@@ -9,7 +9,6 @@ function Search() {
   const [noLocation, setNoLocation] = useState(false);
   const [validInput, setValidInput] = useState(true);
 
-  
   const { obtainBreweries } = useBreweries();
 
   const states = require('us-state-converter');
@@ -43,35 +42,38 @@ function Search() {
     e.preventDefault();
     console.log('state', state);
     console.log('city', city);
-    if(!city.match(regex)){
+    if (!city.match(regex)) {
       setValidInput(false);
       setNoState(false);
       setNoLocation(false);
-      return
+      return;
     }
     if (city && !state) {
-      setValidInput(true)
+      setValidInput(true);
       setNoState(true);
       setNoLocation(false);
       return;
     }
     if (!state && !city) {
-      setValidInput(true)
+      setValidInput(true);
       setNoLocation(true);
       setNoState(false);
       return;
     }
-    
+
     obtainBreweries(city, state);
     setNoLocation(false);
     setNoState(false);
+    setValidInput(true);
     console.log(state);
   }
 
   return (
     <>
       {noState && (
-        <p className='location-error-message'>Please select a state to get started.</p>
+        <p className='location-error-message'>
+          Please select a state to get started.
+        </p>
       )}
       {noLocation && (
         <p className='location-error-message'>
@@ -79,9 +81,7 @@ function Search() {
         </p>
       )}
       {!validInput && (
-        <p className='location-error-message'>
-          Please enter a valid city.
-        </p>
+        <p className='location-error-message'>Please enter a valid city.</p>
       )}
 
       <form className='searchBar' onSubmit={submitForm}>
@@ -115,12 +115,3 @@ function Search() {
 }
 
 export default Search;
-
-//Error handling
-// Make sure there aren't any cities that match --> a message appears --> handle typos
-// Add a second input for the state ==> make sure to include that input into the api request
-// If there aren't any breweries that alingn with the inputs ->  have a message appear that say so
-// Handle user input --> prevent any kind of number or special character input
-
-// Take a look at error handling for api requests
-// Do we need to create an error page?
