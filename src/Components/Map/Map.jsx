@@ -30,14 +30,46 @@ function Map() {
       latSum += Number(brewery.latitude);
       longSum += Number(brewery.longitude);
     })
-    console.log("LONG SUM",longSum)
-    console.log("LAT SUM", latSum)
+   
     let mapCenter = {
       latCenter : latSum/(filteredBreweries.length),
       longCenter : longSum/(filteredBreweries.length)
     }
     return mapCenter;
   }
+  
+  function caclulateFurthestDistance(filteredBreweries){
+
+    let largestDistance = filteredBreweries.reduce((acc, currentBrewery, index) => {
+        for( var i = index + 1 ; i < filteredBreweries.length; i++) {
+          
+          let distance = calculateDistance(currentBrewery.latitude,currentBrewery.longitude,filteredBreweries[i].latitude,filteredBreweries[i].longitude)
+          
+          if(distance > acc){
+            console.log(acc)
+            acc = distance;
+          }
+        }
+        return acc;
+    },0)
+    return largestDistance;
+  }
+
+
+
+
+  function calculateDistance (lat1,long1,lat2,long2){
+    console.log(lat1,long1,lat2,long2)
+    let latRad1 = (Number(lat1) * Math.PI)/180
+    let latRad2 = (Number(lat2) * Math.PI)/180
+    let longRad1 = (Number(long1) * Math.PI)/180
+    let longRad2 = (Number(long2) * Math.PI)/180
+    const distance = 3958*(Math.acos((Math.sin(latRad1)*Math.sin(latRad2)) + (Math.cos(latRad1)*Math.cos(latRad2)*Math.cos(longRad2 - longRad1))));
+    
+    return distance;
+  }
+  calculateDistance();
+
 
 
   const mapPoints = validBreweries.map((brewery) => {
