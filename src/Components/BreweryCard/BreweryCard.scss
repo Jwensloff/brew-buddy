@@ -10,30 +10,35 @@
   .name {
     margin-right: 2rem;
   }
+}
+.card-a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .card-a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: 0.5rem;
+  height: 2rem;
+  width: 5rem;
 
-    padding: .5rem;
-    height: 2rem;
-    width: 5rem;
+  background-color: $primaryColor;
+  color: antiquewhite;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-    background-color: $primaryColor;
-    color: antiquewhite;
-    text-decoration: none;
-    cursor: pointer;
-  }
+.card-a-box {
+  display: flex;
+  justify-content: space-evenly;
+}
 
-  .card-a-box {
-    display: flex;
-    justify-content: space-evenly;
-  }
+.breweryCard-favorites-btn {
+  background-color: #e0cc99;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
 
-  .breweryCard-favorites-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
+
+.card-text {
+  margin: 0.5rem 0;
 }

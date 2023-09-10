@@ -28,9 +28,10 @@ function BreweryCard({ brewery }) {
   return (
     <article className='breweryCard'>
       <h3 className='card-text name'>{name}</h3>
-      <p className='card-text'>{street}</p>
-      <p className='card-text'>{phone}</p>
-      <p className='card-text'>{brewery_type}</p>
+      <p className='card-text type'>{brewery_type}</p>
+      {street && <p className='card-text'>{street}</p>}
+      {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
+     
       <div className='card-a-box'>
         {website_url && (
           <a
@@ -42,14 +43,14 @@ function BreweryCard({ brewery }) {
             Website
           </a>
         )}
-        <a
+       {street && <a
           className='card-a'
           href={directionsURL}
           target='_blank'
           rel='noreferrer'
         >
           Directions
-        </a>
+        </a>}
       </div>
       <button
         className='breweryCard-favorites-btn'
@@ -58,11 +59,17 @@ function BreweryCard({ brewery }) {
           toggleIsFavorite();
         }}
       >
-             {isFavorite ? <FontAwesomeIcon icon={faBookmark} /> : <FontAwesomeIcon icon={farBookmark} />}
-
+             {isFavorite ? <FontAwesomeIcon icon={faBookmark} size='xl'/> : <FontAwesomeIcon icon={farBookmark} size='xl'/>}
       </button>
     </article>
   );
 }
 
+function formatPhoneNumber(number) {
+  const strNum = `${number}`
+  return  `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
+  
+}
+
 export default BreweryCard;
+
