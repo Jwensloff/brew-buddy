@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.scss';
 import Homepage from '../Homepage/Homepage';
-import Search from '../Search/Search';
 import { useState } from 'react';
 import { BreweryContextProvider } from '../../Context/BreweryContext';
 import { FavoriteContextProvider } from '../../Context/FavoriteContext';
+import FavoritesPage from '../FavoritesPage/FavoritesPage';
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -16,15 +16,10 @@ function App() {
   return (
     <BreweryContextProvider>
       <FavoriteContextProvider>
-        <div className='App'>
-          <header className='mainHeader'>
-            <Search />
-          </header>
-
-          <Routes>
-            <Route path='/' element={<Homepage />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path='/' element={<Homepage />} />
+          <Route path='/favorites' element={<FavoritesPage />} />
+        </Routes>
       </FavoriteContextProvider>
     </BreweryContextProvider>
   );
