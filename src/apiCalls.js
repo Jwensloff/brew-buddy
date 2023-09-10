@@ -12,6 +12,7 @@ async function getBreweries(city) {
     return await response.json();
   } catch (error) {
     console.log(error);
+    return error
   }
 }
 
@@ -29,6 +30,7 @@ async function getBreweriesByState(state) {
     return await response.json();
   } catch (error) {
     console.log(error);
+    return error
   }
 }
 

@@ -5,36 +5,48 @@ export const BreweryContext = createContext(null);
 
 export function BreweryContextProvider({ children }) {
   const [breweries, setBreweries] = useState([]);
-  const [noResults, setNoResults]= useState(false);
+  const [noResults, setNoResults] = useState(false);
+  const [error, setError] = useState('');
 
   async function obtainBreweries(city, state) {
     console.log('city', city);
     console.log('state', state);
-    let stateBreweryDate = [];
+    let stateBreweryData = [];
     let breweryData = [];
     let filteredBreweryData = [];
     if (!city) {
-      stateBreweryDate = await getBreweriesByState(state);
-      setBreweries(stateBreweryDate);
-      setNoResults(false)
+      stateBreweryData = await getBreweriesByState(state);
+      if (stateBreweryData.message === 'Custom error for now') {
+        setError(stateBreweryData.message);
+        return;
+      }
+      setError(false);
+      setBreweries(stateBreweryData);
+      setNoResults(false);
     } else {
       breweryData = await getBreweries(city);
+      if (breweryData.message === 'Custom error for now') {
+        setError(breweryData.message);
+        return;
+      }
+      setError(false);
       filteredBreweryData = breweryData.filter(
         (brewery) => brewery.state === state
       );
-      if(filteredBreweryData.length === 0){
-        setNoResults(true)
-        setBreweries(filteredBreweryData)
+      if (filteredBreweryData.length === 0) {
+        setNoResults(true);
+        setBreweries(filteredBreweryData);
       } else {
-        setNoResults(false)
-        setBreweries(filteredBreweryData)
+        setNoResults(false);
+        setBreweries(filteredBreweryData);
       }
     }
-
   }
 
   return (
-    <BreweryContext.Provider value={{ breweries, obtainBreweries, noResults, setNoResults }}>
+    <BreweryContext.Provider
+      value={{ breweries, obtainBreweries, noResults, setNoResults, error }}
+    >
       {children}
     </BreweryContext.Provider>
   );

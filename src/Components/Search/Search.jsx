@@ -91,7 +91,7 @@ function Search() {
           key='search'
           name='city-search'
           value={city}
-          placeholder='City'
+          placeholder='City (optional)'
           onChange={(e) => setCity(e.target.value)}
         />
 

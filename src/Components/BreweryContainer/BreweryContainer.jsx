@@ -2,6 +2,7 @@ import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
+
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
 
