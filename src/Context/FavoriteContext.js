@@ -1,9 +1,24 @@
 import { createContext, useContext, useState } from 'react';
+import { useBreweries } from './BreweryContext';
 
 export const FavoriteContext = createContext(null);
 
 export function FavoriteContextProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
+  const [favoriteFilter, setFavoriteFilter] = useState(false);
+  const { breweries } = useBreweries();
+
+  function getFilteredBreweries() {
+    if (favoriteFilter) {
+      return breweries.filter(brewery => favorites.includes(brewery));
+    } else {
+      return breweries;
+    }
+  }
+
+  function toggleFavoritesFilter() {
+    setFavoriteFilter(prevFilter => !prevFilter);
+  }
 
   function toggleFavorite(brewery) {
     if (favorites.includes(brewery)) {
@@ -18,6 +33,9 @@ export function FavoriteContextProvider({ children }) {
   const value = {
     favorites,
     toggleFavorite,
+    toggleFavoritesFilter,
+    getFilteredBreweries,
+    favoriteFilter
   };
 
   return (

@@ -3,16 +3,18 @@ import { MapContainer, TileLayer, Marker, Popup, Pane } from 'react-leaflet';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
+import { useFavorites } from '../../Context/FavoriteContext';
 
 function Map() {
   const defaultPosition = [39.82, -98.57];
   const defaultZoomLevel = 4;
   const { breweries } = useBreweries();
+  const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const filteredBreweries = breweries.filter(
+    const filteredBreweries = getFilteredBreweries().filter(
       brewery => brewery.latitude && brewery.longitude,
     );
     setValidBreweries(filteredBreweries);
@@ -24,7 +26,7 @@ function Map() {
       let bounds = L.latLngBounds(cornerA, cornerB);
       mapRef.current.flyToBounds(bounds);
     }
-  }, [breweries]);
+  }, [breweries, favorites, favoriteFilter]);
 
   function calculateCenter(filteredBreweries) {
     let longSum = 0;
