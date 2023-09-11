@@ -3,23 +3,34 @@ import './App.scss';
 import Homepage from '../Homepage/Homepage';
 import Search from '../Search/Search';
 import ErrorPage from '../ErrorPage/ErrorPage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BreweryContextProvider } from '../../Context/BreweryContext';
-import AgeCheck from '../AgeCheck/AgeCheck'
-
+import AgeCheck from '../AgeCheck/AgeCheck';
 
 function App() {
   const [favorites, setFavorites] = useState([]);
+  // const [isLegal, setisLegal] = useState(false);
+  const [isLegal, setisLegal] = useState(() => {
+    const legalStatus = localStorage.getItem('isLegal');
+    console.log('legalStatus',legalStatus)
+    const parsedItem = JSON.parse(legalStatus);
+    console.log('parsedItem',parsedItem)
+    return parsedItem || '';
+  });
 
   const addFavorites = (newFavorite) => {
     setFavorites([...favorites, newFavorite]);
   };
 
+  // useEffect(() => {
+  //   localStorage.setItem('IsLegal', JSON.stringify(false));
+  // }, [isLegal]);
+
   return (
     <BreweryContextProvider>
       <div className='App'>
-        <AgeCheck />
-      <header className='mainHeader'>
+        {!isLegal && <AgeCheck setisLegal={setisLegal} isLegal={isLegal}/>}
+        <header className='mainHeader'>
           <Search />
         </header>
 
