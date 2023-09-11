@@ -12,3 +12,13 @@
   margin: 1vh;
   box-sizing: border-box;
 }
+
+.brewery-popup{
+  background-color: $primaryColor;
+  padding: 0;
+  color: white;
+}
+
+.leaflet-popup-content-wrapper{
+  background-color: $primaryColor;
+}
