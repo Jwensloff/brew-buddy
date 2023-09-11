@@ -70,7 +70,6 @@ function Map() {
   }
 
   function zoomToBrewery({lat,lng}){
-    
     mapRef.current.flyTo([lat,lng],15)
   }
 
