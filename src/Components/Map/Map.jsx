@@ -1,5 +1,5 @@
 import './Map.scss';
-import { MapContainer, TileLayer, Marker, Popup, Pane } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Pane, useMap } from 'react-leaflet';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
@@ -12,19 +12,23 @@ function Map() {
   const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
+  const [selectedBrewery, setSelectedBrewery] = useState(null);
 
   useEffect(() => {
     const filteredBreweries = getFilteredBreweries().filter(
       brewery => brewery.latitude && brewery.longitude,
     );
     setValidBreweries(filteredBreweries);
-    if (filteredBreweries.length > 0 && mapRef.current) {
+    if (filteredBreweries.length > 2 && mapRef.current) {
       const center = calculateCenter(filteredBreweries);
       const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);
       let cornerB = L.latLng(distanceObject.corner2);
       let bounds = L.latLngBounds(cornerA, cornerB);
       mapRef.current.flyToBounds(bounds);
+    }
+    else if(mapRef.current && filteredBreweries.length === 1){
+      mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
   }, [breweries, favorites, favoriteFilter]);
 
@@ -66,6 +70,10 @@ function Map() {
     return largestDistance;
   }
 
+  function zoomToBrewery({lat,lng}){
+    mapRef.current.flyTo([lat,lng],15)
+  }
+
   function calculateDistance(lat1, long1, lat2, long2) {
     let latRad1 = (Number(lat1) * Math.PI) / 180;
     let latRad2 = (Number(lat2) * Math.PI) / 180;
@@ -80,10 +88,23 @@ function Map() {
     return distance;
   }
 
-  const mapPoints = validBreweries.map(brewery => {
+ 
+  const mapPoints = validBreweries.map((brewery) => {
+    let formattedNumber;
+    if(brewery.phone){
+    const strNum = brewery.phone;
+    
+    formattedNumber = `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
+    }
+    
     return (
-      <Marker key={brewery.id} position={[brewery.latitude, brewery.longitude]}>
-        <Popup>{brewery.name}</Popup>
+      <Marker key={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {zoomToBrewery(e.target._latlng)}}}>
+        <Popup>
+          <div className='brewery-popup'>
+            <p>{brewery.name}</p>
+            <p>{brewery.address_1}</p>
+            <p>{formattedNumber}</p>
+            </div></Popup>
       </Marker>
     );
   });
