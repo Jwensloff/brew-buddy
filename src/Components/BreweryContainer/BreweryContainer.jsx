@@ -6,11 +6,6 @@ import { useEffect, useState } from 'react';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
-
-  const cards = breweries.map((brewery) => {
-    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
-  });
-  const { breweries } = useBreweries();
   const { favorites } = useFavorites();
   const [favoriteFilter, setFavoriteFilter] = useState(false);
   const [cards, setCards] = useState([])

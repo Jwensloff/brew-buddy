@@ -17,17 +17,15 @@ function App() {
 
   return (
     <BreweryContextProvider>
-      <div className='App'>
-        <header className='mainHeader'>
-          <Search />
-        </header>
-
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          <Route path='/error' element={<ErrorPage />} />
-          <Route path='*' element={<ErrorPage />} />
-        </Routes>
-      </div>
+      <FavoriteContextProvider>
+        <div className='App'>
+          <Routes>
+            <Route path='/' element={<Homepage />} />
+            <Route path='/error' element={<ErrorPage />} />
+            <Route path='*' element={<ErrorPage />} />
+          </Routes>
+        </div>
+      </FavoriteContextProvider>
     </BreweryContextProvider>
   );
 }
