@@ -40,8 +40,7 @@ function Search() {
 
   async function submitForm(e) {
     e.preventDefault();
-    console.log('state', state);
-    console.log('city', city);
+
     if (!city.match(regex)) {
       setValidInput(false);
       setNoState(false);
@@ -65,7 +64,6 @@ function Search() {
     setNoLocation(false);
     setNoState(false);
     setValidInput(true);
-    console.log(state);
   }
 
   return (

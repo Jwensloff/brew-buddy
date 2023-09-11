@@ -14,7 +14,6 @@ function Homepage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('error', error);
     if (error) {
       navigate('/error');
     }
@@ -26,14 +25,10 @@ function Homepage() {
       <header className='mainHeader'>
         <Search />
       </header>
-      {error ? (
-        <ErrorPage />
-      ) : (
-        <main className='homepage'>
-            <BreweryContainer />
-            <Map />
-          </main>
-      )}
+      <main className='homepage'>
+        <BreweryContainer />
+        <Map />
+      </main>
     </>
   );
 }

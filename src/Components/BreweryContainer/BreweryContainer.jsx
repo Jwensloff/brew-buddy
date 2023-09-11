@@ -24,10 +24,9 @@ function BreweryContainer() {
       return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
     });
   }
-  
 
   function toggleFavoritesFilter() {
-    setFavoriteFilter(prevFilter => (prevFilter ? false : true));
+    setFavoriteFilter(prevFilter => !prevFilter);
   }
 
   return (
@@ -38,6 +37,7 @@ function BreweryContainer() {
         </section>
       ) : (
         <section className='breweryContainer'>
+          <button onClick={toggleFavoritesFilter}>Fav filter</button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>
       )}

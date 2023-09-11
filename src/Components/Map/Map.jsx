@@ -5,21 +5,20 @@ import { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
 
 function Map() {
-  const defaultposition = [39.82, -98.57];
-  const defaultzoomLevel = 4;
+  const defaultPosition = [39.82, -98.57];
+  const defaultZoomLevel = 4;
   const { breweries } = useBreweries();
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
 
   useEffect(() => {
     const filteredBreweries = breweries.filter(
-      (brewery) => brewery.latitude && brewery.longitude
+      brewery => brewery.latitude && brewery.longitude,
     );
-    console.log('Filtered breweries', filteredBreweries);
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 0 && mapRef.current) {
       const center = calculateCenter(filteredBreweries);
-      const distanceObject = caclulateFurthestDistance(filteredBreweries);
+      const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);
       let cornerB = L.latLng(distanceObject.corner2);
       let bounds = L.latLngBounds(cornerA, cornerB);
@@ -30,7 +29,7 @@ function Map() {
   function calculateCenter(filteredBreweries) {
     let longSum = 0;
     let latSum = 0;
-    filteredBreweries.forEach((brewery) => {
+    filteredBreweries.forEach(brewery => {
       latSum += Number(brewery.latitude);
       longSum += Number(brewery.longitude);
     });
@@ -42,18 +41,15 @@ function Map() {
     return mapCenter;
   }
 
-  let corner1 = '';
-  let corner2 = '';
-  let bounds = '';
-  function caclulateFurthestDistance(filteredBreweries) {
+  function calculateFurthestDistance(filteredBreweries) {
     let largestDistance = filteredBreweries.reduce(
       (acc, currentBrewery, index) => {
-        filteredBreweries.slice(index + 1).forEach((brewery) => {
+        filteredBreweries.slice(index + 1).forEach(brewery => {
           let distance = calculateDistance(
             currentBrewery.latitude,
             currentBrewery.longitude,
             brewery.latitude,
-            brewery.longitude
+            brewery.longitude,
           );
           if (distance > acc.distance) {
             acc.distance = distance;
@@ -63,13 +59,12 @@ function Map() {
         });
         return acc;
       },
-      { distance: 0, corner1: [], corner2: [] }
+      { distance: 0, corner1: [], corner2: [] },
     );
     return largestDistance;
   }
 
   function calculateDistance(lat1, long1, lat2, long2) {
-    console.log('coordinates', lat1, long1, lat2, long2);
     let latRad1 = (Number(lat1) * Math.PI) / 180;
     let latRad2 = (Number(lat2) * Math.PI) / 180;
     let longRad1 = (Number(long1) * Math.PI) / 180;
@@ -78,12 +73,12 @@ function Map() {
       3958 *
       Math.acos(
         Math.sin(latRad1) * Math.sin(latRad2) +
-          Math.cos(latRad1) * Math.cos(latRad2) * Math.cos(longRad2 - longRad1)
+          Math.cos(latRad1) * Math.cos(latRad2) * Math.cos(longRad2 - longRad1),
       );
     return distance;
   }
 
-  const mapPoints = validBreweries.map((brewery) => {
+  const mapPoints = validBreweries.map(brewery => {
     return (
       <Marker key={brewery.id} position={[brewery.latitude, brewery.longitude]}>
         <Popup>{brewery.name}</Popup>
@@ -95,12 +90,8 @@ function Map() {
     <div className='map__container'>
       <MapContainer
         ref={mapRef}
-        center={
-          validBreweries.length !== 0
-            ? [validBreweries[0].latitude, validBreweries[0].longitude]
-            : defaultposition
-        }
-        zoom={validBreweries.length != 0 ? 15 : defaultzoomLevel}
+        center={defaultPosition}
+        zoom={defaultZoomLevel}
         scrollWheelZoom={false}
       >
         <TileLayer
