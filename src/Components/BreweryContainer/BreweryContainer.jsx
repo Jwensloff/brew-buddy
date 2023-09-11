@@ -5,6 +5,11 @@ import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
 
 function BreweryContainer() {
+  const { breweries, noResults } = useBreweries();
+
+  const cards = breweries.map((brewery) => {
+    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+  });
   const { breweries } = useBreweries();
   const { favorites } = useFavorites();
   const [favoriteFilter, setFavoriteFilter] = useState(false);
@@ -25,17 +30,23 @@ function BreweryContainer() {
     });
   }
   
-  console.log('cardss', cards)
 
   function toggleFavoritesFilter() {
     setFavoriteFilter(prevFilter => (prevFilter ? false : true));
   }
 
   return (
-    <section className='breweryContainer'>
-      <button onClick={() => toggleFavoritesFilter()}>Filter by fav</button>
-      {cards.length ? cards : 'Search Results Will Appear Here'}
-    </section>
+    <>
+      {noResults ? (
+        <section className='no-results-message'>
+          We're sorry, we didn't find any breweries.
+        </section>
+      ) : (
+        <section className='breweryContainer'>
+          {cards.length ? cards : 'Search Results Will Appear Here'}
+        </section>
+      )}
+    </>
   );
 }
 

@@ -4,18 +4,36 @@ import Map from '../Map/Map';
 import Search from '../Search/Search';
 import { NavLink } from 'react-router-dom';
 
+import ErrorPage from '../ErrorPage/ErrorPage';
+import { useBreweries } from '../../Context/BreweryContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Homepage() {
+  const { error } = useBreweries();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('error', error);
+    if (error) {
+      navigate('/error');
+    }
+  }, [error]);
+
   return (
     <>
       <NavLink to='/favorites'>favorites</NavLink>
       <header className='mainHeader'>
         <Search />
       </header>
-      <main className='homepage'>
-        <BreweryContainer />
-        <Map />
-      </main>
+      {error ? (
+        <ErrorPage />
+      ) : (
+        <main className='homepage'>
+            <BreweryContainer />
+            <Map />
+          </main>
+      )}
     </>
   );
 }
