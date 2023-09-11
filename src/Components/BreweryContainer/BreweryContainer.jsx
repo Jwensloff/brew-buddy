@@ -21,6 +21,10 @@ function BreweryContainer() {
     setCards(createCards(getFilteredBreweries()))
   }, [favorites, breweries, favoriteFilter])
 
+  const styles = {
+    backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99'
+  }
+
   return (
     <>
       {noResults ? (
@@ -29,7 +33,7 @@ function BreweryContainer() {
         </section>
       ) : (
         <section className='breweryContainer'>
-          <button onClick={toggleFavoritesFilter}>Fav filter</button>
+          <button className='filter-btn' style={styles} onClick={toggleFavoritesFilter}>Filter Local Breweries by Favorite</button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>
       )}
