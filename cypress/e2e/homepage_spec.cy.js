@@ -17,7 +17,7 @@ describe('homepage', () => {
     )
   })
 
-  it('If a State is not selected a message should alert user to enter a location.', () => {
+  it('If a location and State is not entered a message should alert user to enter a location.', () => {
     cy.get('.location-error-message').should('not.exist')
     cy.get('.searchBar').find('#searchBtn').click()
     cy.get('.location-error-message').should('exist').contains('Please specify a location to get started.')
