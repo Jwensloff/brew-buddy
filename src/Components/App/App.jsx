@@ -22,21 +22,28 @@ function App() {
   return (
     <BreweryContextProvider>
       <div className='App'>
-        {!isLegal ? (
-          <AgeCheck setisLegal={setisLegal} />
-        ) : (
-          <>
-            <header className='mainHeader'>
-              <Search />
-            </header>
+        <header className='mainHeader'>
+          <Search />
+        </header>
 
-            <Routes>
-              <Route path='/' element={<Homepage />} />
-              <Route path='/error' element={<ErrorPage />} />
-              <Route path='*' element={<ErrorPage />} />
-            </Routes>
-          </>
-        )}
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                <Homepage />
+                {!isLegal && (
+                  <div className='overlay'>
+                    {' '}
+                    <AgeCheck setisLegal={setisLegal}/>{' '}
+                  </div>
+                )}
+              </>
+            }
+          />
+          <Route path='/error' element={<ErrorPage />} />
+          <Route path='*' element={<ErrorPage />} />
+        </Routes>
       </div>
     </BreweryContextProvider>
   );
