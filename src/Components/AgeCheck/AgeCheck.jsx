@@ -2,8 +2,8 @@ import './AgeCheck.scss';
 import { useState } from 'react';
 
 function AgeCheck({ setisLegal }) {
-  
-  const ageVerification = (canAccessSite) => {
+
+  const ageVerification = () => {
     localStorage.setItem('isLegal', JSON.stringify(true));
     setisLegal(true);
   };
@@ -15,7 +15,7 @@ function AgeCheck({ setisLegal }) {
           <h2 className='content'>Are you 21?</h2>
           <div className='age-button-container'>
             <button
-              onClick={() => ageVerification(true)}
+              onClick={() => ageVerification()}
               className='yes-button content'
             >
               Yes
