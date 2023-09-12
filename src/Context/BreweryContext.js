@@ -9,11 +9,10 @@ export function BreweryContextProvider({ children }) {
   const [error, setError] = useState('');
 
   async function obtainBreweries(city, state) {
-    console.log('city', city);
-    console.log('state', state);
     let stateBreweryData = [];
     let breweryData = [];
     let filteredBreweryData = [];
+
     if (!city) {
       stateBreweryData = await getBreweriesByState(state);
       if (stateBreweryData.message === 'Custom error for now') {

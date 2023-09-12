@@ -1,15 +1,3 @@
 @import '../../index.scss';
 
-.mainHeader {
-  background-image: url('../../Assets/hops.jpeg');
-  background-repeat: no-repeat;
-  background-position: center;
-  min-height: 20vh;
-  border-bottom: 2rem solid $primaryColor;
-  padding: 1rem;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: end;
-}
