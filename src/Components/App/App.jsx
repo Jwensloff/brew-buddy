@@ -9,22 +9,17 @@ import FavoritesPage from '../FavoritesPage/FavoritesPage';
 import AgeCheck from '../AgeCheck/AgeCheck';
 
 function App() {
-  const [favorites, setFavorites] = useState([]);
   const [isLegal, setisLegal] = useState(() => {
     const legalStatus = localStorage.getItem('isLegal');
     const parsedItem = JSON.parse(legalStatus);
     return parsedItem || '';
   });
 
-  const addFavorites = (newFavorite) => {
-    setFavorites([...favorites, newFavorite]);
-  };
-
   return (
     <BreweryContextProvider>
       <FavoriteContextProvider>
-          <Routes>
-            <Route
+        <Routes>
+          <Route
             path='/'
             element={
               <>
@@ -32,16 +27,16 @@ function App() {
                 {!isLegal && (
                   <div className='overlay'>
                     {' '}
-                    <AgeCheck setisLegal={setisLegal}/>{' '}
+                    <AgeCheck setisLegal={setisLegal} />{' '}
                   </div>
                 )}
               </>
             }
           />
-            <Route path='/favorites' element={<FavoritesPage />} />
-            <Route path='/error' element={<ErrorPage />} />
-            <Route path='*' element={<ErrorPage />} />
-          </Routes>
+          <Route path='/favorites' element={<FavoritesPage />} />
+          <Route path='/error' element={<ErrorPage />} />
+          <Route path='*' element={<ErrorPage />} />
+        </Routes>
       </FavoriteContextProvider>
     </BreweryContextProvider>
   );
