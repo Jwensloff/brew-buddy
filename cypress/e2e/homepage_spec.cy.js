@@ -38,12 +38,26 @@ describe('homepage', () => {
     cy.get('.breweryContainer').find('.breweryCard').first().contains('10 Barrel Brewing Co')
   })
 
-  
-
   it('Should should be able to search by State.', () => {
     cy.get('.searchBar').find('#dropdown').select('California')
     cy.get('.searchBar').find('#searchBtn').click()
     cy.get('.breweryContainer').find('.breweryCard').last().contains('32 North Brewing Co')
   })
 
+  it('should to able to toggle local favorites filter', () => {
+    cy.get('.searchBar').find('#searchInput').type('San Diego');
+    cy.get('.searchBar').find('#dropdown').select('California');
+    cy.get('.searchBar').find('#searchBtn').click();
+    cy.get('.breweryCard').should('have.length', 3)
+    cy.get('.breweryCard').contains('2Kids Brewing Company');
+    cy.get('.breweryCard').first().find('.breweryCard-favorites-btn').click();
+    cy.get('.breweryCard').last().find('.breweryCard-favorites-btn').click();
+    cy.get('.filter-btn').click()
+    cy.get('.breweryCard').should('have.length', 2)
+    cy.get('.breweryCard').should('not.contain', '2Kids Brewing Company');
+    cy.get('.filter-btn').click()
+    cy.get('.breweryCard').should('have.length', 3)
+    cy.get('.breweryCard').contains('2Kids Brewing Company');
+    cy.get('.breweryCard').first().find('.breweryCard-favorites-btn');
+  });
 })
