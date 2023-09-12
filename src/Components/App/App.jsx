@@ -9,12 +9,9 @@ import AgeCheck from '../AgeCheck/AgeCheck';
 
 function App() {
   const [favorites, setFavorites] = useState([]);
-  // const [isLegal, setisLegal] = useState(false);
   const [isLegal, setisLegal] = useState(() => {
     const legalStatus = localStorage.getItem('isLegal');
-    console.log('legalStatus',legalStatus)
     const parsedItem = JSON.parse(legalStatus);
-    console.log('parsedItem',parsedItem)
     return parsedItem || '';
   });
 
@@ -22,23 +19,24 @@ function App() {
     setFavorites([...favorites, newFavorite]);
   };
 
-  // useEffect(() => {
-  //   localStorage.setItem('IsLegal', JSON.stringify(false));
-  // }, [isLegal]);
-
   return (
     <BreweryContextProvider>
       <div className='App'>
-        {!isLegal && <AgeCheck setisLegal={setisLegal} isLegal={isLegal}/>}
-        <header className='mainHeader'>
-          <Search />
-        </header>
+        {!isLegal ? (
+          <AgeCheck setisLegal={setisLegal} />
+        ) : (
+          <>
+            <header className='mainHeader'>
+              <Search />
+            </header>
 
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          <Route path='/error' element={<ErrorPage />} />
-          <Route path='*' element={<ErrorPage />} />
-        </Routes>
+            <Routes>
+              <Route path='/' element={<Homepage />} />
+              <Route path='/error' element={<ErrorPage />} />
+              <Route path='*' element={<ErrorPage />} />
+            </Routes>
+          </>
+        )}
       </div>
     </BreweryContextProvider>
   );

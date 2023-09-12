@@ -1,30 +1,22 @@
 import './AgeCheck.scss';
 import { useState } from 'react';
 
-function AgeCheck({ setisLegal, isLegal }) {
-
+function AgeCheck({ setisLegal }) {
   const ageVerification = (canAccessSite) => {
-    if (!canAccessSite) {
-      return;
-    } else {
-      localStorage.setItem('isLegal', JSON.stringify(true));
-      setisLegal(true)
-    }
+    localStorage.setItem('isLegal', JSON.stringify(true));
+    setisLegal(true);
   };
 
   return (
     <div className='age-check-overlay'>
-      <div className='age-check-circle'>
-        <h2>Are you 21?</h2>
+      <div className='age-check-wrapper'>
+        <h2 className='content'>Are you 21?</h2>
         <div className='age-button-container'>
-          <button onClick={() => ageVerification(true)} className='yes-button'>
+          <button onClick={() => ageVerification(true)} className='yes-button content'>
             Yes
           </button>
-          <button onClick={() => ageVerification(false)} className='no-button'>
-            No
-          </button>
         </div>
-        <p>Brew Buddy is for individuals of legal drinking age.</p>
+        <p className='content'>Brew Buddy is for individuals of legal drinking age.</p>
       </div>
     </div>
   );
