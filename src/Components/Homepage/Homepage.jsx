@@ -21,8 +21,8 @@ function Homepage() {
 
   return (
     <>
-      <NavLink to='/favorites'>favorites</NavLink>
-      <header className='mainHeader'>
+      <NavLink className='see-all-favorites-btn' to='/favorites'>favorites</NavLink>
+      <header className='main-header'>
         <Search />
       </header>
       <main className='homepage'>

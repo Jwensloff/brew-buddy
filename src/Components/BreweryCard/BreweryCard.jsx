@@ -6,7 +6,7 @@ import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
 
 function BreweryCard({ brewery }) {
-  const { name, street, phone, brewery_type, website_url, city } = brewery;
+  const { name, street, phone, brewery_type, website_url, city, id } = brewery;
   const directionsURL = `https://www.google.com/maps/dir/${name},${street}+${city}`;
   const { toggleFavorite, favorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -26,7 +26,7 @@ function BreweryCard({ brewery }) {
   }
 
   return (
-    <article className='brewery-card'>
+    <article id={id} className='brewery-card'>
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
@@ -53,7 +53,7 @@ function BreweryCard({ brewery }) {
         </a>}
       </div>
       <button
-        className='breweryCard-favorites-btn'
+        className='brewery-card-favorites-btn'
         onClick={() => {
           toggleFavorite(brewery);
           toggleIsFavorite();

@@ -59,14 +59,22 @@ describe('homepage', () => {
     .find('.brewery-card')
     .last()
     .contains('Firestone Walker Brewing Company');
-    
   });
   
   it('should allow a user to favorite a brewery and view list of favorites', () => {
     cy.get('.filter-btn').should('exist')
+    cy.get('.see-all-favorites-btn').should('exist')
     cy.get('.search-bar').find('#dropdown').select('California')
     cy.get('.search-bar').find('#searchBtn').click()
     cy.wait('@stateData')
-
+    cy.get('.brewery-card').should('have.length', 3)
+    cy.get('.brewery-card').get('#1').find('.brewery-card-favorites-btn').click()
+    cy.get('.brewery-card').get('#3').find('.brewery-card-favorites-btn').click()
+    cy.get('.filter-btn').click()
+    cy.get('.brewery-card').should('have.length', 2)
+    cy.get('.brewery-card').get('#1').find('.brewery-card-favorites-btn').click()
+    cy.get('.brewery-card').should('have.length', 1)
+    cy.get('.see-all-favorites-btn').click()
+    cy.get('.brewery-card').should('have.length', 1)
   })
 });
