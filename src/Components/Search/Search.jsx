@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useReducer, useState } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
@@ -41,18 +41,13 @@ function Search() {
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
-    let noDuplicateStatesArray = [];
-    let stateNames = [];
-
-    listOfStates.forEach(state => {
-      if (stateNames.includes(state.name)) {
-        return;
-      }
-      stateNames.push(state.name);
-      noDuplicateStatesArray.push(state);
-    });
-    return noDuplicateStatesArray;
-  };
+  return listOfStates.reduce((uniqueStates, state) => {
+    if (!uniqueStates.some(s => s.name === state.name)) {
+      uniqueStates.push(state);
+    }
+    return uniqueStates;
+  }, []);
+};
 
   const filteredStates = noDuplicates();
   const dropdownList = filteredStates.map(state => {
