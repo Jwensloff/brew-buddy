@@ -44,7 +44,7 @@ export function BreweryContextProvider({ children }) {
 
   return (
     <BreweryContext.Provider
-      value={{ breweries, obtainBreweries, noResults, setNoResults, error }}
+      value={{ breweries, obtainBreweries, noResults, setNoResults, error, setBreweries}}
     >
       {children}
     </BreweryContext.Provider>
