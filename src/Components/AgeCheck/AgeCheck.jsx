@@ -20,6 +20,11 @@ function AgeCheck({ setisLegal }) {
             >
               Yes
             </button>
+            <a href="https://www.caprisun.com/" rel="noopener noreferrer">
+      <button className='no-button content'
+>No</button>
+    </a>
+
           </div>
           <p className='content'>
             Brew Buddy is for individuals of legal drinking age.
