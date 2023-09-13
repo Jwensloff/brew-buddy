@@ -1,8 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
+const initialErrorMessage = '';
+
+function errorMessageReducer(state, action) {
+  switch (action.type) {
+    case 'SET_ERROR_MESSAGE':
+      return action.error;
+    case 'CLEAR_ERROR_MESSAGE':
+      return '';
+    default:
+      return state;
+  }
+}
+
 function Search() {
+  const [errorState, dispatchErrorMsg] = useReducer(
+    errorMessageReducer,
+    initialErrorMessage
+  );
   const [formData, setFormData] = useState({
     city: '',
     state: 'Select State'
@@ -12,6 +29,29 @@ function Search() {
   const [validInput, setValidInput] = useState(true);
 
   const { obtainBreweries } = useBreweries();
+
+  useEffect(() => {
+    if (noState) {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please select a state to get started.',
+        errorType: 'state'
+      });
+    } else if (noLocation) {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please specify a location to get started.'
+      });
+    } else if (!validInput) {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please enter a valid city.',
+        errorType: 'city'
+      });
+    } else {
+      dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
+    }
+  }, [noState, noLocation, validInput]);
 
   const updateFormData = e => {
     setFormData(prevFormData => {
@@ -90,7 +130,6 @@ function Search() {
           placeholder='City (optional)'
           onChange={updateFormData}
         />
-
         <select
           id='dropdown'
           name='state'
@@ -108,19 +147,10 @@ function Search() {
           Search
         </button>
       </form>
-
-      {noState && (
-        <p className='location-error-message state-error'>
-          Please select a state to get started.
-        </p>
-      )}
-      {noLocation && (
-        <p className='location-error-message'>
+      {errorState && (
+        <p className={`location-error-message ${errorState.errorType}-error`}>
           Please specify a location to get started.
         </p>
-      )}
-      {!validInput && (
-        <p className='location-error-message city-error'>Please enter a valid city.</p>
       )}
     </div>
   );
