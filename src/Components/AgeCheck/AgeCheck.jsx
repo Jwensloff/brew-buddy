@@ -1,5 +1,6 @@
 import './AgeCheck.scss';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function AgeCheck({ setisLegal }) {
 
@@ -9,7 +10,6 @@ function AgeCheck({ setisLegal }) {
   };
 
   return (
-    // <div className='modal'>
       <div className='overlay-container'>
         <div className='age-check-wrapper'>
           <h2 className='content'>Are you 21?</h2>
@@ -26,8 +26,8 @@ function AgeCheck({ setisLegal }) {
           </p>
         </div>
       </div>
-    // </div>
   );
 }
+
 
 export default AgeCheck;

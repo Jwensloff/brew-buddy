@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookmark } from '@fortawesome/free-solid-svg-icons'
-import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
+import PropTypes from 'prop-types';
 
 function BreweryCard({ brewery }) {
   const { name, street, phone, brewery_type, website_url, city, id } = brewery;
@@ -12,7 +13,7 @@ function BreweryCard({ brewery }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    if (favorites.find(favBrewery => favBrewery.id === brewery.id)) {
+    if (favorites.find((favBrewery) => favBrewery.id === brewery.id)) {
       setIsFavorite(true);
     }
   }, []);
@@ -31,7 +32,7 @@ function BreweryCard({ brewery }) {
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
-     
+
       <div className='card-a-box'>
         {website_url && (
           <a
@@ -43,14 +44,16 @@ function BreweryCard({ brewery }) {
             Website
           </a>
         )}
-       {street && <a
-          className='card-a'
-          href={directionsURL}
-          target='_blank'
-          rel='noreferrer'
-        >
-          Directions
-        </a>}
+        {street && (
+          <a
+            className='card-a'
+            href={directionsURL}
+            target='_blank'
+            rel='noreferrer'
+          >
+            Directions
+          </a>
+        )}
       </div>
       <button
         className='brewery-card-favorites-btn'
@@ -59,17 +62,36 @@ function BreweryCard({ brewery }) {
           toggleIsFavorite();
         }}
       >
-             {isFavorite ? <FontAwesomeIcon icon={faBookmark} size='xl'/> : <FontAwesomeIcon icon={farBookmark} size='xl'/>}
+        {isFavorite ? (
+          <FontAwesomeIcon icon={faBookmark} size='xl' />
+        ) : (
+          <FontAwesomeIcon icon={farBookmark} size='xl' />
+        )}
       </button>
     </article>
   );
 }
 
 function formatPhoneNumber(number) {
-  const strNum = `${number}`
-  return  `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
-  
+  const strNum = `${number}`;
+  return `(${strNum.substring(0, 3)}) ${strNum.substring(
+    3,
+    6
+  )}-${strNum.substring(6, 10)}`;
 }
 
-export default BreweryCard;
+BreweryCard.propTypes = {
+  brewery: PropTypes.shape({
+    name: PropTypes.string,
+    street: PropTypes.string,
+    phone: PropTypes.string,
+    brewery_type: PropTypes.string,
+    website_url: PropTypes.string,
+    city: PropTypes.string,
+    id: PropTypes.string,
+  }),
+  toggleFavorite: PropTypes.func,
+  favorites: PropTypes.object,
+};
 
+export default BreweryCard;

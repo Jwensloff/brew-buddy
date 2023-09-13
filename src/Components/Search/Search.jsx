@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
+import PropTypes from 'prop-types';
 
 function Search() {
   const [city, setCity] = useState('');
@@ -111,5 +112,9 @@ function Search() {
     </>
   );
 }
+
+Search.propTypes = {
+  obtainBreweries: PropTypes.func,
+};
 
 export default Search;
