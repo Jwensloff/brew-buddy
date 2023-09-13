@@ -82,7 +82,7 @@ function Search() {
         <p className='location-error-message'>Please enter a valid city.</p>
       )}
 
-      <form className='searchBar' onSubmit={submitForm}>
+      <form className='search-bar' onSubmit={submitForm}>
         <input
           id='searchInput'
           type='search'

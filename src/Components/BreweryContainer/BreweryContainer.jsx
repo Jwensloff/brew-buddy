@@ -32,7 +32,7 @@ function BreweryContainer() {
           We're sorry, we didn't find any breweries.
         </section>
       ) : (
-        <section className='breweryContainer'>
+        <section className='brewery-container'>
           <button className='filter-btn' style={styles} onClick={toggleFavoritesFilter}>Filter Local Breweries by Favorite</button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>

@@ -26,7 +26,7 @@ function BreweryCard({ brewery }) {
   }
 
   return (
-    <article className='breweryCard'>
+    <article className='brewery-card'>
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
