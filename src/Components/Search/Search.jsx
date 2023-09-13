@@ -7,7 +7,7 @@ const initialErrorMessage = '';
 function errorMessageReducer(state, action) {
   switch (action.type) {
     case 'SET_ERROR_MESSAGE':
-      return action.error;
+      return { error: action.error, type: action.errorType };
     case 'CLEAR_ERROR_MESSAGE':
       return '';
     default:
@@ -24,34 +24,8 @@ function Search() {
     city: '',
     state: 'Select State'
   });
-  const [noState, setNoState] = useState(false);
-  const [noLocation, setNoLocation] = useState(false);
-  const [validInput, setValidInput] = useState(true);
 
   const { obtainBreweries } = useBreweries();
-
-  useEffect(() => {
-    if (noState) {
-      dispatchErrorMsg({
-        type: 'SET_ERROR_MESSAGE',
-        error: 'Please select a state to get started.',
-        errorType: 'state'
-      });
-    } else if (noLocation) {
-      dispatchErrorMsg({
-        type: 'SET_ERROR_MESSAGE',
-        error: 'Please specify a location to get started.'
-      });
-    } else if (!validInput) {
-      dispatchErrorMsg({
-        type: 'SET_ERROR_MESSAGE',
-        error: 'Please enter a valid city.',
-        errorType: 'city'
-      });
-    } else {
-      dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
-    }
-  }, [noState, noLocation, validInput]);
 
   const updateFormData = e => {
     setFormData(prevFormData => {
@@ -91,31 +65,31 @@ function Search() {
 
   async function submitForm(e) {
     e.preventDefault();
+    dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
 
     if (!formData.city.match(regex)) {
-      setValidInput(false);
-      setNoState(false);
-      setNoLocation(false);
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please enter a valid city.',
+        errorType: 'city'
+      });
       return;
-    }
-
-    if (formData.city && formData.state === 'Select State') {
-      setValidInput(true);
-      setNoState(true);
-      setNoLocation(false);
+    } else if (formData.city && formData.state === 'Select State') {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please select a state to get started.',
+        errorType: 'state'
+      });
       return;
-    }
-    if (formData.state === 'Select State' && !formData.city) {
-      setValidInput(true);
-      setNoLocation(true);
-      setNoState(false);
+    } else if (!formData.city && formData.state === 'Select State') {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please specify a location to get started.'
+      });
       return;
+    } else {
+      obtainBreweries(formData.city, formData.state);
     }
-
-    await obtainBreweries(formData.city, formData.state);
-    setNoLocation(false);
-    setNoState(false);
-    setValidInput(true);
   }
 
   return (
@@ -148,8 +122,8 @@ function Search() {
         </button>
       </form>
       {errorState && (
-        <p className={`location-error-message ${errorState.errorType}-error`}>
-          Please specify a location to get started.
+        <p className={`location-error-message ${errorState.type}-error`}>
+          {errorState.error}
         </p>
       )}
     </div>
