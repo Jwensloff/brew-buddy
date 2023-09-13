@@ -3,13 +3,24 @@ import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
 function Search() {
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+  const [formData, setFormData] = useState({
+    city: '',
+    state: 'Select State'
+  });
   const [noState, setNoState] = useState(false);
   const [noLocation, setNoLocation] = useState(false);
   const [validInput, setValidInput] = useState(true);
 
   const { obtainBreweries } = useBreweries();
+
+  const updateFormData = e => {
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        [e.target.name]: e.target.value
+      };
+    });
+  };
 
   const states = require('us-state-converter');
   const listOfStates = states();
@@ -19,7 +30,7 @@ function Search() {
     let noDuplicateStatesArray = [];
     let stateNames = [];
 
-    listOfStates.forEach((state) => {
+    listOfStates.forEach(state => {
       if (stateNames.includes(state.name)) {
         return;
       }
@@ -30,7 +41,7 @@ function Search() {
   };
 
   const filteredStates = noDuplicates();
-  const dropdownList = filteredStates.map((state) => {
+  const dropdownList = filteredStates.map(state => {
     return (
       <option className='dropdown-item' key={state.name} value={state.name}>
         {state.usps}
@@ -41,35 +52,65 @@ function Search() {
   async function submitForm(e) {
     e.preventDefault();
 
-    if (!city.match(regex)) {
+    if (!formData.city.match(regex)) {
       setValidInput(false);
       setNoState(false);
       setNoLocation(false);
       return;
     }
-    if (city && !state) {
+
+    if (formData.city && formData.state === 'Select State') {
       setValidInput(true);
       setNoState(true);
       setNoLocation(false);
       return;
     }
-    if (!state && !city) {
+    if (formData.state === 'Select State' && !formData.city) {
       setValidInput(true);
       setNoLocation(true);
       setNoState(false);
       return;
     }
 
-    obtainBreweries(city, state);
+    await obtainBreweries(formData.city, formData.state);
     setNoLocation(false);
     setNoState(false);
     setValidInput(true);
   }
 
   return (
-    <>
+    <div className='search-container'>
+      <form className='search-bar' onSubmit={submitForm}>
+        <input
+          id='searchInput'
+          type='search'
+          key='search'
+          name='city'
+          value={formData.city}
+          placeholder='City (optional)'
+          onChange={updateFormData}
+        />
+
+        <select
+          id='dropdown'
+          name='state'
+          className='dropdown'
+          value={formData.state}
+          onChange={updateFormData}
+        >
+          <option className='dropdown-item' key={'select-state'}>
+            {' '}
+            Select State{' '}
+          </option>
+          {dropdownList}
+        </select>
+        <button type='submit' className='btn' id='searchBtn'>
+          Search
+        </button>
+      </form>
+
       {noState && (
-        <p className='location-error-message'>
+        <p className='location-error-message state-error'>
           Please select a state to get started.
         </p>
       )}
@@ -79,36 +120,9 @@ function Search() {
         </p>
       )}
       {!validInput && (
-        <p className='location-error-message'>Please enter a valid city.</p>
+        <p className='location-error-message city-error'>Please enter a valid city.</p>
       )}
-
-      <form className='searchBar' onSubmit={submitForm}>
-        <input
-          id='searchInput'
-          type='search'
-          key='search'
-          name='city-search'
-          value={city}
-          placeholder='City (optional)'
-          onChange={(e) => setCity(e.target.value)}
-        />
-
-        <select
-          id='dropdown'
-          name='dropdown'
-          className='dropdown'
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        >
-          <option className='dropdown-item' key={'select-state'}>
-            {' '}
-            Select State{' '}
-          </option>
-          {dropdownList}
-        </select>
-        <input id='searchBtn' type='submit' className='btn' />
-      </form>
-    </>
+    </div>
   );
 }
 
