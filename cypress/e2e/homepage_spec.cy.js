@@ -19,7 +19,7 @@ describe('homepage', () => {
     cy.intercept(
       'GET',
       'https://api.openbrewerydb.org/v1/breweries?by_city=San_Diego',
-      { statusCode: 200, fixture: 'test_brewery_data.json' }
+      { statusCode: 200, fixture: 'test_city_data.json' }
     ).as('cityData');
 
     cy.intercept(
@@ -62,10 +62,11 @@ describe('homepage', () => {
     
   });
   
-  // it.skip('should be able to search by just state', () => {
-    // cy.get('.search-bar').get("input[name='city-search']").clear();
-    // cy.get('.search-bar').find('#dropdown').select('Montana');
-    // cy.get('.search-bar').find('#searchBtn').click()
-    // cy.wait('@stateData').its('response.statusCode').should('eq', 200)
-  // })
+  it('should allow a user to favorite a brewery and view list of favorites', () => {
+    cy.get('.filter-btn').should('exist')
+    cy.get('.search-bar').find('#dropdown').select('California')
+    cy.get('.search-bar').find('#searchBtn').click()
+    cy.wait('@stateData')
+
+  })
 });
