@@ -1,19 +1,23 @@
 @import '../../index.scss';
 
 .searchBar {
-  background-color: $primaryColor;
-  height: 3rem;
+  // background-color: $primaryColor;
+  height: 3.2rem;
   max-width: 40rem;
   padding: .5rem;
   display: flex;
   justify-content: space-evenly;
-  border-radius: 5px;
+  border-radius: 3px;
+
+  input {
+    border-radius: 5px;;
+  }
 }
 
 .location-error-message{
   padding: .5rem;
   border: .5rem solid $primaryColor;
-  background-color: white;
+  background-color: #f5f5dc;
   margin-bottom: 0.5rem ;
 }
 
@@ -25,7 +29,7 @@
 #searchBtn {
 
   @include btn;
-
+  background-color: $primaryColor;
   &:hover {
     cursor: pointer;
   }
@@ -33,4 +37,5 @@
 .dropdown{
   margin-right: 1rem;
   width: 6.5rem;
+  border-radius: 3px;
 }

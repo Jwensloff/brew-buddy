@@ -2,7 +2,6 @@ import './Homepage.scss';
 import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Map from '../Map/Map';
 import Search from '../Search/Search';
-import { NavLink } from 'react-router-dom';
 
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { useBreweries } from '../../Context/BreweryContext';
@@ -21,8 +20,8 @@ function Homepage() {
 
   return (
     <>
-      <NavLink to='/favorites'>favorites</NavLink>
       <header className='mainHeader'>
+        <div className='hero-img'></div>
         <Search />
       </header>
       <main className='homepage'>

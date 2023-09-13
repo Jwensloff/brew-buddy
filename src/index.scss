@@ -7,7 +7,10 @@
 @mixin btn {
   width: 6rem;
   border-radius: 3px;
+}
 
+body {
+  font-family: 'Lato', sans-serif;
 }
 
 $primaryColor: #A9721F;

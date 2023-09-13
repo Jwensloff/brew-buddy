@@ -22,7 +22,8 @@ function BreweryContainer() {
   }, [favorites, breweries, favoriteFilter])
 
   const styles = {
-    backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99'
+    backgroundColor: favoriteFilter ? '#808000' : '#BAB86C',
+    color: favoriteFilter ? '#BAB86C' : '#808000'
   }
 
   return (
