@@ -1,14 +1,24 @@
 import './ErrorPage.scss';
 import { useBreweries } from '../../Context/BreweryContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-function ErrorPage() {
-  const { error } = useBreweries();
+export default function ErrorPage() {
+  const { error, setError } = useBreweries();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const returnToRootUrl = () => {
+      setError(false);
+      navigate('/');
+    };
+    window.onpopstate = returnToRootUrl;
+    return () => window.removeEventListener('popstate', returnToRootUrl);
+  });
 
   return (
     <section className='error-page-wrapper'>
-      <p>This is an error.</p>
+      <p>{error}</p>
     </section>
   );
 }
-
-export default ErrorPage;
