@@ -35,4 +35,11 @@ describe('Error messages should lead the user to enter the correct data', () => 
     cy.get('.location-error-message').should('exist').contains('Please select a state to get started')
   })
 
+  it('should tell a user if there are no search results that match their input', () => {
+    cy.get('.search-bar').find('#searchInput').type('San Diego')
+    cy.get('#dropdown').select('Washington')
+    cy.get('.search-bar').find('#searchBtn').click();
+    cy.get('.no-results-message').should('exist')
+    cy.get('.no-results-message').contains('We\'re sorry, we didn\'t find any breweries.')
+  })
 })
