@@ -1,4 +1,4 @@
-async function getBreweries(city) {
+export async function getBreweriesByCity(city) {
   // 50 results is the default 'per_page' param
   // You must indicate whether you want to return more
   city = city.split(' ').reduce((acc, curr) => acc + `_${curr}`);
@@ -15,7 +15,7 @@ async function getBreweries(city) {
   }
 }
 
-async function getBreweriesByState(state) {
+export async function getBreweriesByState(state) {
   state = state.split(' ').reduce((acc, curr) => acc + `_${curr}`);
   try {
     const response = await fetch(
@@ -29,5 +29,3 @@ async function getBreweriesByState(state) {
     return error
   }
 }
-
-export {getBreweries, getBreweriesByState}
