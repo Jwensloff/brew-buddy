@@ -16,6 +16,7 @@ function BreweryContainer() {
   const [cards, setCards] = useState([]);
 
   function createCards(displayedBreweries) {
+    console.log('displayedBreweries',displayedBreweries)
     return displayedBreweries.map((brewery) => {
       return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
     });
