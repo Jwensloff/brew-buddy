@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
-  const { favorites, getFilteredBreweries, toggleFavoritesFilter, favoriteFilter} = useFavorites();
-  const [cards, setCards] = useState([])
-
+  const {
+    favorites,
+    getFilteredBreweries,
+    toggleFavoritesFilter,
+    favoriteFilter
+  } = useFavorites();
+  const [cards, setCards] = useState([]);
 
   function createCards(displayedBreweries) {
     return displayedBreweries.map(brewery => {
@@ -17,22 +21,29 @@ function BreweryContainer() {
   }
 
   useEffect(() => {
-    setCards(createCards(getFilteredBreweries()))
-  }, [favorites, breweries, favoriteFilter])
+    setCards(createCards(getFilteredBreweries()));
+  }, [favorites, breweries, favoriteFilter]);
 
   const styles = {
     backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99'
-  }
+  };
 
   return (
     <>
       {noResults ? (
         <section className='no-results-message'>
-          We're sorry, we didn't find any breweries.
+          The beer trail is calling! 🍺 But we might need your help. Check your search
+          and give it another shot.
         </section>
       ) : (
         <section className='breweryContainer'>
-          <button className='filter-btn' style={styles} onClick={toggleFavoritesFilter}>Filter Local Breweries by Favorite</button>
+          <button
+            className='filter-btn'
+            style={styles}
+            onClick={toggleFavoritesFilter}
+          >
+            Filter Local Breweries by Favorite
+          </button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>
       )}
