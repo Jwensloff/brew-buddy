@@ -8,17 +8,16 @@ export function BreweryContextProvider({ children }) {
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState('');
 
-  async function obtainBreweries(...params) {
-    const [city, state] = params;
+  async function obtainBreweries(city, state) {
     let stateBreweryData = [];
     let breweryData = [];
     let filteredBreweryData = [];
 
-    switch (params) {
-      case !params.state:
+    switch (city) {
+      case '':
         stateBreweryData = await getBreweriesByState(state);
 
-        if (!stateBreweryData.name === 'Error') {
+        if (stateBreweryData.name !== 'Error') {
           setError(false);
           setBreweries(stateBreweryData);
           setNoResults(false);
@@ -30,14 +29,17 @@ export function BreweryContextProvider({ children }) {
 
       default:
         breweryData = await getBreweriesByCity(city);
+
         if (breweryData.name === 'Error') {
           setError(breweryData.message);
           return;
         }
+
         setError(false);
         filteredBreweryData = breweryData.filter(
           brewery => brewery.state === state
         );
+
         if (filteredBreweryData.length === 0) {
           setNoResults(true);
           setBreweries(filteredBreweryData);
