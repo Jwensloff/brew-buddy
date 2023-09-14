@@ -7,7 +7,7 @@ export function BreweryContextProvider({ children }) {
   const [breweries, setBreweries] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState('');
-  const [selectedBrewery, setSelectedBrewery] = useState({}); 
+  const [selectedBrewery, setSelectedBrewery] = useState(''); 
   const [isSelected, setIsSelected] = useState(false)
 
   async function obtainBreweries(city, state) {

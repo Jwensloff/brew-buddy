@@ -12,11 +12,13 @@ function Map() {
   const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
+  const markersRef = useRef({});
 
   useEffect(() => {
     const filteredBreweries = getFilteredBreweries().filter(
       brewery => brewery.latitude && brewery.longitude,
     );
+    console.log("RETSESTSERESRSETES")
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
@@ -36,6 +38,9 @@ function Map() {
     const brewTest = breweries.filter(brewery => brewery.id === selectedBrewery);
     mapRef.current.flyTo([brewTest[0].latitude,brewTest[0].longitude], 14)
     }
+   
+    if(selectedBrewery){
+      markersRef[selectedBrewery].openPopup()}
   },[selectedBrewery])
 
   function calculateCenter(filteredBreweries) {
@@ -97,25 +102,29 @@ function Map() {
   function showSelectedBeweryCard(breweryName){
     const index = breweries.findIndex((brewery) => brewery.name === breweryName)
     const brewCopy = [...breweries];
-    const selectedBrewery = brewCopy.splice(index,1)
-    brewCopy.unshift(selectedBrewery[0])
+    const selectBrewery = brewCopy.splice(index,1)
+    brewCopy.unshift(selectBrewery[0])
     setIsSelected(true)
     setBreweries(brewCopy)
   }
 
  
-  const mapPoints = validBreweries.map((brewery) => {
+  const mapPoints = validBreweries.map((brewery,index) => {
+    if(brewery.id === selectedBrewery){
+      console.log("TRUE")
+    }
     let formattedNumber;
     if(brewery.phone){
     const strNum = brewery.phone;
     
     formattedNumber = `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
     }
+    
   return (
-      <Marker key={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {
+      <Marker ref={(ref) => markersRef[brewery.id] = ref} key={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {
         showSelectedBeweryCard(e.target._popup.options.children.props.children[0].props.children);
         zoomToBrewery(e.target._latlng)}}}>
-        <Popup className={selectedBrewery === brewery.id ? 'popup-visible' : ''}>
+        <Popup >
           <div className='brewery-popup'>
             <p>{brewery.name}</p>
             <p>{brewery.address_1}</p>
