@@ -35,8 +35,8 @@ describe('homepage', () => {
   });
   
   it('Should be able to search breweries by city AND state', () => {
-    cy.get('.search-bar').get("input[name='city-search']").type('San Diego');
-    cy.get("input[name='city-search']").should('have.value', 'San Diego');
+    cy.get('.search-bar').get("input[name='city']").type('San Diego');
+    cy.get("input[name='city']").should('have.value', 'San Diego');
     cy.get('.search-bar').find('#dropdown').select('California');
     cy.get('.search-bar').find('#searchBtn').click();
     cy.wait('@cityData')
@@ -49,7 +49,7 @@ describe('homepage', () => {
     .find('.brewery-card')
     .last()
     .contains('32 North Brewing Co');
-    cy.get('.search-bar').get("input[name='city-search']").clear();
+    cy.get('.search-bar').get("input[name='city']").clear();
     cy.get('.search-bar').find('#dropdown').select('California');
     cy.get('#dropdown').should('have.value', 'California');
     cy.get('.search-bar').find('#searchBtn').click();
