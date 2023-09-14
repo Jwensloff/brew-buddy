@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .navBar {
   display: block;
   position: absolute;
@@ -11,12 +13,12 @@ ul {
   padding: 0 ;
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: start;
 }
 
 .navLink {
   display: flex;
-  color: #f5f5dc;
+  color: $lightColor;
   min-height: 2.5rem;
   width: 7rem;
   text-decoration: none;
@@ -26,10 +28,10 @@ ul {
   font-size: 1rem;
 
   &:hover {
-    background-color: #7daa40;
+    background-color: $brightColor;
   }
 }
 .active {
-  text-decoration: underline #7daa40 3px;
+  text-decoration: underline $brightColor 3px;
   cursor: default;
 }

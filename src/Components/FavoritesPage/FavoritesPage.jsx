@@ -12,7 +12,6 @@ export function FavoritesPage() {
 
   return (
     <div className='favorites-page'>
-      <NavBar />
       <section className='favs-grid'>{cards}</section>
     </div>
   );

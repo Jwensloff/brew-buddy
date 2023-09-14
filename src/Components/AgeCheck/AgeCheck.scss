@@ -1,7 +1,7 @@
 @import '../../index.scss';
 
 .overlay-container{
-    background-color: $primaryColor;
+    background-color: $accentColor;
     height: 70%;
     width: 80%;
     display: flex;
@@ -40,7 +40,7 @@
   height: 2.5rem;
   width: 6rem;
   border-radius: 5px;
-  background-color: $primaryColor;
+  background-color: $accentColor;
 }
 
 .yes-button:hover{

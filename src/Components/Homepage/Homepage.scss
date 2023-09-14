@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   padding: 1rem;
-  background-color: #f7f7ed;
+  background-color: $lightColor;
 }
 
 .hero-img {
@@ -20,6 +20,7 @@
   width: 100%;
 }
 
+
 .mainHeader {
   position: relative;
   min-height: 20vh;
@@ -31,3 +32,5 @@
   align-items: center;
   justify-content: end;
 }
+
+

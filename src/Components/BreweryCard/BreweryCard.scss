@@ -1,7 +1,7 @@
 @import '../../index.scss';
 
 .breweryCard {
-  background-color: #E3E3C4 ;
+  background-color: #e3e3c4;
   height: fit-content;
   max-width: 100%;
   padding: 1rem;
@@ -19,8 +19,8 @@
   padding: 0.5rem;
   height: 2rem;
   width: 5rem;
-
-  background-color: $primaryColor;
+  @include btn;
+  background-color: $lightAccentColor;
   color: #f5f5dc;
   text-decoration: none;
   cursor: pointer;
@@ -32,7 +32,8 @@
 }
 
 .breweryCard-favorites-btn {
-  background-color: #e0cc99;
+  cursor: pointer;
+  background-color: #e3e3c4;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;

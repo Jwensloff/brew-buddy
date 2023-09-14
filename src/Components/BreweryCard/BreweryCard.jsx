@@ -29,7 +29,7 @@ function BreweryCard({ brewery }) {
     <article className='breweryCard'>
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
-      {street && <p className='card-text'>{street}</p>}
+      {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
      
       <div className='card-a-box'>
@@ -59,11 +59,13 @@ function BreweryCard({ brewery }) {
           toggleIsFavorite();
         }}
       >
-             {isFavorite ? <FontAwesomeIcon icon={faBookmark} size='xl'/> : <FontAwesomeIcon icon={farBookmark} size='xl'/>}
+             {isFavorite ? <FontAwesomeIcon icon={faBookmark}  color={'#273f1d'} size='xl'/> : <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl'/>}
       </button>
     </article>
   );
 }
+
+
 
 function formatPhoneNumber(number) {
   const strNum = `${number}`

@@ -1,7 +1,6 @@
 @import '../../index.scss';
 
 .searchBar {
-  // background-color: $primaryColor;
   height: 3.2rem;
   max-width: 40rem;
   padding: .5rem;
@@ -16,8 +15,8 @@
 
 .location-error-message{
   padding: .5rem;
-  border: .5rem solid $primaryColor;
-  background-color: #f5f5dc;
+  border: .5rem solid $accentColor;
+  background-color: $lightColor;
   margin-bottom: 0.5rem ;
 }
 
@@ -27,9 +26,10 @@
 }
 
 #searchBtn {
-
+  text-transform: uppercase;
   @include btn;
-  background-color: $primaryColor;
+  color: $lightColor;
+  background-color: $accentColor;
   &:hover {
     cursor: pointer;
   }
