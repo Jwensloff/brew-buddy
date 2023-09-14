@@ -39,6 +39,7 @@
   height: 2.5rem;
   @include btn;
   background-color: $accentColor;
+  margin: 1rem;
 
   &:hover {
     cursor: pointer;
@@ -49,9 +50,5 @@
 }
 
 .no-button:hover{
-  cursor: pointer;
   background-color: rgb(247, 2, 2);
-  transform: translateY(-3px);
-  box-shadow: 0 1rem 2rem rgba( 0, 0, 0, .5);
 }
-
