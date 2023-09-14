@@ -5,7 +5,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useBreweries } from '../../Context/BreweryContext';
 
 import Map from '../Map/Map';
-import Search from '../Search/Search';
 import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Header from '../Header/Header';
 
