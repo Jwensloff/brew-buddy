@@ -13,7 +13,7 @@ function BreweryContainer() {
 
   function createCards(displayedBreweries) {
     return displayedBreweries.map(brewery => {
-      return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+      return <BreweryCard brewery={brewery} key={brewery.id} ></BreweryCard>;
     });
   }
 

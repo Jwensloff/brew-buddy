@@ -22,3 +22,12 @@
 .leaflet-popup-content-wrapper{
   background-color: $primaryColor;
 }
+
+.popup-visible{
+  display: block;
+}
+
+.popup{
+  display: none;
+}
+

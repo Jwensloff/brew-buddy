@@ -17,7 +17,6 @@ export function FavoriteContextProvider({ children }) {
     if (favoriteFilter) {
       return breweries.filter((brewery) => favorites.includes(brewery));
     } else {
-      console.log("FAV CONTEXT BREW:", breweries)
       return breweries;
     }
   }
