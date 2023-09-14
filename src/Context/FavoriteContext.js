@@ -10,12 +10,7 @@ import { useBreweries } from './BreweryContext';
 export const FavoriteContext = createContext(null);
 
 export function FavoriteContextProvider({ children }) {
-  // const [favorites, setFavorites] = useState(() => {
-  //   const currentFavorites = localStorage.getItem('favorites');
-  //   const parsedData = JSON.parse(currentFavorites);
-  //   return parsedData || [];
-  // });
-
+  
   const getFavoritesFromLocalStorage = () => {
     const currentFavorites = localStorage.getItem('favorites');
     const parsedData = JSON.parse(currentFavorites);
@@ -26,6 +21,8 @@ export function FavoriteContextProvider({ children }) {
     favoriteFilter: false,
     favorites: getFavoritesFromLocalStorage(),
   };
+
+  // console.log('initial state', initialState)
 
   const favesReducer = (state, action) => {
     switch (action.type) {
@@ -44,25 +41,23 @@ export function FavoriteContextProvider({ children }) {
   };
 
   const [state, dispatch] = useReducer(favesReducer, initialState);
-  // const [favoriteFilter, setFavoriteFilter] = useState(false);
 
   const { breweries } = useBreweries();
 
   function getFilteredBreweries() {
     if (state.favoriteFilter) {
-      return breweries.filter((brewery) => state.favorites.includes(brewery));
+      return breweries.filter((brewery) => {
+        const favoriteBrewery = state.favorites.find(
+          (favorite) => favorite.id === brewery.id
+        );
+        if (favoriteBrewery) {
+          return true;
+        }
+      });
     } else {
       return breweries;
     }
   }
-
-  // function toggleFavoritesFilter() {
-  //   setFavoriteFilter((prevFilter) => !prevFilter);
-  // }
-
-  // function toggleFavorite(brewery) {
-
-  // }
 
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(state.favorites));

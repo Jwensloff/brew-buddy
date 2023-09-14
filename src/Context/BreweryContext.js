@@ -1,14 +1,37 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useReducer } from 'react';
 import { getBreweries, getBreweriesByState } from '../apiCalls';
 
 export const BreweryContext = createContext(null);
 
 export function BreweryContextProvider({ children }) {
+
+  const initialState = {
+    selectedBrewery: '',
+    isSelected: false,
+  }
+
+
+  const breweryReducer = (state, action) => {
+    switch(action.type){
+      case 'SET_SELECTED_BREWERY':
+        return {...state, selectedBrewery: action.id, isSelected: true}
+      case 'SET_IS_SELECTED':
+        return {...state, isSelected: true}  
+    default:
+      return state
+      }
+
+  }
+
+
+  const [state, dispatch] = useReducer(breweryReducer, initialState)
+
   const [breweries, setBreweries] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState('');
-  const [selectedBrewery, setSelectedBrewery] = useState({}); 
-  const [isSelected, setIsSelected] = useState(false)
+
+  // const [selectedBrewery, setSelectedBrewery] = useState({}); 
+  // const [isSelected, setIsSelected] = useState(false)
 
   async function obtainBreweries(city, state) {
     let stateBreweryData = [];
@@ -45,14 +68,30 @@ export function BreweryContextProvider({ children }) {
     }
   }
 
-  function setContextSelected(id){
-    setSelectedBrewery(id);
-    setIsSelected(true);
+  // function setContextSelected(id){
+
+    // setSelectedBrewery(id);
+    // setIsSelected(true);
+  // }
+
+  const value = {
+    breweries, 
+    obtainBreweries, 
+    noResults, 
+    setNoResults, 
+    error, 
+    setIsSelected: () => {
+      dispatch({type: 'SET_IS_SELECTED'})
+    },
+    setBreweries, 
+    setContextSelected: (id) => {
+      dispatch({type: 'SET_SELECTED_BREWERY', id})
+    }
   }
 
   return (
     <BreweryContext.Provider
-      value={{ breweries, obtainBreweries, noResults, setNoResults, error, setBreweries, isSelected, setIsSelected, selectedBrewery, setSelectedBrewery, setContextSelected}}
+      value={value}
     >
       {children}
     </BreweryContext.Provider>
