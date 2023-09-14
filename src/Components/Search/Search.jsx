@@ -1,6 +1,7 @@
 import { useReducer, useState } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
+import PropTypes from 'prop-types';
 
 const initialErrorMessage = '';
 
@@ -124,5 +125,9 @@ function Search() {
     </div>
   );
 }
+
+Search.propTypes = {
+  obtainBreweries: PropTypes.func,
+};
 
 export default Search;
