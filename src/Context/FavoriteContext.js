@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useReducer,
+} from 'react';
 import { useBreweries } from './BreweryContext';
 
 export const FavoriteContext = createContext(null);
@@ -10,20 +16,33 @@ export function FavoriteContextProvider({ children }) {
     return parsedData || [];
   });
 
-  const [favoriteFilter, setFavoriteFilter] = useState(false);
+  const initialState = {
+    favoriteFilter: false,
+  };
+
+  const favesReducer = (state, action) => {
+    switch (action.type) {
+      case 'TOGGLE_FAVORITE_FILTER':
+        return { ...state, favoriteFilter: !state.favoriteFilter };
+    }
+  };
+
+  const [state, dispatch] = useReducer(favesReducer, initialState);
+  // const [favoriteFilter, setFavoriteFilter] = useState(false);
+
   const { breweries } = useBreweries();
 
   function getFilteredBreweries() {
-    if (favoriteFilter) {
+    if (state.favoriteFilter) {
       return breweries.filter((brewery) => favorites.includes(brewery));
     } else {
       return breweries;
     }
   }
 
-  function toggleFavoritesFilter() {
-    setFavoriteFilter((prevFilter) => !prevFilter);
-  }
+  // function toggleFavoritesFilter() {
+  //   setFavoriteFilter((prevFilter) => !prevFilter);
+  // }
 
   function toggleFavorite(brewery) {
     if (favorites.includes(brewery)) {
@@ -42,9 +61,11 @@ export function FavoriteContextProvider({ children }) {
   const value = {
     favorites,
     toggleFavorite,
-    toggleFavoritesFilter,
+    toggleFavoritesFilter: () => {
+      dispatch({ type: 'TOGGLE_FAVORITE_FILTER' });
+    },
     getFilteredBreweries,
-    favoriteFilter,
+    favoriteFilter: state.favoriteFilter,
   };
 
   return (
