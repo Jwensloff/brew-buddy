@@ -1,36 +1,56 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 
+const initialErrorMessage = '';
+
+function errorMessageReducer(state, action) {
+  switch (action.type) {
+    case 'SET_ERROR_MESSAGE':
+      return { error: action.error, type: action.errorType };
+    case 'CLEAR_ERROR_MESSAGE':
+      return '';
+    default:
+      return state;
+  }
+}
+
 function Search() {
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [noState, setNoState] = useState(false);
-  const [noLocation, setNoLocation] = useState(false);
-  const [validInput, setValidInput] = useState(true);
+  const [errorState, dispatchErrorMsg] = useReducer(
+    errorMessageReducer,
+    initialErrorMessage
+  );
+  const [formData, setFormData] = useState({
+    city: '',
+    state: 'Select State'
+  });
 
   const { obtainBreweries } = useBreweries();
+
+  const updateFormData = e => {
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        [e.target.name]: e.target.value
+      };
+    });
+  };
 
   const states = require('us-state-converter');
   const listOfStates = states();
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
-    let noDuplicateStatesArray = [];
-    let stateNames = [];
-
-    listOfStates.forEach((state) => {
-      if (stateNames.includes(state.name)) {
-        return;
-      }
-      stateNames.push(state.name);
-      noDuplicateStatesArray.push(state);
-    });
-    return noDuplicateStatesArray;
-  };
+  return listOfStates.reduce((uniqueStates, state) => {
+    if (!uniqueStates.some(s => s.name === state.name)) {
+      uniqueStates.push(state);
+    }
+    return uniqueStates;
+  }, []);
+};
 
   const filteredStates = noDuplicates();
-  const dropdownList = filteredStates.map((state) => {
+  const dropdownList = filteredStates.map(state => {
     return (
       <option className='dropdown-item' key={state.name} value={state.name}>
         {state.usps}
@@ -40,65 +60,51 @@ function Search() {
 
   async function submitForm(e) {
     e.preventDefault();
+    dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
 
-    if (!city.match(regex)) {
-      setValidInput(false);
-      setNoState(false);
-      setNoLocation(false);
+    if (!formData.city.match(regex)) {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please enter a valid city.',
+        errorType: 'city'
+      });
       return;
-    }
-    if (city && !state) {
-      setValidInput(true);
-      setNoState(true);
-      setNoLocation(false);
+    } else if (formData.city && formData.state === 'Select State') {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please select a state to get started.',
+        errorType: 'state'
+      });
       return;
-    }
-    if (!state && !city) {
-      setValidInput(true);
-      setNoLocation(true);
-      setNoState(false);
+    } else if (!formData.city && formData.state === 'Select State') {
+      dispatchErrorMsg({
+        type: 'SET_ERROR_MESSAGE',
+        error: 'Please specify a location to get started.'
+      });
       return;
+    } else {
+      obtainBreweries(formData.city, formData.state);
     }
-
-    obtainBreweries(city, state);
-    setNoLocation(false);
-    setNoState(false);
-    setValidInput(true);
   }
 
   return (
-    <>
-      {noState && (
-        <p className='location-error-message'>
-          Please select a state to get started.
-        </p>
-      )}
-      {noLocation && (
-        <p className='location-error-message'>
-          Please specify a location to get started.
-        </p>
-      )}
-      {!validInput && (
-        <p className='location-error-message'>Please enter a valid city.</p>
-      )}
-
-      <form className='searchBar' onSubmit={submitForm}>
+    <div className='search-container'>
+      <form className='search-bar' onSubmit={submitForm}>
         <input
           id='searchInput'
           type='search'
           key='search'
-          name='city-search'
-          value={city}
+          name='city'
+          value={formData.city}
           placeholder='City (optional)'
-          onChange={(e) => setCity(e.target.value)}
+          onChange={updateFormData}
         />
-
         <select
           id='dropdown'
-          name='dropdown'
+          name='state'
           className='dropdown'
-          value={state}
-          onChange={(e) => setState(e.target.value)}
+          value={formData.state}
+          onChange={updateFormData}
         >
           <option className='dropdown-item' key={'select-state'}>
             {' '}
@@ -106,9 +112,16 @@ function Search() {
           </option>
           {dropdownList}
         </select>
-        <input id='searchBtn' type='submit' className='btn' />
+        <button type='submit' className='btn' id='searchBtn'>
+          Search
+        </button>
       </form>
-    </>
+      {errorState && (
+        <p className={`location-error-message ${errorState.type}-error`}>
+          {errorState.error}
+        </p>
+      )}
+    </div>
   );
 }
 

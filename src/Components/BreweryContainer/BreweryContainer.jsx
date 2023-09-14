@@ -3,7 +3,6 @@ import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
-import { getBreweries } from '../../apiCalls';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();

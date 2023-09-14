@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-import { getBreweries, getBreweriesByState } from '../apiCalls';
+import { createContext, useContext, useState } from 'react';
+import { getBreweriesByCity, getBreweriesByState } from '../apiCalls';
 
 export const BreweryContext = createContext(null);
 
@@ -13,38 +13,53 @@ export function BreweryContextProvider({ children }) {
     let breweryData = [];
     let filteredBreweryData = [];
 
-    if (!city) {
-      stateBreweryData = await getBreweriesByState(state);
-      if (stateBreweryData.message === 'Custom error for now') {
+    switch (city) {
+      case '':
+        stateBreweryData = await getBreweriesByState(state);
+
+        if (stateBreweryData.name !== 'Error') {
+          setError(false);
+          setBreweries(stateBreweryData);
+          setNoResults(false);
+        }
+        // Set error by default
         setError(stateBreweryData.message);
-        return;
-      }
-      setError(false);
-      setBreweries(stateBreweryData);
-      setNoResults(false);
-    } else {
-      breweryData = await getBreweries(city);
-      if (breweryData.message === 'Custom error for now') {
-        setError(breweryData.message);
-        return;
-      }
-      setError(false);
-      filteredBreweryData = breweryData.filter(
-        (brewery) => brewery.state === state
-      );
-      if (filteredBreweryData.length === 0) {
-        setNoResults(true);
-        setBreweries(filteredBreweryData);
-      } else {
-        setNoResults(false);
-        setBreweries(filteredBreweryData);
-      }
+
+        break;
+
+      default:
+        breweryData = await getBreweriesByCity(city);
+
+        if (breweryData.name === 'Error') {
+          setError(breweryData.message);
+          return;
+        }
+
+        setError(false);
+        filteredBreweryData = breweryData.filter(
+          brewery => brewery.state === state
+        );
+
+        if (filteredBreweryData.length === 0) {
+          setNoResults(true);
+          setBreweries(filteredBreweryData);
+        } else {
+          setNoResults(false);
+          setBreweries(filteredBreweryData);
+        }
     }
   }
 
   return (
     <BreweryContext.Provider
-      value={{ breweries, obtainBreweries, noResults, setNoResults, error }}
+      value={{
+        breweries,
+        obtainBreweries,
+        noResults,
+        setNoResults,
+        error,
+        setError
+      }}
     >
       {children}
     </BreweryContext.Provider>
