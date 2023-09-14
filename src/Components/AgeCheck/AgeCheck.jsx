@@ -12,7 +12,7 @@ function AgeCheck({ setisLegal }) {
     // <div className='modal'>
       <div className='overlay-container'>
         <div className='age-check-wrapper'>
-          <h2 className='content'>Are you 21?</h2>
+          <h2 className='content age-q'>Are you 21?</h2>
           <div className='age-button-container'>
             <button
               onClick={() => ageVerification()}
@@ -21,9 +21,9 @@ function AgeCheck({ setisLegal }) {
               Yes
             </button>
           </div>
-          <p className='content'>
+          <h2 className='content'>
             Brew Buddy is for individuals of legal drinking age.
-          </p>
+          </h2>
         </div>
       </div>
     // </div>
