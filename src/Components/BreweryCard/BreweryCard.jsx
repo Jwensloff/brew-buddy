@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookmark } from '@fortawesome/free-solid-svg-icons'
-import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 
 function BreweryCard({ brewery }) {
   const { name, street, phone, brewery_type, website_url, city } = brewery;
@@ -31,7 +31,7 @@ function BreweryCard({ brewery }) {
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
-     
+
       <div className='card-a-box'>
         {website_url && (
           <a
@@ -43,14 +43,16 @@ function BreweryCard({ brewery }) {
             Website
           </a>
         )}
-       {street && <a
-          className='card-a'
-          href={directionsURL}
-          target='_blank'
-          rel='noreferrer'
-        >
-          Directions
-        </a>}
+        {street && (
+          <a
+            className='card-a'
+            href={directionsURL}
+            target='_blank'
+            rel='noreferrer'
+          >
+            Directions
+          </a>
+        )}
       </div>
       <button
         className='breweryCard-favorites-btn'
@@ -59,19 +61,22 @@ function BreweryCard({ brewery }) {
           toggleIsFavorite();
         }}
       >
-             {isFavorite ? <FontAwesomeIcon icon={faBookmark}  color={'#273f1d'} size='xl'/> : <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl'/>}
+        {isFavorite ? (
+          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' />
+        ) : (
+          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' />
+        )}
       </button>
     </article>
   );
 }
 
-
-
 function formatPhoneNumber(number) {
-  const strNum = `${number}`
-  return  `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
-  
+  const strNum = `${number}`;
+  return `(${strNum.substring(0, 3)}) ${strNum.substring(
+    3,
+    6,
+  )}-${strNum.substring(6, 10)}`;
 }
 
 export default BreweryCard;
-

@@ -8,19 +8,16 @@
   width: 6rem;
   border-radius: 3px;
   color: $lightColor;
-  
 }
 
 body {
   font-family: 'Lato', sans-serif;
 }
 
-// $accentColor: #A9721F;
-// $accentColor: #591a0a;
 $accentColor: #562007;
 $lightAccentColor: #9c5425;
 $darkColor: #273f1d;
-$oliveGreen: #BAB86C;
+$oliveGreen: #bab86c;
 $mediumColor: #808000;
 $brightColor: #7daa40;
 $lightColor: #f7f7ed;
@@ -32,7 +29,6 @@ $lightColor: #f7f7ed;
 
   .breweryContainer {
     grid-column: 1 / span 2;
-
   }
 }
 
@@ -46,13 +42,10 @@ $lightColor: #f7f7ed;
     grid-column: auto;
     order: 1;
     height: 300px;
-
   }
 
   .breweryContainer {
     grid-column: auto;
     order: 2;
-
   }
-
 }

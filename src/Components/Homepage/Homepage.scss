@@ -20,17 +20,14 @@
   width: 100%;
 }
 
-
 .mainHeader {
   position: relative;
   min-height: 20vh;
   padding: 1rem;
-  background-color: rgba(125, 170, 64, .35);
+  background-color: rgba(125, 170, 64, 0.35);
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: end;
 }
-
-

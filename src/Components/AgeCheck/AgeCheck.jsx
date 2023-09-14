@@ -9,7 +9,6 @@ function AgeCheck({ setisLegal }) {
   };
 
   return (
-    // <div className='modal'>
       <div className='overlay-container'>
         <div className='age-check-wrapper'>
           <h2 className='content age-q'>Are you 21?</h2>
@@ -26,7 +25,6 @@ function AgeCheck({ setisLegal }) {
           </h2>
         </div>
       </div>
-    // </div>
   );
 }
 
