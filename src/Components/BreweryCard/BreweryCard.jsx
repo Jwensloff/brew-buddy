@@ -11,7 +11,7 @@ function BreweryCard({ brewery, selectBrewery }) {
   const directionsURL = `https://www.google.com/maps/dir/${name},${street}+${city}`;
   const { toggleFavorite, favorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
-  const {setContextSelected} = useBreweries();
+  const {setContextSelected, selectedBrewery} = useBreweries();
 
   useEffect(() => {
     if (favorites.find(favBrewery => favBrewery.id === brewery.id)) {
@@ -28,7 +28,7 @@ function BreweryCard({ brewery, selectBrewery }) {
   }
   
   return (
-    <article className='breweryCard' onClick={() => setContextSelected(id) }>
+    <article className={brewery.id === selectedBrewery ? 'breweryCard selected' : 'breweryCard'} onClick={() => {setContextSelected(id)} }>
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
@@ -56,7 +56,8 @@ function BreweryCard({ brewery, selectBrewery }) {
       </div>
       <button
         className='breweryCard-favorites-btn'
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           toggleFavorite(brewery);
           toggleIsFavorite();
         }}
