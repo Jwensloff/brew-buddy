@@ -1,13 +1,33 @@
 @import '../../index.scss';
 
-.main-header {
+.hero-img {
   background-image: url('../../Assets/hops.jpeg');
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 20vh;
-  border-bottom: 2rem solid $primaryColor;
-  padding: 1rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  width: 100%;
+}
 
+// .mainHeader {
+  //   min-height: 20vh;
+  //   padding: 1rem;
+  //   background-color: rgba(125, 170, 64, 0.35);
+  
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  //   justify-content: end;
+  // }
+  
+  .main-header {
+  position: relative;
+  min-height: 20vh;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

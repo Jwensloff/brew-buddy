@@ -1,6 +1,5 @@
 import { useFavorites } from '../../Context/FavoriteContext';
 import BreweryCard from '../BreweryCard/BreweryCard';
-import NavBar from '../NavBar/NavBar';
 import './FavoritesPage.scss';
 
 export function FavoritesPage() {
