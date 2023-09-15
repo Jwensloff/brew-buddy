@@ -43,6 +43,7 @@ export function BreweryContextProvider({ children }) {
       let onlyCoordsData = stateBreweryData.filter(brewery => brewery.longitude && brewery.latitude)
           setError(false);
           setBreweries(onlyCoordsData);
+          setBreweries(onlyCoordsData);
           setNoResults(false);
         }
         // Set error by default
