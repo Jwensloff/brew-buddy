@@ -15,9 +15,7 @@ function Map() {
   const markersRef = useRef({});
 
   useEffect(() => {
-    const filteredBreweries = getFilteredBreweries().filter(
-      brewery => brewery.latitude && brewery.longitude,
-    );
+    
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
@@ -30,15 +28,15 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [breweries, favorites, favoriteFilter]);
+  }, [filteredBreweries]);
 
   useEffect(() => {
     if(isSelected){
     const selectedBrew = breweries.filter(brewery => brewery.id === selectedBrewery);
     mapRef.current.flyTo([selectedBrew[0].latitude,selectedBrew[0].longitude], 14)
     }
-    if(selectedBrewery && Object.keys(markersRef).length !== 0){
-      markersRef[selectedBrewery].openPopup()}
+    if(selectedBrewery && Object.keys(markersRef.current).length !== 0){
+      markersRef.current[selectedBrewery].openPopup()}
   },[selectedBrewery])
 
   function calculateCenter(filteredBreweries) {
@@ -114,7 +112,7 @@ function Map() {
     }
     
   return (
-      <Marker ref={(ref) => markersRef[brewery.id] = ref} key={brewery.id} id={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {
+      <Marker ref={(ref) => markersRef.current[brewery.id] = ref} key={brewery.id} id={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {
         showSelectedBeweryCard(e.target._popup.options.children.props.children[0].props.children);
         zoomToBrewery(e.target._latlng)}}}>
         <Popup >

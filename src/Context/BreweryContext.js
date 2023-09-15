@@ -87,7 +87,8 @@ export function BreweryContextProvider({ children }) {
     breweries, 
     obtainBreweries, 
     noResults, 
-    setNoResults, 
+    setNoResults,
+    selectedBrewery: state.selectedBrewery,
     error, 
     setIsSelected: () => {
       dispatch({type: 'SET_IS_SELECTED'})
