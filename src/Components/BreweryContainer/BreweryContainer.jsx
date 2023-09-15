@@ -10,19 +10,11 @@ function BreweryContainer() {
     filteredBreweries,
     toggleFavoritesFilter,
     isFaveFilterOn,
-    
   } = useFavorites();
-  const [cards, setCards] = useState([]);
 
-  function createCards(displayedBreweries) {
-    return displayedBreweries.map((brewery) => {
-      return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
-    });
-  }
-
-  useEffect(() => {
-    setCards(createCards(filteredBreweries));
-  }, [filteredBreweries]);
+   const cards = filteredBreweries.map((brewery) => {
+    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+  });
 
   const styles = {
     backgroundColor: isFaveFilterOn ? '#A9721F' : '#e0cc99',
