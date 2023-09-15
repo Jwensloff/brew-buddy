@@ -6,7 +6,6 @@ describe('Legal drinking age modal appears when a user first visits site', () =>
     cy.get('.age-check-wrapper')
       .should('exist')
       .contains('Brew Buddy is for individuals of legal drinking age.');
-    cy.visit('http://localhost:3000');
     cy.get('.yes-button').click();
     cy.get('.homepage').should('exist');
     cy.get('.brewery-container').contains('Start by inputting a location!');
