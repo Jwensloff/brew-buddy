@@ -6,9 +6,10 @@ describe('Legal drinking age modal appears when a user first visits site', () =>
     cy.get('.age-check-wrapper')
       .should('exist')
       .contains('Brew Buddy is for individuals of legal drinking age.');
+    cy.visit('http://localhost:3000');
     cy.get('.yes-button').click();
     cy.get('.homepage').should('exist');
-    cy.get('.brewery-container').contains('Search Results Will Appear Here');
+    cy.get('.brewery-container').contains('Start by inputting a location!');
     cy.get('.leaflet-container').should('exist');
   });
 });
@@ -18,79 +19,86 @@ describe('homepage', () => {
     cy.visit('http://localhost:3000');
     cy.intercept(
       'GET',
-      'https://api.openbrewerydb.org/v1/breweries?by_city=San_Diego',
+      'https://api.openbrewerydb.org/v1/breweries?by_city=San_Diego&per_page=100',
       { statusCode: 200, fixture: 'test_city_data.json' }
     ).as('cityData');
 
     cy.intercept(
       'GET',
-      'https://api.openbrewerydb.org/v1/breweries?by_state=California',
+      'https://api.openbrewerydb.org/v1/breweries?by_state=California&per_page=100',
       { statusCode: 200, fixture: 'test_state_data.json' }
     ).as('stateData');
-    
+
     cy.get('.age-check-wrapper')
-    .should('exist')
-    .contains('Brew Buddy is for individuals of legal drinking age.');
+      .should('exist')
+      .contains('Brew Buddy is for individuals of legal drinking age.');
     cy.get('.yes-button').click();
   });
-  
+
   it('Should be able to search breweries by city AND state', () => {
     cy.get('.search-bar').get("input[name='city']").type('San Diego');
     cy.get("input[name='city']").should('have.value', 'San Diego');
     cy.get('.search-bar').find('#dropdown').select('California');
-    cy.get('.search-bar').find('#searchBtn').click();
-    cy.wait('@cityData')
-    cy.get('.brewery-card').should('have.length', 3)
+    cy.get('#searchBtn').click();
+    cy.wait('@cityData').then((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+    });
+    cy.get('.brewery-card').should('have.length', 3);
     cy.get('.brewery-container')
-    .find('.brewery-card')
-    .first()
-    .contains('10 Barrel Brewing Co');
+      .find('.brewery-card')
+      .first()
+      .contains('10 Barrel Brewing Co');
     cy.get('.brewery-container')
-    .find('.brewery-card')
-    .last()
-    .contains('32 North Brewing Co');
+      .find('.brewery-card')
+      .last()
+      .contains('32 North Brewing Co');
     cy.get('.search-bar').get("input[name='city']").clear();
     cy.get('.search-bar').find('#dropdown').select('California');
     cy.get('#dropdown').should('have.value', 'California');
     cy.get('.search-bar').find('#searchBtn').click();
-    cy.wait('@stateData')
-    cy.get('.brewery-card').should('have.length', 3)
+    cy.wait('@stateData').then((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+    });
+    cy.get('.brewery-card').should('have.length', 3);
     cy.get('.brewery-container')
-    .find('.brewery-card')
-    .last()
-    .contains('Firestone Walker Brewing Company');
+      .find('.brewery-card')
+      .last()
+      .contains('Firestone Walker Brewing Company');
   });
-  
+
   it('should allow a user to favorite a brewery and view list of favorites', () => {
-    cy.get('.filter-btn').should('exist')
-    cy.get('.see-all-favorites-btn').should('exist')
-    cy.get('.search-bar').find('#dropdown').select('California')
-    cy.get('.search-bar').find('#searchBtn').click()
-    cy.wait('@stateData')
-    cy.get('.brewery-card').should('have.length', 3)
-    cy.get('.brewery-card').get('#1').find('.brewery-card-favorites-btn').click()
-    cy.get('.brewery-card').get('#3').find('.brewery-card-favorites-btn').click()
-    cy.get('.filter-btn').click()
-    cy.get('.brewery-card').should('have.length', 2)
-    cy.get('.brewery-card').get('#1').find('.brewery-card-favorites-btn').click()
-    cy.get('.brewery-card').should('have.length', 1)
-    cy.get('.see-all-favorites-btn').click()
-    cy.get('.brewery-card').should('have.length', 1)
-  })
+    cy.get('.filter-btn').should('exist');
+    cy.get('.see-all-favorites-btn').should('exist');
+    cy.get('.search-bar').find('#dropdown').select('California');
+    cy.get('.search-bar').find('#searchBtn').click();
+    cy.wait('@stateData').then((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+    });
+    cy.get('.brewery-card').should('have.length', 3);
+    cy.get('.brewery-card').first().find('.brewery-card-favorites-btn').click();
+    cy.get('.brewery-card').last().find('.brewery-card-favorites-btn').click();
+    cy.get('.filter-btn').click();
+    cy.get('.brewery-card').should('have.length', 2);
+    cy.get('.brewery-card').first().find('.brewery-card-favorites-btn').click();
+    cy.get('.brewery-card').should('have.length', 1);
+    cy.get('.see-all-favorites-btn').click();
+    cy.get('.brewery-card').should('have.length', 1);
+  });
+
   it('should to able to toggle local favorites filter', () => {
-    cy.get('.searchBar').find('#searchInput').type('San Diego');
-    cy.get('.searchBar').find('#dropdown').select('California');
-    cy.get('.searchBar').find('#searchBtn').click();
-    cy.get('.breweryCard').should('have.length', 3)
-    cy.get('.breweryCard').contains('2Kids Brewing Company');
-    cy.get('.breweryCard').first().find('.breweryCard-favorites-btn').click();
-    cy.get('.breweryCard').last().find('.breweryCard-favorites-btn').click();
-    cy.get('.filter-btn').click()
-    cy.get('.breweryCard').should('have.length', 2)
-    cy.get('.breweryCard').should('not.contain', '2Kids Brewing Company');
-    cy.get('.filter-btn').click()
-    cy.get('.breweryCard').should('have.length', 3)
-    cy.get('.breweryCard').contains('2Kids Brewing Company');
-    cy.get('.breweryCard').first().find('.breweryCard-favorites-btn');
+    cy.get('.search-bar').find('#searchInput').type('San Diego');
+    cy.get('.search-bar').find('#dropdown').select('California');
+    cy.get('.search-bar').find('#searchBtn').click();
+    cy.get('.brewery-card').should('have.length', 3);
+    cy.get('.brewery-card').contains('2Kids Brewing Company');
+    cy.get('.brewery-card').first().find('.brewery-card-favorites-btn').click();
+    cy.get('.brewery-card').last().find('.brewery-card-favorites-btn').click();
+    cy.get('.filter-btn').click();
+    cy.get('.brewery-card').should('have.length', 2);
+    cy.get('.brewery-card').should('not.contain', '2Kids Brewing Company');
+    cy.get('.filter-btn').click();
+    cy.get('.brewery-card').should('have.length', 3);
+    cy.get('.brewery-card').contains('2Kids Brewing Company');
+    cy.get('.brewery-card').first().find('.brewery-card-favorites-btn');
   });
 });
