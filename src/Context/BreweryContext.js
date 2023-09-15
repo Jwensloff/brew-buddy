@@ -13,7 +13,11 @@ export function BreweryContextProvider({ children }) {
   const breweryReducer = (state, action) => {
     switch (action.type) {
       case 'SET_SELECTED_BREWERY':
-        return { ...state, selectedBrewery: action.id, isSelected: true };
+        if(action.id){
+        return { ...state, selectedBrewery: action.id, isSelected: true };}
+        else {
+          return initialState;
+        }
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
       default:
