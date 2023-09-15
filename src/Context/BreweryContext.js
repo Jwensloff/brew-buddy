@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useReducer } from 'react';
-import { getBreweries, getBreweriesByState } from '../apiCalls';
+import { createContext, useContext, useState, useReducer } from 'react';
+import { getBreweriesByCity, getBreweriesByState } from '../apiCalls';
 
 export const BreweryContext = createContext(null);
 
@@ -38,33 +38,41 @@ export function BreweryContextProvider({ children }) {
     let breweryData = [];
     let filteredBreweryData = [];
 
-    if (!city) {
-      stateBreweryData = await getBreweriesByState(state);
-      if (stateBreweryData.message === 'Custom error for now') {
-        setError(stateBreweryData.message);
-        return;
-      }
+    switch (city) {
+      case '':
+        stateBreweryData = await getBreweriesByState(state);
+
+        if (stateBreweryData.name !== 'Error') {
       let onlyCoordsData = stateBreweryData.filter(brewery => brewery.longitude && brewery.latitude)
-      setError(false);
-      setBreweries(onlyCoordsData);
-      setNoResults(false);
-    } else {
-      breweryData = await getBreweries(city);
-      if (breweryData.message === 'Custom error for now') {
-        setError(breweryData.message);
-        return;
-      }
-      setError(false);
-      filteredBreweryData = breweryData.filter(
-        (brewery) => brewery.state === state && brewery.latitude && brewery.longitude
-      );
-      if (filteredBreweryData.length === 0) {
-        setNoResults(true);
-        setBreweries(filteredBreweryData);
-      } else {
-        setNoResults(false);
-        setBreweries(filteredBreweryData);
-      }
+          setError(false);
+          setBreweries(onlyCoordsData);
+          setNoResults(false);
+        }
+        // Set error by default
+        setError(stateBreweryData.message);
+
+        break;
+
+      default:
+        breweryData = await getBreweriesByCity(city);
+
+        if (breweryData.name === 'Error') {
+          setError(breweryData.message);
+          return;
+        }
+
+        setError(false);
+        filteredBreweryData = breweryData.filter(
+          brewery => brewery.state === state && brewery.latitude && brewery.longitude
+        );
+
+        if (filteredBreweryData.length === 0) {
+          setNoResults(true);
+          setBreweries(filteredBreweryData);
+        } else {
+          setNoResults(false);
+          setBreweries(filteredBreweryData);
+        }
     }
   }
 

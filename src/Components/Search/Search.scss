@@ -1,20 +1,43 @@
 @import '../../index.scss';
 
-.searchBar {
+.search-container {
+  height: 100%;
+  position: relative;
+  margin: auto 0;
+}
+
+.search-bar {
   background-color: $primaryColor;
   height: 3rem;
   max-width: 40rem;
-  padding: .5rem;
-  display: flex;
-  justify-content: space-evenly;
+  padding: 0.5rem;
   border-radius: 5px;
+
+  > * {
+    border-radius: 5px;
+    height: 2rem;
+  }
 }
 
-.location-error-message{
-  padding: .5rem;
-  border: .5rem solid $primaryColor;
-  background-color: white;
-  margin-bottom: 0.5rem ;
+.location-error-message {
+  position: absolute;
+  top: 75%;
+  left: 0;
+
+  color: red;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.location-error-message.state-error {
+  left: 42%;
+}
+
+.location-error-message.city-error {
+  left: 10%;
 }
 
 #searchInput {
@@ -23,14 +46,13 @@
 }
 
 #searchBtn {
-
   @include btn;
 
   &:hover {
     cursor: pointer;
   }
 }
-.dropdown{
+.dropdown {
   margin-right: 1rem;
   width: 6.5rem;
 }
