@@ -15,6 +15,9 @@ function Map() {
   const markersRef = useRef({});
 
   useEffect(() => {
+    const filteredBreweries = getFilteredBreweries().filter(
+      brewery => brewery.latitude && brewery.longitude,
+    );
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
@@ -27,7 +30,7 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [filteredBreweries]);
+  }, [breweries, favorites, favoriteFilter]);
 
   useEffect(() => {
     if(isSelected){

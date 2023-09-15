@@ -18,6 +18,9 @@ function BreweryContainer() {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
 
+
+  
+
   function calculateDistance(lat1, long1, lat2, long2) {
     let latRad1 = (Number(lat1) * Math.PI) / 180;
     let latRad2 = (Number(lat2) * Math.PI) / 180;

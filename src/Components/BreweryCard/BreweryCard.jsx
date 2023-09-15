@@ -29,7 +29,11 @@ function BreweryCard({ brewery, selectBrewery }) {
   }
   
   return (
+<<<<<<< HEAD
     <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(id)} }>
+=======
+    <article className='brewery-card' onClick={() => setContextSelected(id) }>
+>>>>>>> main
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
@@ -58,9 +62,14 @@ function BreweryCard({ brewery, selectBrewery }) {
         )}
       </div>
       <button
+<<<<<<< HEAD
         className='breweryCard-favorites-btn'
         onClick={(e) => {
           e.stopPropagation();
+=======
+        className='brewery-card-favorites-btn'
+        onClick={() => {
+>>>>>>> main
           toggleFavorite(brewery);
           toggleIsFavorite();
         }}
