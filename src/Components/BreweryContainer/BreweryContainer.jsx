@@ -2,7 +2,7 @@ import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
@@ -60,7 +60,8 @@ function BreweryContainer() {
     <>
       {noResults ? (
         <section className='no-results-message'>
-          We're sorry, we didn't find any breweries.
+          The beer trail is calling! 🍺 But we might need your help. Check your
+          search and give it another shot.
         </section>
       ) : (
         <section className='brewery-container'>
@@ -84,7 +85,7 @@ BreweryContainer.propTypes = {
   favorites: PropTypes.object,
   getFilteredBreweries: PropTypes.func,
   toggleFavoritesFilter: PropTypes.func,
-  favoriteFilter: PropTypes.bool,
+  favoriteFilter: PropTypes.bool
 };
 
 export default BreweryContainer;
