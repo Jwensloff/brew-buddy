@@ -31,7 +31,7 @@ function Map() {
   }, [filteredBreweries]);
 
   useEffect(() => {
-    if(isSelected){
+    if(isSelected && mapRef.current){
     const selectedBrew = breweries.filter(brewery => brewery.id === selectedBrewery);
     mapRef.current.flyTo([selectedBrew[0].latitude,selectedBrew[0].longitude], 14)
     }

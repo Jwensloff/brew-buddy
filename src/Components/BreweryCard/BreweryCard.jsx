@@ -23,10 +23,7 @@ function BreweryCard({ brewery}) {
   }, []);
 
   useEffect(() => {
-    console.log("CARD REF:",cardRefs.current)
-    console.log("selectedBRew", selectedBrewery)
     if(selectedBrewery && cardRefs.current[selectedBrewery]){
-      console.log("NEXT SCROLL TEST")
       cardRefs.current[selectedBrewery].scrollIntoView({ behavior: 'smooth'})
     }
   },[selectedBrewery])

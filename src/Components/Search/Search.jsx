@@ -26,7 +26,7 @@ function Search() {
     state: 'Select State'
   });
 
-  const { obtainBreweries } = useBreweries();
+  const { obtainBreweries,setIsSelected, isSelected } = useBreweries();
 
   const updateFormData = e => {
     setFormData(prevFormData => {
@@ -84,6 +84,7 @@ function Search() {
       });
       return;
     } else {
+      setIsSelected(false)
       obtainBreweries(formData.city, formData.state);
     }
   }
