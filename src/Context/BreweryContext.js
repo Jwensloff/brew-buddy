@@ -1,13 +1,38 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useReducer } from 'react';
 import { getBreweriesByCity, getBreweriesByState } from '../apiCalls';
 import PropTypes from 'prop-types';
 
 export const BreweryContext = createContext(null);
 
 export function BreweryContextProvider({ children }) {
+
+  const initialState = {
+    selectedBrewery: '',
+    isSelected: false,
+  }
+
+
+  const breweryReducer = (state, action) => {
+    switch(action.type){
+      case 'SET_SELECTED_BREWERY':
+        return {...state, selectedBrewery: action.id, isSelected: true}
+      case 'SET_IS_SELECTED':
+        return {...state, isSelected: true}  
+    default:
+      return state
+      }
+
+  }
+
+
+  const [state, dispatch] = useReducer(breweryReducer, initialState)
+
   const [breweries, setBreweries] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState('');
+
+  // const [selectedBrewery, setSelectedBrewery] = useState({}); 
+  // const [isSelected, setIsSelected] = useState(false)
 
   async function obtainBreweries(city, state) {
     let stateBreweryData = [];
@@ -19,8 +44,9 @@ export function BreweryContextProvider({ children }) {
         stateBreweryData = await getBreweriesByState(state);
 
         if (stateBreweryData.name !== 'Error') {
+      let onlyCoordsData = stateBreweryData.filter(brewery => brewery.longitude && brewery.latitude)
           setError(false);
-          setBreweries(stateBreweryData);
+          setBreweries(onlyCoordsData);
           setNoResults(false);
         }
         // Set error by default
@@ -38,7 +64,7 @@ export function BreweryContextProvider({ children }) {
 
         setError(false);
         filteredBreweryData = breweryData.filter(
-          brewery => brewery.state === state
+          brewery => brewery.state === state && brewery.latitude && brewery.longitude
         );
 
         if (filteredBreweryData.length === 0) {
@@ -51,16 +77,30 @@ export function BreweryContextProvider({ children }) {
     }
   }
 
+  // function setContextSelected(id){
+
+    // setSelectedBrewery(id);
+    // setIsSelected(true);
+  // }
+
+  const value = {
+    breweries, 
+    obtainBreweries, 
+    noResults, 
+    setNoResults, 
+    error, 
+    setIsSelected: () => {
+      dispatch({type: 'SET_IS_SELECTED'})
+    },
+    setBreweries, 
+    setContextSelected: (id) => {
+      dispatch({type: 'SET_SELECTED_BREWERY', id})
+    }
+  }
+
   return (
     <BreweryContext.Provider
-      value={{
-        breweries,
-        obtainBreweries,
-        noResults,
-        setNoResults,
-        error,
-        setError
-      }}
+      value={value}
     >
       {children}
     </BreweryContext.Provider>

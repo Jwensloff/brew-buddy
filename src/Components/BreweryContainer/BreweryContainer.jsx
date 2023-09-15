@@ -9,25 +9,17 @@ import PropTypes from 'prop-types';
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
   const {
-    favorites,
-    getFilteredBreweries,
+    filteredBreweries,
     toggleFavoritesFilter,
-    favoriteFilter,
+    isFaveFilterOn,
   } = useFavorites();
-  const [cards, setCards] = useState([]);
 
-  function createCards(displayedBreweries) {
-    return displayedBreweries.map((brewery) => {
-      return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
-    });
-  }
-
-  useEffect(() => {
-    setCards(createCards(getFilteredBreweries()));
-  }, [favorites, breweries, favoriteFilter]);
+   const cards = filteredBreweries.map((brewery) => {
+    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+  });
 
   const styles = {
-    backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99',
+    backgroundColor: isFaveFilterOn ? '#A9721F' : '#e0cc99',
   };
 
   return (

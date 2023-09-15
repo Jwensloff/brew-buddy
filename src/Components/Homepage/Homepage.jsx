@@ -14,11 +14,13 @@ import ErrorPage from '../ErrorPage/ErrorPage';
 function Homepage() {
   const { error } = useBreweries();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (error) {
       navigate('/error');
     }
   }, [error]);
+
 
   return (
     <>

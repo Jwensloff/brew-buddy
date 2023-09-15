@@ -1,51 +1,110 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useReducer,
+} from 'react';
 import { useBreweries } from './BreweryContext';
 
 export const FavoriteContext = createContext(null);
 
 export function FavoriteContextProvider({ children }) {
-  const [favorites, setFavorites] = useState(() => {
+  const { breweries } = useBreweries();
+  const getFavoritesFromLocalStorage = () => {
     const currentFavorites = localStorage.getItem('favorites');
     const parsedData = JSON.parse(currentFavorites);
     return parsedData || [];
-  });
+  };
 
-  const [favoriteFilter, setFavoriteFilter] = useState(false);
-  const { breweries } = useBreweries();
+  const initialState = {
+    isFaveFilterOn: false,
+    favorites: getFavoritesFromLocalStorage(),
+    filteredBreweries: [],
+  };
 
-  function getFilteredBreweries() {
-    if (favoriteFilter) {
-      return breweries.filter((brewery) => favorites.includes(brewery));
-    } else {
-      return breweries;
+  const favesReducer = (state, action) => {
+    switch (action.type) {
+      case 'TOGGLE_FAVORITE_FILTER':
+        return { ...state, isFaveFilterOn: !state.isFaveFilterOn };
+
+      case 'ADD_FAVORITE':
+        return { ...state, favorites: [...state.favorites, action.brewery] };
+
+      case 'DELETE_FAVORITE':
+        const updatedFavorites = state.favorites.filter(
+          favBrewery => favBrewery.id !== action.brewery.id,
+        );
+        return { ...state, favorites: updatedFavorites };
+      case 'UPDATE_BY_FAVORITES':
+           
+        const favesByLocation = action.breweries.filter(brewery => {
+          const favoriteBrewery = state.favorites.find(
+            favorite => favorite.id === brewery.id,
+          );
+          if (favoriteBrewery) {
+            return true;
+          }
+        });
+        return { ...state, filteredBreweries: favesByLocation };
+      case 'UPDATE_WITHOUT_FAVORITES':
+        return { ...state, filteredBreweries: action.breweries};
+      // case 'GET_FAVORITES_BY_LOCATION':
+      //   const brewCopy = [...breweries]
+      //   const favesByLocation = brewCopy.filter(brewery => {
+      //     const favoriteBrewery = state.favorites.find(
+      //       favorite => favorite.id === brewery.id,
+      //     );
+      //     if (favoriteBrewery) {
+      //       return true;
+      //     }
+      //   });
+      //   return { ...state, filteredBreweries: favesByLocation };
+
+      default:
+        return state;
     }
-  }
+  };
 
-  function toggleFavoritesFilter() {
-    setFavoriteFilter((prevFilter) => !prevFilter);
-  }
-
-  function toggleFavorite(brewery) {
-    if (favorites.includes(brewery)) {
-      setFavorites((prev) =>
-        prev.filter((favBrewery) => favBrewery.id !== brewery.id)
-      );
-    } else {
-      setFavorites((prev) => [...prev, brewery]);
-    }
-  }
+  const [state, dispatch] = useReducer(favesReducer, initialState);
 
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    localStorage.setItem('favorites', JSON.stringify(state.favorites));
+  }, [state.favorites]);
 
   const value = {
-    favorites,
-    toggleFavorite,
-    toggleFavoritesFilter,
-    getFilteredBreweries,
-    favoriteFilter,
+    filteredBreweries: state.filteredBreweries,
+    favorites: state.favorites,
+    toggleFavorite: brewery => {
+      if (state.favorites.includes(brewery)) {
+        dispatch({ type: 'DELETE_FAVORITE', brewery });
+      } else {
+        dispatch({ type: 'ADD_FAVORITE', brewery });
+      }
+    },
+    toggleFavoritesFilter: () => {
+      dispatch({ type: 'TOGGLE_FAVORITE_FILTER' });
+    },
+    updateFilteredBreweries: () => {
+      if (state.isFaveFilterOn) {
+        dispatch({ type: 'UPDATE_BY_FAVORITES', breweries: breweries});
+      } else {
+        dispatch({ type: 'UPDATE_WITHOUT_FAVORITES', breweries: breweries });
+      }
+    },
+    isFaveFilterOn: state.isFaveFilterOn,
   };
+
+  useEffect(() => {
+    // call for an update on filteredBrews
+    value.updateFilteredBreweries();
+    // reducer must be pure
+  }, [breweries, state.favorites, value.isFaveFilterOn]);
+
+  //update when
+  // breweries state changes
+  // favorites state changes
+  // filter is toggled
 
   return (
     <FavoriteContext.Provider value={value}>
