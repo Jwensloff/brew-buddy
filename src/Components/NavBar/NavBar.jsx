@@ -6,7 +6,7 @@ function NavBar() {
     <nav className='navBar'>
       <ul>
         <NavLink className={'navLink'} to='/'>search</NavLink>
-        <NavLink className={'navLink'} to='/favorites'>favorites</NavLink>
+        <NavLink className='see-all-favorites-btn navLink' to='/favorites'>favorites</NavLink>
       </ul>
     </nav>
   );

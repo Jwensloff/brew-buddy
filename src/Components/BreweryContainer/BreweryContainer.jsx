@@ -2,19 +2,14 @@ import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
-import { useEffect, useState } from 'react';
-import { getBreweries } from '../../apiCalls';
 import PropTypes from 'prop-types';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
-  const {
-    filteredBreweries,
-    toggleFavoritesFilter,
-    isFaveFilterOn,
-  } = useFavorites();
+  const { filteredBreweries, toggleFavoritesFilter, isFaveFilterOn } =
+    useFavorites();
 
-   const cards = filteredBreweries.map((brewery) => {
+  const cards = filteredBreweries.map(brewery => {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
 
@@ -32,22 +27,34 @@ function BreweryContainer() {
     return distance;
   }
 
-  function calcDistanceFromSelected(){
+  function calcDistanceFromSelected() {
+    // const brewCopy = [...breweries];
+    // for(var i = 1; i < breweries.length ; i ++){
+    //   const distance = calculateDistance(brewCopy[0].latitude, brewCopy[0].longitude, breweries[i].latitude, breweries[i].longitude);
+    //   brewCopy[i].distance = distance;
+    //
 
     const [firstBrewery, ...restOfBreweries] = [...breweries];
 
-    const breweriesWithDistance = restOfBreweries.map((brewery) => {
-      const distance = calculateDistance(firstBrewery.latitude, firstBrewery.longitude, brewery.latitude, brewery.longitude);
+    const breweriesWithDistance = restOfBreweries.map(brewery => {
+      const distance = calculateDistance(
+        firstBrewery.latitude,
+        firstBrewery.longitude,
+        brewery.latitude,
+        brewery.longitude,
+      );
 
-      return {...brewery, distance}
-
-    })
+      return { ...brewery, distance };
+    });
+    console.log('BREW COPIES WITH DISTANCE', breweriesWithDistance);
   }
 
   const styles = {
-    backgroundColor: favoriteFilter ? '#808000' : '#BAB86C',
-    color: favoriteFilter ? '#f7f7ed' : '#273f1d',
+    backgroundColor: isFaveFilterOn ? '#808000' : '#BAB86C',
+    color: isFaveFilterOn ? '#f7f7ed' : '#273f1d',
   };
+
+  const filterBtnMessage = isFaveFilterOn ? 'On' : 'Off';
 
   return (
     <>
@@ -62,7 +69,7 @@ function BreweryContainer() {
             style={styles}
             onClick={toggleFavoritesFilter}
           >
-            Filter Local Breweries by Favorite
+            {`Filter Local Breweries by Favorite: ${filterBtnMessage}`}
           </button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>

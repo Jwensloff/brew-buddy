@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBreweries } from '../../Context/BreweryContext';
 import PropTypes from 'prop-types';
-
 import Map from '../Map/Map';
 import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Search from '../Search/Search';
@@ -21,10 +20,8 @@ function Homepage() {
     }
   }, [error]);
 
-
   return (
     <>
-      <NavLink className='see-all-favorites-btn' to='/favorites'>favorites</NavLink>
       <Header />
       <main className='homepage'>
         <BreweryContainer />
