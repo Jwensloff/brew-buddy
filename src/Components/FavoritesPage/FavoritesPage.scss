@@ -7,9 +7,9 @@
   padding:  5rem 3rem;
   display: flex;
   // grid-template-rows: repeat(4, 1fr);
-  // background-color: $lightColor;
-  background-color: $oliveGreen;
-  height: 100vh;
+  background-color: $lightColor;
+  // background-color: $oliveGreen;
+  min-height: 100vh;
 }
 
 .favs-grid {
