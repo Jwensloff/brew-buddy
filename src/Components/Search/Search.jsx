@@ -1,8 +1,15 @@
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const initialErrorMessage = '';
+
+const initialFormData = {
+  city: '',
+  state: 'Select State',
+  formIsReady: false
+};
 
 function errorMessageReducer(state, action) {
   switch (action.type) {
@@ -15,39 +22,68 @@ function errorMessageReducer(state, action) {
   }
 }
 
+function formReducer(state, action) {
+  switch (action.type) {
+    case 'SET_CITY':
+      return { ...state, city: action.payload };
+    case 'SET_STATE':
+      return { ...state, state: action.payload };
+    case 'SET_FORM_IS_READY':
+      return { ...state, formIsReady: action.payload };
+    default:
+      return state;
+  }
+}
+
 function Search() {
   const [errorState, dispatchErrorMsg] = useReducer(
     errorMessageReducer,
     initialErrorMessage
   );
-  const [formData, setFormData] = useState({
-    city: '',
-    state: 'Select State'
-  });
-
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormData);
+  const { city, state, formIsReady } = formState;
+  const navigate = useNavigate();
+  const searchBtnRef = useRef(null);
   const { obtainBreweries } = useBreweries();
+  const location = useLocation();
 
-  const updateFormData = e => {
-    setFormData(prevFormData => {
-      return {
-        ...prevFormData,
-        [e.target.name]: e.target.value
-      };
-    });
-  };
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const cityParam = queryParams.get('city');
+    const stateParam = queryParams.get('state');
+
+    if (cityParam || stateParam) {
+      dispatchForm({
+        type: 'SET_CITY',
+        payload: cityParam
+      });
+      dispatchForm({
+        type: 'SET_STATE',
+        payload: stateParam
+      });
+      dispatchForm({
+        type: 'SET_FORM_IS_READY',
+        payload: true
+      });
+    }
+  }, [location]);
+
+  useEffect(() => {
+    searchBtnRef.current.click();
+  }, [formIsReady]);
 
   const states = require('us-state-converter');
   const listOfStates = states();
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
-  return listOfStates.reduce((uniqueStates, state) => {
-    if (!uniqueStates.some(s => s.name === state.name)) {
-      uniqueStates.push(state);
-    }
-    return uniqueStates;
-  }, []);
-};
+    return listOfStates.reduce((uniqueStates, state) => {
+      if (!uniqueStates.some(s => s.name === state.name)) {
+        uniqueStates.push(state);
+      }
+      return uniqueStates;
+    }, []);
+  };
 
   const filteredStates = noDuplicates();
   const dropdownList = filteredStates.map(state => {
@@ -62,28 +98,29 @@ function Search() {
     e.preventDefault();
     dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
 
-    if (!formData.city.match(regex)) {
+    if (!city.match(regex)) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please enter a valid city.',
         errorType: 'city'
       });
       return;
-    } else if (formData.city && formData.state === 'Select State') {
+    } else if (city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please select a state to get started.',
         errorType: 'state'
       });
       return;
-    } else if (!formData.city && formData.state === 'Select State') {
+    } else if (!city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please specify a location to get started.'
       });
       return;
     } else {
-      obtainBreweries(formData.city, formData.state);
+      navigate(`/?city=${city}&state=${state}`);
+      obtainBreweries(city, state);
     }
   }
 
@@ -95,16 +132,20 @@ function Search() {
           type='search'
           key='search'
           name='city'
-          value={formData.city}
+          value={city}
           placeholder='City (optional)'
-          onChange={updateFormData}
+          onChange={e =>
+            dispatchForm({ type: 'SET_CITY', payload: e.target.value })
+          }
         />
         <select
           id='dropdown'
           name='state'
           className='dropdown'
-          value={formData.state}
-          onChange={updateFormData}
+          value={state}
+          onChange={e =>
+            dispatchForm({ type: 'SET_STATE', payload: e.target.value })
+          }
         >
           <option className='dropdown-item' key={'select-state'}>
             {' '}
@@ -112,7 +153,7 @@ function Search() {
           </option>
           {dropdownList}
         </select>
-        <button type='submit' className='btn' id='searchBtn'>
+        <button type='submit' className='btn' id='searchBtn' ref={searchBtnRef}>
           Search
         </button>
       </form>
