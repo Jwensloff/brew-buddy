@@ -5,9 +5,10 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   padding: 0 1rem 0 0;
-  // height: 75vh;
   height: 100%;
   overflow-y: scroll;
+  text-align: center;
+  align-items: start;
 }
 
 .no-results-message {

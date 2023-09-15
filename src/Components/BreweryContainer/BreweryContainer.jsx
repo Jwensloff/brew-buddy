@@ -71,7 +71,7 @@ function BreweryContainer() {
           >
             {`Filter Local Breweries by Favorite: ${filterBtnMessage}`}
           </button>
-          {cards.length ? cards : 'Search Results Will Appear Here'}
+          {cards.length ? cards : 'Start by inputting a location!'}
         </section>
       )}
     </>
