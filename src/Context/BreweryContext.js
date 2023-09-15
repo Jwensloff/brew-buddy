@@ -7,7 +7,8 @@ export const BreweryContext = createContext(null);
 export function BreweryContextProvider({ children }) {
   const initialState = {
     selectedBrewery: '',
-    isSelected: false
+    isSelected: false,
+    breweries: [],
   };
 
   const breweryReducer = (state, action) => {
@@ -27,82 +28,59 @@ export function BreweryContextProvider({ children }) {
   const [noResults, setNoResults] = useState(false);
   const [error, setError] = useState('');
 
-  // const [selectedBrewery, setSelectedBrewery] = useState({}); 
-  // const [isSelected, setIsSelected] = useState(false)
+  function cleanData(data, city, state) {
+    const validData = data.filter(
+      brewery => brewery.latitude && brewery.longitude,
+    );
 
-  async function obtainBreweries(city, state) {
-    let stateBreweryData = [];
-    let breweryData = [];
-    let filteredBreweryData = [];
-
-    switch (city) {
-      case '':
-        stateBreweryData = await getBreweriesByState(state);
-
-        if (stateBreweryData.name !== 'Error') {
-      let onlyCoordsData = stateBreweryData.filter(brewery => brewery.longitude && brewery.latitude)
-          setError(false);
-          setBreweries(onlyCoordsData);
-          setBreweries(onlyCoordsData);
-          setNoResults(false);
-        }
-        // Set error by default
-        setError(stateBreweryData.message);
-
-        break;
-
-      default:
-        breweryData = await getBreweriesByCity(city);
-
-        if (breweryData.name === 'Error') {
-          setError(breweryData.message);
-          return;
-        }
-
-        setError(false);
-        filteredBreweryData = breweryData.filter(
-          brewery => brewery.state === state && brewery.latitude && brewery.longitude
-        );
-
-        if (filteredBreweryData.length === 0) {
-          setNoResults(true);
-          setBreweries(filteredBreweryData);
-        } else {
-          setNoResults(false);
-          setBreweries(filteredBreweryData);
-        }
+    if (city) {
+      validData = validData.filter(brewery => brewery.state === state);
     }
+
+    return validData;
   }
 
-  // function setContextSelected(id){
+  function processData(data) {
+    setError(false);
+    const noResults = data.length ? true : false;
+    setNoResults(noResults);
+    setBreweries(data);
+  }
 
-    // setSelectedBrewery(id);
-    // setIsSelected(true);
-  // }
 
+  async function obtainBreweries(city, state) {
+    let breweryData = [];
+
+    if (!city) {
+      breweryData = await getBreweriesByState(state);
+    } else {
+      breweryData = await getBreweriesByCity(city);
+    }
+
+    const cleanedData = cleanData(breweryData, city, state);
+    processData(cleanedData);
+  }
+
+  
   const value = {
-    breweries, 
-    obtainBreweries, 
-    noResults, 
+    breweries,
+    obtainBreweries,
+    noResults,
     setNoResults,
     isSelected: state.isSelected,
     selectedBrewery: state.selectedBrewery,
-    error, 
-    setIsSelected: (status) => {
-      dispatch({type: 'SET_IS_SELECTED', status })
+    error,
+    setIsSelected: status => {
+      dispatch({ type: 'SET_IS_SELECTED', status });
     },
-    setBreweries, 
-    setContextSelected: (id) => {
-      dispatch({type: 'SET_SELECTED_BREWERY', id})
-    }
-  }
+    setBreweries,
+    setContextSelected: id => {
+      dispatch({ type: 'SET_SELECTED_BREWERY', id });
+    },
+  };
 
   return (
-    <BreweryContext.Provider
-      value={value}
-    >
-      {children}
-    </BreweryContext.Provider>
+    <BreweryContext.Provider value={value}>{children}</BreweryContext.Provider>
   );
 }
 
