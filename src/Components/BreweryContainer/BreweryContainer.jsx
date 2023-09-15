@@ -2,7 +2,7 @@ import BreweryCard from '../BreweryCard/BreweryCard';
 import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
-import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();

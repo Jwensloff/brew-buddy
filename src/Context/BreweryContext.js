@@ -5,27 +5,23 @@ import PropTypes from 'prop-types';
 export const BreweryContext = createContext(null);
 
 export function BreweryContextProvider({ children }) {
-
   const initialState = {
     selectedBrewery: '',
-    isSelected: false,
-  }
-
+    isSelected: false
+  };
 
   const breweryReducer = (state, action) => {
-    switch(action.type){
+    switch (action.type) {
       case 'SET_SELECTED_BREWERY':
-        return {...state, selectedBrewery: action.id, isSelected: true}
+        return { ...state, selectedBrewery: action.id, isSelected: true };
       case 'SET_IS_SELECTED':
-        return {...state, isSelected: action.status}  
-    default:
-      return state
-      }
+        return { ...state, isSelected: action.status };
+      default:
+        return state;
+    }
+  };
 
-  }
-
-
-  const [state, dispatch] = useReducer(breweryReducer, initialState)
+  const [state, dispatch] = useReducer(breweryReducer, initialState);
 
   const [breweries, setBreweries] = useState([]);
   const [noResults, setNoResults] = useState(false);
