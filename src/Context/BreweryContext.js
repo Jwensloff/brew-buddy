@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useReducer } from 'react';
 import { getBreweriesByCity, getBreweriesByState } from '../apiCalls';
+import PropTypes from 'prop-types';
 
 export const BreweryContext = createContext(null);
 

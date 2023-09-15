@@ -3,6 +3,8 @@ import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
+import { getBreweries } from '../../apiCalls';
+import PropTypes from 'prop-types';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
@@ -27,7 +29,7 @@ function BreweryContainer() {
           We're sorry, we didn't find any breweries.
         </section>
       ) : (
-        <section className='breweryContainer'>
+        <section className='brewery-container'>
           <button
             className='filter-btn'
             style={styles}
@@ -41,5 +43,14 @@ function BreweryContainer() {
     </>
   );
 }
+
+BreweryContainer.propTypes = {
+  breweries: PropTypes.object,
+  noResults: PropTypes.bool,
+  favorites: PropTypes.object,
+  getFilteredBreweries: PropTypes.func,
+  toggleFavoritesFilter: PropTypes.func,
+  favoriteFilter: PropTypes.bool,
+};
 
 export default BreweryContainer;
