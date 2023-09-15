@@ -1,16 +1,17 @@
 @import '../../index.scss';
 
 .brewery-container {
-  
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  padding: 0 .3rem 0 0;
-  height: 75vh;
+  padding: 0 1rem 0 0;
+  height: 100%;
   overflow-y: scroll;
+  text-align: center;
+  align-items: start;
 }
 
-.no-results-message{
+.no-results-message {
   background-color: #e0cc99;
   padding: 1rem;
   text-align: center;

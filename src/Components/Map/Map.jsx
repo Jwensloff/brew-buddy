@@ -17,7 +17,7 @@ function Map() {
   useEffect(() => {
     
     setValidBreweries(filteredBreweries);
-    if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
+    if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
       const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);

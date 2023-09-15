@@ -96,15 +96,8 @@ export function FavoriteContextProvider({ children }) {
   };
 
   useEffect(() => {
-    // call for an update on filteredBrews
     value.updateFilteredBreweries();
-    // reducer must be pure
   }, [breweries, state.favorites, value.isFaveFilterOn]);
-
-  //update when
-  // breweries state changes
-  // favorites state changes
-  // filter is toggled
 
   return (
     <FavoriteContext.Provider value={value}>

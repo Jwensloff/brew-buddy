@@ -5,11 +5,15 @@ import './FavoritesPage.scss';
 export function FavoritesPage() {
   const { favorites } = useFavorites();
 
-  const cards = favorites.map((brewery) => {
+  const cards = favorites.map(brewery => {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
 
-  return <div>{cards}</div>
+  return (
+    <div className='favorites-page'>
+      <section className='favs-grid'>{cards}</section>
+    </div>
+  );
 }
 
 export default FavoritesPage;

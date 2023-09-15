@@ -6,18 +6,21 @@ import { useState } from 'react';
 import { BreweryContextProvider } from '../../Context/BreweryContext';
 import { FavoriteContextProvider } from '../../Context/FavoriteContext';
 import FavoritesPage from '../FavoritesPage/FavoritesPage';
+import NavBar from '../NavBar/NavBar';
 import AgeCheck from '../AgeCheck/AgeCheck';
 
 function App() {
   const [isLegal, setisLegal] = useState(() => {
     const legalStatus = localStorage.getItem('isLegal');
     const parsedItem = JSON.parse(legalStatus);
+    console.log(parsedItem)
     return parsedItem || '';
   });
 
   return (
     <BreweryContextProvider>
       <FavoriteContextProvider>
+          <NavBar />
         <Routes>
           <Route
             path='/'

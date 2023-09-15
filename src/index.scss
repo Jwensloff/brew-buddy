@@ -7,7 +7,47 @@
 @mixin btn {
   width: 6rem;
   border-radius: 3px;
+  color: $lightColor;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  height: 100vh;
 
 }
 
-$primaryColor: #A9721F;
+$accentColor: #562007;
+$lightAccentColor: #9c5425;
+$darkColor: #273f1d;
+$oliveGreen: #bab86c;
+$mediumColor: #808000;
+$brightColor: #7daa40;
+$lightColor: #f7f7ed;
+
+@media screen and (max-width: 1080px) {
+  .map__container {
+    grid-column: 3 / span 2;
+  }
+
+  .breweryContainer {
+    grid-column: 1 / span 2;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .homepage {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .map__container {
+    grid-column: auto;
+    order: 1;
+    height: 300px;
+  }
+
+  .breweryContainer {
+    grid-column: auto;
+    order: 2;
+  }
+}

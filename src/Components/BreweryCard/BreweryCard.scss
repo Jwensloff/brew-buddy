@@ -1,9 +1,9 @@
 @import '../../index.scss';
 
 .brewery-card {
-  background-color: #e0cc99;
+  background-color: #e3e3c4;
   height: fit-content;
-  width: 100%;
+  max-width: 100%;
   padding: 1rem;
   position: relative;
 
@@ -19,9 +19,9 @@
   padding: 0.5rem;
   height: 2rem;
   width: 5rem;
-
-  background-color: $primaryColor;
-  color: antiquewhite;
+  @include btn;
+  background-color: $lightAccentColor;
+  color: #f5f5dc;
   text-decoration: none;
   cursor: pointer;
 }
@@ -32,7 +32,8 @@
 }
 
 .brewery-card-favorites-btn {
-  background-color: #e0cc99;
+  cursor: pointer;
+  background-color: transparent;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -43,6 +44,5 @@
 }
 
 .selected{
-  background-color: rgb(229, 164, 42);
-  border: 3px solid black;
+  background-color: #BAB86C;
 }

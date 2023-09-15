@@ -1,26 +1,21 @@
 @import '../../index.scss';
 
-.map__container{
-  height: 400px;
-  grid-column: 2 / span 3;
+.map__container {
   height: 100%;
+  grid-column: 2 / span 3;
 }
 
 .leaflet-container {
+  height: 100%;
   width: auto;
-  height: 75vh;
-  margin: 1vh;
-  box-sizing: border-box;
 }
 
-.brewery-popup{
-  background-color: $primaryColor;
+.brewery-popup {
+  background-color: $lightAccentColor;
   padding: 0;
-  color: white;
+  color: #f5f5dc;
 }
 
-.leaflet-popup-content-wrapper{
-  background-color: $primaryColor;
+.leaflet-popup-content-wrapper {
+  background-color: $lightAccentColor;
 }
-
-

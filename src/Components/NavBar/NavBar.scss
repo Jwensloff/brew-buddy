@@ -1,0 +1,37 @@
+@import '../../index.scss';
+
+.navBar {
+  display: block;
+  position: absolute;
+  top: 0;
+  background-color: rgba(39, 63, 29, .6);
+  width: 100%;
+  z-index: 1;
+}
+
+ul {
+  padding: 0 ;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.navLink {
+  display: flex;
+  color: $lightColor;
+  min-height: 2.5rem;
+  width: 7rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: $brightColor;
+  }
+}
+.active {
+  text-decoration: underline $brightColor 3px;
+  cursor: default;
+}

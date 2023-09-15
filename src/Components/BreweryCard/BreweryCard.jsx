@@ -40,9 +40,9 @@ function BreweryCard({ brewery}) {
     <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(brewery.id)}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
-      {street && <p className='card-text'>{street}</p>}
+      {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
-
+     
       <div className='card-a-box'>
         {website_url && (
           <a
@@ -74,9 +74,9 @@ function BreweryCard({ brewery}) {
         }}
       >
         {isFavorite ? (
-          <FontAwesomeIcon icon={faBookmark} size='xl' />
+          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' />
         ) : (
-          <FontAwesomeIcon icon={farBookmark} size='xl' />
+          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' />
         )}
       </button>
     </article>
