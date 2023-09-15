@@ -99,6 +99,7 @@ function Search() {
     e.preventDefault();
     dispatchErrorMsg({ type: 'CLEAR_ERROR_MESSAGE' });
 
+    
     if (!city.match(regex)) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
@@ -120,9 +121,10 @@ function Search() {
       });
       return;
     } else {
+      const formattedCity = city.trim();
       setIsSelected(false)
-      navigate(`/?city=${city}&state=${state}`);
-      obtainBreweries(city, state);
+      navigate(`/?city=${formattedCity}&state=${state}`);
+      obtainBreweries(formattedCity, state);
     }
   }
 
