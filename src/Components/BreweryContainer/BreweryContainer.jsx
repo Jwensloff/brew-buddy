@@ -60,7 +60,8 @@ function BreweryContainer() {
     <>
       {noResults ? (
         <section className='no-results-message'>
-          We're sorry, we didn't find any breweries.
+          The beer trail is calling! 🍺 But we might need your help. Check your
+          search and give it another shot.
         </section>
       ) : (
         <section className='brewery-container'>
@@ -84,7 +85,7 @@ BreweryContainer.propTypes = {
   favorites: PropTypes.object,
   getFilteredBreweries: PropTypes.func,
   toggleFavoritesFilter: PropTypes.func,
-  favoriteFilter: PropTypes.bool,
+  favoriteFilter: PropTypes.bool
 };
 
 export default BreweryContainer;
