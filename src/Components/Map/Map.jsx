@@ -19,7 +19,7 @@ function Map() {
       brewery => brewery.latitude && brewery.longitude,
     );
     setValidBreweries(filteredBreweries);
-    if (filteredBreweries.length > 2 && mapRef.current) {
+    if (filteredBreweries.length >= 2 && mapRef.current) {
       const center = calculateCenter(filteredBreweries);
       const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);
