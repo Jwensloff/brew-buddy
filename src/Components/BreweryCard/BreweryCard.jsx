@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,18 +7,29 @@ import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import PropTypes from 'prop-types';
 import { useBreweries } from '../../Context/BreweryContext';
 
-function BreweryCard({ brewery, selectBrewery }) {
+
+function BreweryCard({ brewery}) {
   const { name, street, phone, brewery_type, website_url, city, id } = brewery;
   const directionsURL = `https://www.google.com/maps/dir/${name},${street}+${city}`;
   const { toggleFavorite, favorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
-  const {setContextSelected} = useBreweries();
+  const {setContextSelected, selectedBrewery} = useBreweries();
+  const cardRefs = useRef({})
 
   useEffect(() => {
     if (favorites.find((favBrewery) => favBrewery.id === brewery.id)) {
       setIsFavorite(true);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("CARD REF:",cardRefs.current)
+    console.log("selectedBRew", selectedBrewery)
+    if(selectedBrewery && cardRefs.current[selectedBrewery]){
+      console.log("NEXT SCROLL TEST")
+      cardRefs.current[selectedBrewery].scrollIntoView({ behavior: 'smooth'})
+    }
+  },[selectedBrewery])
 
   function toggleIsFavorite() {
     if (isFavorite) {
@@ -27,9 +38,9 @@ function BreweryCard({ brewery, selectBrewery }) {
       setIsFavorite(true);
     }
   }
-  
-  return (
-    <article className='brewery-card' onClick={() => setContextSelected(id) }>
+
+    return (
+    <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(brewery.id)}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street}</p>}
@@ -59,7 +70,8 @@ function BreweryCard({ brewery, selectBrewery }) {
       </div>
       <button
         className='brewery-card-favorites-btn'
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           toggleFavorite(brewery);
           toggleIsFavorite();
         }}
