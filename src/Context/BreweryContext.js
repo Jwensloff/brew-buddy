@@ -17,7 +17,7 @@ export function BreweryContextProvider({ children }) {
       case 'SET_SELECTED_BREWERY':
         return {...state, selectedBrewery: action.id, isSelected: true}
       case 'SET_IS_SELECTED':
-        return {...state, isSelected: true}  
+        return {...state, isSelected: action.isSelected}  
     default:
       return state
       }
@@ -88,6 +88,7 @@ export function BreweryContextProvider({ children }) {
     obtainBreweries, 
     noResults, 
     setNoResults,
+    isSelected: state.isSelected,
     selectedBrewery: state.selectedBrewery,
     error, 
     setIsSelected: () => {
