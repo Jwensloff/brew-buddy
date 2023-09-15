@@ -3,31 +3,29 @@ import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
-import { getBreweries } from '../../apiCalls';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
   const {
-    favorites,
-    getFilteredBreweries,
+    filteredBreweries,
     toggleFavoritesFilter,
-    favoriteFilter,
+    isFaveFilterOn,
+    
   } = useFavorites();
   const [cards, setCards] = useState([]);
 
   function createCards(displayedBreweries) {
-    console.log('displayedBreweries',displayedBreweries)
     return displayedBreweries.map((brewery) => {
       return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
     });
   }
 
   useEffect(() => {
-    setCards(createCards(getFilteredBreweries()));
-  }, [favorites, breweries, favoriteFilter]);
+    setCards(createCards(filteredBreweries));
+  }, [filteredBreweries]);
 
   const styles = {
-    backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99',
+    backgroundColor: isFaveFilterOn ? '#A9721F' : '#e0cc99',
   };
 
   return (

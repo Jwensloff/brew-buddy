@@ -9,14 +9,11 @@ function Map() {
   const defaultPosition = [39.82, -98.57];
   const defaultZoomLevel = 4;
   const { breweries, setBreweries, selectedBrewery, isSelected, setIsSelected} = useBreweries();
-  const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
+  const { filteredBreweries} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const filteredBreweries = getFilteredBreweries().filter(
-      brewery => brewery.latitude && brewery.longitude,
-    );
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
@@ -29,7 +26,7 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [breweries, favorites, favoriteFilter]);
+  }, [filteredBreweries]);
 
   useEffect(() => {
     if(isSelected){
