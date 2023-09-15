@@ -3,26 +3,46 @@ import './BreweryContainer.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
+import { getBreweries } from '../../apiCalls';
+import PropTypes from 'prop-types';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
   const {
-    favorites,
-    getFilteredBreweries,
+    filteredBreweries,
     toggleFavoritesFilter,
-    favoriteFilter,
+    isFaveFilterOn,
   } = useFavorites();
-  const [cards, setCards] = useState([]);
 
-  function createCards(displayedBreweries) {
-    return displayedBreweries.map(brewery => {
-      return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
-    });
+   const cards = filteredBreweries.map((brewery) => {
+    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+  });
+
+  function calculateDistance(lat1, long1, lat2, long2) {
+    let latRad1 = (Number(lat1) * Math.PI) / 180;
+    let latRad2 = (Number(lat2) * Math.PI) / 180;
+    let longRad1 = (Number(long1) * Math.PI) / 180;
+    let longRad2 = (Number(long2) * Math.PI) / 180;
+    const distance =
+      3958 *
+      Math.acos(
+        Math.sin(latRad1) * Math.sin(latRad2) +
+          Math.cos(latRad1) * Math.cos(latRad2) * Math.cos(longRad2 - longRad1),
+      );
+    return distance;
   }
 
-  useEffect(() => {
-    setCards(createCards(getFilteredBreweries()));
-  }, [favorites, breweries, favoriteFilter]);
+  function calcDistanceFromSelected(){
+
+    const [firstBrewery, ...restOfBreweries] = [...breweries];
+
+    const breweriesWithDistance = restOfBreweries.map((brewery) => {
+      const distance = calculateDistance(firstBrewery.latitude, firstBrewery.longitude, brewery.latitude, brewery.longitude);
+
+      return {...brewery, distance}
+
+    })
+  }
 
   const styles = {
     backgroundColor: favoriteFilter ? '#808000' : '#BAB86C',
@@ -36,7 +56,7 @@ function BreweryContainer() {
           We're sorry, we didn't find any breweries.
         </section>
       ) : (
-        <section className='breweryContainer'>
+        <section className='brewery-container'>
           <button
             className='filter-btn'
             style={styles}
@@ -50,5 +70,14 @@ function BreweryContainer() {
     </>
   );
 }
+
+BreweryContainer.propTypes = {
+  breweries: PropTypes.object,
+  noResults: PropTypes.bool,
+  favorites: PropTypes.object,
+  getFilteredBreweries: PropTypes.func,
+  toggleFavoritesFilter: PropTypes.func,
+  favoriteFilter: PropTypes.bool,
+};
 
 export default BreweryContainer;

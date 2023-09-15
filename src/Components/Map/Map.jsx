@@ -8,18 +8,16 @@ import { useFavorites } from '../../Context/FavoriteContext';
 function Map() {
   const defaultPosition = [39.82, -98.57];
   const defaultZoomLevel = 4;
-  const { breweries } = useBreweries();
-  const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
+  const { breweries, setBreweries, selectedBrewery, isSelected,setContextSelected, setIsSelected} = useBreweries();
+  const { filteredBreweries} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
-  const [selectedBrewery, setSelectedBrewery] = useState(null);
+  const markersRef = useRef({});
 
   useEffect(() => {
-    const filteredBreweries = getFilteredBreweries().filter(
-      brewery => brewery.latitude && brewery.longitude,
-    );
+    
     setValidBreweries(filteredBreweries);
-    if (filteredBreweries.length >= 2 && mapRef.current) {
+    if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
       const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);
@@ -30,7 +28,16 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [breweries, favorites, favoriteFilter]);
+  }, [filteredBreweries]);
+
+  useEffect(() => {
+    if(isSelected){
+    const selectedBrew = breweries.filter(brewery => brewery.id === selectedBrewery);
+    mapRef.current.flyTo([selectedBrew[0].latitude,selectedBrew[0].longitude], 14)
+    }
+    if(selectedBrewery && Object.keys(markersRef.current).length !== 0){
+      markersRef.current[selectedBrewery].openPopup()}
+  },[selectedBrewery])
 
   function calculateCenter(filteredBreweries) {
     let longSum = 0;
@@ -88,18 +95,27 @@ function Map() {
     return distance;
   }
 
+  function showSelectedBeweryCard(breweryName){
+    const index = breweries.findIndex((brewery) => brewery.name === breweryName)
+    const brewCopy = [...breweries];
+    const selectBrewery = brewCopy.splice(index,1)
+    setContextSelected(selectBrewery[0].id)
+    setIsSelected(true)
+  }
+
  
-  const mapPoints = validBreweries.map((brewery) => {
+  const mapPoints = validBreweries.map((brewery,index) => {
     let formattedNumber;
     if(brewery.phone){
     const strNum = brewery.phone;
-    
     formattedNumber = `(${strNum.substring(0, 3)}) ${strNum.substring(3, 6)}-${strNum.substring(6, 10)}`
     }
     
-    return (
-      <Marker key={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {zoomToBrewery(e.target._latlng)}}}>
-        <Popup>
+  return (
+      <Marker ref={(ref) => markersRef.current[brewery.id] = ref} key={brewery.id} id={brewery.id} position={[brewery.latitude, brewery.longitude]} eventHandlers={{click: (e) => {
+        showSelectedBeweryCard(e.target._popup.options.children.props.children[0].props.children);
+        zoomToBrewery(e.target._latlng)}}}>
+        <Popup >
           <div className='brewery-popup'>
             <p>{brewery.name}</p>
             <p>{brewery.address_1}</p>

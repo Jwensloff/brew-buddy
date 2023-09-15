@@ -4,7 +4,7 @@ export async function getBreweriesByCity(city) {
   city = city.split(' ').reduce((acc, curr) => acc + `_${curr}`);
   try {
     const response = await fetch(
-      `https://api.openbrewerydb.org/v1/breweries?by_city=${city}`
+      `https://api.openbrewerydb.org/v1/breweries?by_city=${city}&per_page=100`
     );
     if (!response.ok) {
       throw new Error('Custom error for now');
@@ -19,7 +19,7 @@ export async function getBreweriesByState(state) {
   state = state.split(' ').reduce((acc, curr) => acc + `_${curr}`);
   try {
     const response = await fetch(
-      `https://api.openbrewerydb.org/v1/breweries?by_state=${state}`
+      `https://api.openbrewerydb.org/v1/breweries?by_state=${state}&per_page=100`
     );
     if (!response.ok) {
       throw new Error('Custom error for now');
