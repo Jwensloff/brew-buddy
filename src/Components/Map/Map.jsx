@@ -8,16 +8,13 @@ import { useFavorites } from '../../Context/FavoriteContext';
 function Map() {
   const defaultPosition = [39.82, -98.57];
   const defaultZoomLevel = 4;
-  const { breweries, setBreweries, selectedBrewery,setSelectedBrewery, isSelected, setIsSelected} = useBreweries();
-  const { getFilteredBreweries , favorites, favoriteFilter} = useFavorites()
+  const { breweries, setBreweries, selectedBrewery, isSelected,setContextSelected, setIsSelected} = useBreweries();
+  const { filteredBreweries} = useFavorites()
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
   const markersRef = useRef({});
 
   useEffect(() => {
-    const filteredBreweries = getFilteredBreweries().filter(
-      brewery => brewery.latitude && brewery.longitude,
-    );
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length > 2 && mapRef.current && !isSelected) {
       const center = calculateCenter(filteredBreweries);
@@ -30,7 +27,7 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [breweries, favorites, favoriteFilter]);
+  }, [filteredBreweries]);
 
   useEffect(() => {
     if(isSelected){
@@ -101,10 +98,8 @@ function Map() {
     const index = breweries.findIndex((brewery) => brewery.name === breweryName)
     const brewCopy = [...breweries];
     const selectBrewery = brewCopy.splice(index,1)
-    setSelectedBrewery(selectBrewery[0].id)
-    brewCopy.unshift(selectBrewery[0])
+    setContextSelected(selectBrewery[0].id)
     setIsSelected(true)
-    setBreweries(brewCopy)
   }
 
  

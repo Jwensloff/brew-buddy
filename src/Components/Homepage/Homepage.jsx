@@ -1,19 +1,19 @@
 import './Homepage.scss';
-import BreweryContainer from '../BreweryContainer/BreweryContainer';
-import Map from '../Map/Map';
-import Search from '../Search/Search';
-import { NavLink } from 'react-router-dom';
-import {useState} from 'react'
 
-import ErrorPage from '../ErrorPage/ErrorPage';
-import { useBreweries } from '../../Context/BreweryContext';
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useBreweries } from '../../Context/BreweryContext';
+import PropTypes from 'prop-types';
+
+import Map from '../Map/Map';
+import BreweryContainer from '../BreweryContainer/BreweryContainer';
+import Search from '../Search/Search';
+import Header from '../Header/Header';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 function Homepage() {
   const { error } = useBreweries();
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     if (error) {
@@ -24,10 +24,8 @@ function Homepage() {
 
   return (
     <>
-      <NavLink to='/favorites'>favorites</NavLink>
-      <header className='mainHeader'>
-        <Search />
-      </header>
+      <NavLink className='see-all-favorites-btn' to='/favorites'>favorites</NavLink>
+      <Header />
       <main className='homepage'>
         <BreweryContainer />
         <Map />
@@ -35,5 +33,9 @@ function Homepage() {
     </>
   );
 }
+
+Homepage.propTypes = {
+  error: PropTypes.string,
+};
 
 export default Homepage;

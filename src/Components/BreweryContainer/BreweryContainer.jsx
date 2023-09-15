@@ -4,18 +4,19 @@ import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 import { useEffect, useState } from 'react';
 import { getBreweries } from '../../apiCalls';
+import PropTypes from 'prop-types';
 
 function BreweryContainer() {
   const { breweries, noResults } = useBreweries();
-  const { favorites, getFilteredBreweries, toggleFavoritesFilter, favoriteFilter} = useFavorites();
-  const [cards, setCards] = useState([])
+  const {
+    filteredBreweries,
+    toggleFavoritesFilter,
+    isFaveFilterOn,
+  } = useFavorites();
 
-
-  function createCards(displayedBreweries) {
-    return displayedBreweries.map(brewery => {
-      return <BreweryCard brewery={brewery} key={brewery.id} ></BreweryCard>;
-    });
-  }
+   const cards = filteredBreweries.map((brewery) => {
+    return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
+  });
 
   function calculateDistance(lat1, long1, lat2, long2) {
     let latRad1 = (Number(lat1) * Math.PI) / 180;
@@ -50,14 +51,14 @@ function BreweryContainer() {
     console.log("BREW COPIES WITH DISTANCE",breweriesWithDistance)
   }
 
-  useEffect(() => {
-    calcDistanceFromSelected()
-    setCards(createCards(getFilteredBreweries()))
-  }, [favorites, breweries, favoriteFilter])
+  // useEffect(() => {
+  //   calcDistanceFromSelected()
+  //   setCards(createCards(getFilteredBreweries()))
+  // }, [favorites, breweries, favoriteFilter])
 
   const styles = {
-    backgroundColor: favoriteFilter ? '#A9721F' : '#e0cc99'
-  }
+    backgroundColor: isFaveFilterOn ? '#A9721F' : '#e0cc99',
+  };
 
   return (
     <>
@@ -66,13 +67,28 @@ function BreweryContainer() {
           We're sorry, we didn't find any breweries.
         </section>
       ) : (
-        <section className='breweryContainer'>
-          <button className='filter-btn' style={styles} onClick={toggleFavoritesFilter}>Filter Local Breweries by Favorite</button>
+        <section className='brewery-container'>
+          <button
+            className='filter-btn'
+            style={styles}
+            onClick={toggleFavoritesFilter}
+          >
+            Filter Local Breweries by Favorite
+          </button>
           {cards.length ? cards : 'Search Results Will Appear Here'}
         </section>
       )}
     </>
   );
 }
+
+BreweryContainer.propTypes = {
+  breweries: PropTypes.object,
+  noResults: PropTypes.bool,
+  favorites: PropTypes.object,
+  getFilteredBreweries: PropTypes.func,
+  toggleFavoritesFilter: PropTypes.func,
+  favoriteFilter: PropTypes.bool,
+};
 
 export default BreweryContainer;

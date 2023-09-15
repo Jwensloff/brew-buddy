@@ -1,6 +1,6 @@
 @import '../../index.scss';
 
-.breweryCard {
+.brewery-card {
   background-color: #e0cc99;
   height: fit-content;
   width: 100%;
@@ -31,13 +31,12 @@
   justify-content: space-evenly;
 }
 
-.breweryCard-favorites-btn {
+.brewery-card-favorites-btn {
   background-color: #e0cc99;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
 }
-
 
 .card-text {
   margin: 0.5rem 0;

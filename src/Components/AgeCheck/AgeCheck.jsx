@@ -1,5 +1,6 @@
 import './AgeCheck.scss';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function AgeCheck({ setisLegal }) {
 
@@ -9,7 +10,6 @@ function AgeCheck({ setisLegal }) {
   };
 
   return (
-    // <div className='modal'>
       <div className='overlay-container'>
         <div className='age-check-wrapper'>
           <h2 className='content'>Are you 21?</h2>
@@ -20,14 +20,19 @@ function AgeCheck({ setisLegal }) {
             >
               Yes
             </button>
+            <a href="https://www.caprisun.com/" rel="noopener noreferrer">
+      <button className='no-button content'
+>No</button>
+    </a>
+
           </div>
           <p className='content'>
             Brew Buddy is for individuals of legal drinking age.
           </p>
         </div>
       </div>
-    // </div>
   );
 }
+
 
 export default AgeCheck;
