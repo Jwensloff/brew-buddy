@@ -9,6 +9,8 @@ export function BreweryContextProvider({ children }) {
     selectedBrewery: '',
     isSelected: false,
     breweries: [],
+    noResults: false,
+    error: ''
   };
 
   const breweryReducer = (state, action) => {
@@ -17,6 +19,12 @@ export function BreweryContextProvider({ children }) {
         return { ...state, selectedBrewery: action.id, isSelected: true };
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
+      case 'SET_BREWERIES':
+        return { ...state, breweries: action.breweries };
+      case 'SET_NO_RESULTS':
+        return { ...state, noResults: action.noResults }
+      case 'SET_ERROR':
+        return {...state, error: action.error}
       default:
         return state;
     }
@@ -24,12 +32,8 @@ export function BreweryContextProvider({ children }) {
 
   const [state, dispatch] = useReducer(breweryReducer, initialState);
 
-  const [breweries, setBreweries] = useState([]);
-  const [noResults, setNoResults] = useState(false);
-  const [error, setError] = useState('');
-
   function cleanData(data, city, state) {
-    const validData = data.filter(
+    let validData = data.filter(
       brewery => brewery.latitude && brewery.longitude,
     );
 
@@ -40,40 +44,40 @@ export function BreweryContextProvider({ children }) {
     return validData;
   }
 
-  function processData(data) {
-    setError(false);
-    const noResults = data.length ? true : false;
-    setNoResults(noResults);
-    setBreweries(data);
+  function processData(breweries) {
+    const noResults = breweries.length ? false : true;    
+    dispatch({ type: 'SET_NO_RESULTS', noResults})
+    dispatch({ type: 'SET_BREWERIES', breweries});
   }
-
 
   async function obtainBreweries(city, state) {
     let breweryData = [];
-
     if (!city) {
       breweryData = await getBreweriesByState(state);
     } else {
       breweryData = await getBreweriesByCity(city);
+    }
+    
+    const isError = breweryData.name === 'Error' ? true : false;   
+    dispatch({type: 'SET_ERROR', error: isError}) 
+    if (isError) {
+      return
     }
 
     const cleanedData = cleanData(breweryData, city, state);
     processData(cleanedData);
   }
 
-  
   const value = {
-    breweries,
+    breweries: state.breweries,
     obtainBreweries,
-    noResults,
-    setNoResults,
+    noResults: state.noResults,
     isSelected: state.isSelected,
     selectedBrewery: state.selectedBrewery,
-    error,
+    error: state.error,
     setIsSelected: status => {
       dispatch({ type: 'SET_IS_SELECTED', status });
     },
-    setBreweries,
     setContextSelected: id => {
       dispatch({ type: 'SET_SELECTED_BREWERY', id });
     },
