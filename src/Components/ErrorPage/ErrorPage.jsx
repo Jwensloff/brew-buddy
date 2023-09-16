@@ -2,6 +2,7 @@ import './ErrorPage.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import PropTypes from 'prop-types'
 
 export default function ErrorPage() {
   const { error, setError } = useBreweries();
@@ -21,4 +22,9 @@ export default function ErrorPage() {
       <p>{error}</p>
     </section>
   );
+}
+
+useBreweries.propTypes = {
+  error: PropTypes.string.isRequired,
+  setError: PropTypes.func.isRequired
 }

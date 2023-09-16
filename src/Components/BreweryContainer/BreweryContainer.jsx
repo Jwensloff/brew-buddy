@@ -28,12 +28,6 @@ function BreweryContainer() {
   }
 
   function calcDistanceFromSelected() {
-    // const brewCopy = [...breweries];
-    // for(var i = 1; i < breweries.length ; i ++){
-    //   const distance = calculateDistance(brewCopy[0].latitude, brewCopy[0].longitude, breweries[i].latitude, breweries[i].longitude);
-    //   brewCopy[i].distance = distance;
-    //
-
     const [firstBrewery, ...restOfBreweries] = [...breweries];
 
     const breweriesWithDistance = restOfBreweries.map(brewery => {
@@ -46,7 +40,6 @@ function BreweryContainer() {
 
       return { ...brewery, distance };
     });
-    console.log('BREW COPIES WITH DISTANCE', breweriesWithDistance);
   }
 
   const styles = {
@@ -79,13 +72,15 @@ function BreweryContainer() {
   );
 }
 
-BreweryContainer.propTypes = {
-  breweries: PropTypes.object,
-  noResults: PropTypes.bool,
-  favorites: PropTypes.object,
-  getFilteredBreweries: PropTypes.func,
-  toggleFavoritesFilter: PropTypes.func,
-  favoriteFilter: PropTypes.bool
-};
+useFavorites.propTypes = {
+  getFilteredBreweries: PropTypes.func.isRequired,
+  toggleFavoritesFilter: PropTypes.func.isRequired,
+  isFaveFilterOn: PropTypes.bool.isRequired
+}
+
+useBreweries.propTypes = {
+  breweries: PropTypes.object.isRequired,
+  noResults: PropTypes.bool.isRequired,
+}
 
 export default BreweryContainer;

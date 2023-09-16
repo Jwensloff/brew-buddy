@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef} from 'react';
-import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
+import { useEffect, useState, useRef} from 'react';
+import { useBreweries } from '../../Context/BreweryContext';
+import { useFavorites } from '../../Context/FavoriteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import PropTypes from 'prop-types';
-import { useBreweries } from '../../Context/BreweryContext';
 
 
 function BreweryCard({ brewery}) {
@@ -93,7 +93,7 @@ function formatPhoneNumber(number) {
 
 BreweryCard.propTypes = {
   brewery: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
     street: PropTypes.string,
     phone: PropTypes.string,
     brewery_type: PropTypes.string,
@@ -101,8 +101,12 @@ BreweryCard.propTypes = {
     city: PropTypes.string,
     id: PropTypes.string,
   }),
-  toggleFavorite: PropTypes.func,
-  favorites: PropTypes.object,
+  
 };
+
+useFavorites.propTypes = {
+  toggleFavorite: PropTypes.func.isRequired,
+  favorites: PropTypes.object.isRequired,
+}
 
 export default BreweryCard;
