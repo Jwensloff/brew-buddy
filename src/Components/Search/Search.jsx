@@ -76,7 +76,7 @@ function Search() {
   }, [formIsReady]);
 
   const states = require('us-state-converter');
-  const listOfStates = states();
+  const listOfStates = states().slice(0, 52);
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
