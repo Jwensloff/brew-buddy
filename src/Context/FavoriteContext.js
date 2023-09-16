@@ -49,18 +49,6 @@ export function FavoriteContextProvider({ children }) {
         return { ...state, filteredBreweries: favesByLocation };
       case 'UPDATE_WITHOUT_FAVORITES':
         return { ...state, filteredBreweries: action.breweries};
-      // case 'GET_FAVORITES_BY_LOCATION':
-      //   const brewCopy = [...breweries]
-      //   const favesByLocation = brewCopy.filter(brewery => {
-      //     const favoriteBrewery = state.favorites.find(
-      //       favorite => favorite.id === brewery.id,
-      //     );
-      //     if (favoriteBrewery) {
-      //       return true;
-      //     }
-      //   });
-      //   return { ...state, filteredBreweries: favesByLocation };
-
       default:
         return state;
     }

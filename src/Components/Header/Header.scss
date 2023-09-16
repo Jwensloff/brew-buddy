@@ -1,9 +1,11 @@
 @import '../../index.scss';
 
 .hero-img {
-  background-image: url('../../Assets/hops.jpeg');
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url('../../Assets/hops.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -23,4 +25,3 @@
   align-items: center; 
   // justify-content: flex-end; 
 }
-

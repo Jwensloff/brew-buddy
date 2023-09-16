@@ -45,7 +45,7 @@ function Search() {
   const { city, state, formIsReady } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
-  const { obtainBreweries, setIsSelected, isSelected } = useBreweries();
+  const { obtainBreweries, setIsSelected, isSelected, setContextSelected } = useBreweries();
   const location = useLocation();
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function Search() {
     if (cityParam || stateParam) {
       dispatchForm({
         type: 'SET_CITY',
-        payload: cityParam
+        payload: cityParam || ''
       });
       dispatchForm({
         type: 'SET_STATE',
@@ -124,7 +124,7 @@ function Search() {
     } else {
       const formattedCity = city.trim();
       setIsSelected(false);
-      navigate(`/?city=${formattedCity}&state=${state}`);
+      navigate(`${formattedCity ? `/?city=${formattedCity}&` : '?'}state=${state}`);
       obtainBreweries(formattedCity, state);
     }
   }
@@ -171,7 +171,7 @@ function Search() {
   );
 }
 
-Search.propTypes = {
+useBreweries.propTypes = {
   obtainBreweries: PropTypes.func
 };
 

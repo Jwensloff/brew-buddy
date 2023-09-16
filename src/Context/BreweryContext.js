@@ -7,15 +7,27 @@ export const BreweryContext = createContext(null);
 export function BreweryContextProvider({ children }) {
   const initialState = {
     selectedBrewery: '',
-    isSelected: false
+    isSelected: false,
+    breweries: [],
+    noResults: false,
+    error: ''
   };
 
   const breweryReducer = (state, action) => {
     switch (action.type) {
       case 'SET_SELECTED_BREWERY':
-        return { ...state, selectedBrewery: action.id, isSelected: true };
+        if(action.id){
+        return { ...state, selectedBrewery: action.id, isSelected: true };}
+        else {
+          return {...state, selectedBrewery: '', isSelected: false};
+        }
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
+      case 'SET_BREWERIES':
+        const noResults = !action.breweries.length;   
+        return { ...state, breweries: action.breweries, noResults: noResults };
+      case 'SET_ERROR':
+        return {...state, error: action.error}
       default:
         return state;
     }
@@ -23,86 +35,53 @@ export function BreweryContextProvider({ children }) {
 
   const [state, dispatch] = useReducer(breweryReducer, initialState);
 
-  const [breweries, setBreweries] = useState([]);
-  const [noResults, setNoResults] = useState(false);
-  const [error, setError] = useState('');
+  function cleanData(data, city, state) {
+    let validData = data.filter(
+      brewery => brewery.latitude && brewery.longitude,
+    );
 
-  // const [selectedBrewery, setSelectedBrewery] = useState({}); 
-  // const [isSelected, setIsSelected] = useState(false)
+    if (city) {
+      validData = validData.filter(brewery => brewery.state === state);
+    }
+
+    dispatch({ type: 'SET_BREWERIES', breweries: validData});
+
+  }
 
   async function obtainBreweries(city, state) {
-    let stateBreweryData = [];
     let breweryData = [];
-    let filteredBreweryData = [];
-
-    switch (city) {
-      case '':
-        stateBreweryData = await getBreweriesByState(state);
-
-        if (stateBreweryData.name !== 'Error') {
-      let onlyCoordsData = stateBreweryData.filter(brewery => brewery.longitude && brewery.latitude)
-          setError(false);
-          setBreweries(onlyCoordsData);
-          setBreweries(onlyCoordsData);
-          setNoResults(false);
-        }
-        // Set error by default
-        setError(stateBreweryData.message);
-
-        break;
-
-      default:
-        breweryData = await getBreweriesByCity(city);
-
-        if (breweryData.name === 'Error') {
-          setError(breweryData.message);
-          return;
-        }
-
-        setError(false);
-        filteredBreweryData = breweryData.filter(
-          brewery => brewery.state === state && brewery.latitude && brewery.longitude
-        );
-
-        if (filteredBreweryData.length === 0) {
-          setNoResults(true);
-          setBreweries(filteredBreweryData);
-        } else {
-          setNoResults(false);
-          setBreweries(filteredBreweryData);
-        }
+    if (!city) {
+      breweryData = await getBreweriesByState(state);
+    } else {
+      breweryData = await getBreweriesByCity(city);
     }
+    
+    const isError = breweryData.name === 'Error';  
+    dispatch({type: 'SET_ERROR', error: isError}) 
+    if (isError) {
+      return
+    }
+
+    cleanData(breweryData, city, state);
   }
-
-  // function setContextSelected(id){
-
-    // setSelectedBrewery(id);
-    // setIsSelected(true);
-  // }
 
   const value = {
-    breweries, 
-    obtainBreweries, 
-    noResults, 
-    setNoResults,
+    breweries: state.breweries,
+    obtainBreweries,
+    noResults: state.noResults,
     isSelected: state.isSelected,
     selectedBrewery: state.selectedBrewery,
-    error, 
-    setIsSelected: (status) => {
-      dispatch({type: 'SET_IS_SELECTED', status })
+    error: state.error,
+    setIsSelected: status => {
+      dispatch({ type: 'SET_IS_SELECTED', status });
     },
-    setBreweries, 
-    setContextSelected: (id) => {
-      dispatch({type: 'SET_SELECTED_BREWERY', id})
-    }
-  }
+    setContextSelected: id => {
+      dispatch({ type: 'SET_SELECTED_BREWERY', id });
+    },
+  };
 
   return (
-    <BreweryContext.Provider
-      value={value}
-    >
-      {children}
-    </BreweryContext.Provider>
+    <BreweryContext.Provider value={value}>{children}</BreweryContext.Provider>
   );
 }
 

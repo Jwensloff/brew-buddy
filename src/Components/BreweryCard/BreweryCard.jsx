@@ -1,11 +1,12 @@
-import { useEffect, useState, useRef} from 'react';
-import { useFavorites } from '../../Context/FavoriteContext';
 import './BreweryCard.scss';
+import { useEffect, useState, useRef} from 'react';
+import { useBreweries } from '../../Context/BreweryContext';
+import {useLocation} from 'react-router-dom'
+import { useFavorites } from '../../Context/FavoriteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import PropTypes from 'prop-types';
-import { useBreweries } from '../../Context/BreweryContext';
 
 
 function BreweryCard({ brewery}) {
@@ -15,7 +16,7 @@ function BreweryCard({ brewery}) {
   const [isFavorite, setIsFavorite] = useState(false);
   const {setContextSelected, selectedBrewery} = useBreweries();
   const cardRefs = useRef({})
-
+  const location = useLocation();
   useEffect(() => {
     if (favorites.find((favBrewery) => favBrewery.id === brewery.id)) {
       setIsFavorite(true);
@@ -45,7 +46,8 @@ function BreweryCard({ brewery}) {
   }
 
     return (
-    <article tabIndex="0"  onKeyDown={(e)=>{focusElement(e)}} className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(brewery.id)}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
+    <article tabIndex="0"  onKeyDown={(e)=>{focusElement(e)}} className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} 
+      onClick={() => {if(location.pathname !=='/favorites'){setContextSelected(brewery.id)}}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h2 className='card-text name'>{name}</h2>
       {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
@@ -101,7 +103,7 @@ function formatPhoneNumber(number) {
 
 BreweryCard.propTypes = {
   brewery: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
     street: PropTypes.string,
     phone: PropTypes.string,
     brewery_type: PropTypes.string,
@@ -109,8 +111,12 @@ BreweryCard.propTypes = {
     city: PropTypes.string,
     id: PropTypes.string,
   }),
-  toggleFavorite: PropTypes.func,
-  favorites: PropTypes.object,
+  
 };
+
+useFavorites.propTypes = {
+  toggleFavorite: PropTypes.func.isRequired,
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired
+}
 
 export default BreweryCard;

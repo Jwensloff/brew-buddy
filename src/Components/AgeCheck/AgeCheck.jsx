@@ -1,5 +1,4 @@
 import './AgeCheck.scss';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 function AgeCheck({ setisLegal }) {
@@ -32,6 +31,10 @@ function AgeCheck({ setisLegal }) {
         </div>
       </div>
   );
+}
+
+AgeCheck.propTypes = {
+  setisLegal: PropTypes.bool.isRequired
 }
 
 
