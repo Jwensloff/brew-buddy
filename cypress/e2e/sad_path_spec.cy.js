@@ -44,7 +44,7 @@ describe('Error messages should lead the user to enter the correct data', () => 
     cy.get('.search-bar').find('#searchBtn').click();
     cy.get('.no-results-message').should('exist');
     cy.get('.no-results-message').contains(
-      "We're sorry, we didn't find any breweries."
+      "The beer trail is calling! 🍺 But we might need your help. Check your search and give it another shot."
     );
   });
 });
