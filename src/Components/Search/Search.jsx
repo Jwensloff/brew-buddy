@@ -130,8 +130,8 @@ function Search() {
   }
 
   return (
-    <div className='search-container'>
-      <form className='search-bar' onSubmit={submitForm}>
+    <div className='search-container' aria-label='Enter a location'>
+      <form className='search-bar' onSubmit={submitForm} >
         <input
           id='searchInput'
           type='search'
