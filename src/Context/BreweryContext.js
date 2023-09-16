@@ -20,9 +20,8 @@ export function BreweryContextProvider({ children }) {
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
       case 'SET_BREWERIES':
-        return { ...state, breweries: action.breweries };
-      case 'SET_NO_RESULTS':
-        return { ...state, noResults: action.noResults }
+        const noResults = action.breweries.length ? false : true;    
+        return { ...state, breweries: action.breweries, noResults: noResults };
       case 'SET_ERROR':
         return {...state, error: action.error}
       default:
@@ -41,13 +40,8 @@ export function BreweryContextProvider({ children }) {
       validData = validData.filter(brewery => brewery.state === state);
     }
 
-    return validData;
-  }
+    dispatch({ type: 'SET_BREWERIES', breweries: validData});
 
-  function processData(breweries) {
-    const noResults = breweries.length ? false : true;    
-    dispatch({ type: 'SET_NO_RESULTS', noResults})
-    dispatch({ type: 'SET_BREWERIES', breweries});
   }
 
   async function obtainBreweries(city, state) {
@@ -64,8 +58,7 @@ export function BreweryContextProvider({ children }) {
       return
     }
 
-    const cleanedData = cleanData(breweryData, city, state);
-    processData(cleanedData);
+    cleanData(breweryData, city, state);
   }
 
   const value = {
