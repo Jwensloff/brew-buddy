@@ -12,12 +12,16 @@
 
   .error-text-container {
     margin-left: 40%;
+
+    p {
+      padding-bottom: 5%;
+    }
   }
 }
 
 .error-page-beer-image {
   background: url('../../Assets/error_page_beer.png') no-repeat center;
-  
+
   position: absolute;
   top: 0;
   bottom: 0;
@@ -26,6 +30,7 @@
   margin: 10px;
 }
 
+// Tablet
 @media screen and (max-width: 900px) {
   .error-page-wrapper {
     .error-text-container {
@@ -33,7 +38,7 @@
       font-size: 25px;
     }
   }
-  
+
   .error-page-beer-image {
     background-size: 25%;
     right: 0;
@@ -41,10 +46,12 @@
   }
 }
 
+// Mobile
 @media screen and (max-width: 480px) {
   .error-page-wrapper {
     .error-text-container {
       font-size: 20px;
+      padding-bottom: 15%;
     }
   }
 
