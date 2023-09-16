@@ -70,11 +70,13 @@ function Search() {
   }, [location]);
 
   useEffect(() => {
-    searchBtnRef.current.click();
+    if (formIsReady) {
+      searchBtnRef.current.click();
+    }
   }, [formIsReady]);
 
   const states = require('us-state-converter');
-  const listOfStates = states();
+  const listOfStates = states().slice(0, 52);
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
@@ -120,9 +122,10 @@ function Search() {
       });
       return;
     } else {
+      const formattedCity = city.trim();
       setContextSelected();
-      navigate(`/?city=${city}&state=${state}`);
-      obtainBreweries(city, state);
+      navigate(`/?city=${formattedCity}&state=${state}`);
+      obtainBreweries(formattedCity, state);
     }
   }
 
@@ -169,7 +172,7 @@ function Search() {
 }
 
 Search.propTypes = {
-  obtainBreweries: PropTypes.func,
+  obtainBreweries: PropTypes.func
 };
 
 export default Search;
