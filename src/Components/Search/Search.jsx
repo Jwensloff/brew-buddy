@@ -9,7 +9,7 @@ const initialErrorMessage = '';
 const initialFormData = {
   city: '',
   state: 'Select State',
-  formIsReady: false
+  formIsReady: false,
 };
 
 function errorMessageReducer(state, action) {
@@ -56,15 +56,15 @@ function Search() {
     if (cityParam || stateParam) {
       dispatchForm({
         type: 'SET_CITY',
-        payload: cityParam || ''
+        payload: cityParam || '',
       });
       dispatchForm({
         type: 'SET_STATE',
-        payload: stateParam
+        payload: stateParam,
       });
       dispatchForm({
         type: 'SET_FORM_IS_READY',
-        payload: true
+        payload: true,
       });
     }
   }, [location]);
@@ -81,7 +81,7 @@ function Search() {
 
   const noDuplicates = () => {
     return listOfStates.reduce((uniqueStates, state) => {
-      if (!uniqueStates.some(s => s.name === state.name)) {
+      if (!uniqueStates.some((s) => s.name === state.name)) {
         uniqueStates.push(state);
       }
       return uniqueStates;
@@ -89,7 +89,7 @@ function Search() {
   };
 
   const filteredStates = noDuplicates();
-  const dropdownList = filteredStates.map(state => {
+  const dropdownList = filteredStates.map((state) => {
     return (
       <option className='dropdown-item' key={state.name} value={state.name}>
         {state.usps}
@@ -105,50 +105,54 @@ function Search() {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please enter a valid city.',
-        errorType: 'city'
+        errorType: 'city',
       });
       return;
     } else if (city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please select a state to get started.',
-        errorType: 'state'
+        errorType: 'state',
       });
       return;
     } else if (!city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
-        error: 'Please specify a location to get started.'
+        error: 'Please specify a location to get started.',
       });
       return;
     } else {
       const formattedCity = city.trim();
       setIsSelected(false);
-      navigate(`${formattedCity ? `/?city=${formattedCity}&` : '?'}state=${state}`);
+      navigate(
+        `${formattedCity ? `/?city=${formattedCity}&` : '?'}state=${state}`
+      );
       obtainBreweries(formattedCity, state);
     }
   }
 
   return (
-    <div className='search-container' aria-label='Enter a location'>
-      <form className='search-bar' onSubmit={submitForm} >
+    <div className='search-container'>
+      <form className='search-bar' onSubmit={submitForm}>
         <input
+          aria-label='Enter a location'
           id='searchInput'
           type='search'
           key='search'
           name='city'
           value={city}
           placeholder='City (optional)'
-          onChange={e =>
+          onChange={(e) =>
             dispatchForm({ type: 'SET_CITY', payload: e.target.value })
           }
         />
         <select
+          aria-label='Select a state'
           id='dropdown'
           name='state'
           className='dropdown'
           value={state}
-          onChange={e =>
+          onChange={(e) =>
             dispatchForm({ type: 'SET_STATE', payload: e.target.value })
           }
         >
@@ -172,7 +176,7 @@ function Search() {
 }
 
 useBreweries.propTypes = {
-  obtainBreweries: PropTypes.func
+  obtainBreweries: PropTypes.func,
 };
 
 export default Search;
