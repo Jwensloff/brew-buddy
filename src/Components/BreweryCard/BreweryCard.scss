@@ -2,22 +2,16 @@
 
 .brewery-card {
   background-color: #D5D5A7;
-  height: fit-content;
   max-width: 100%;
   padding: 1rem;
   position: relative;
-  // border: 0.25rem solid rgb(39, 63, 29, .7);
-
-  .name {
-    margin-right: 2rem;
-  }
 }
 
 .card-a {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  margin: 0.5rem;
   padding: 0.5rem;
   height: 2rem;
   width: 5rem;

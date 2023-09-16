@@ -25,7 +25,7 @@ $brightColor: #7daa40;
 $lightColor: #f7f7ed;
 
 @media screen and (max-width: 1080px) {
-  .map__container {
+  .map_container {
     grid-column: 3 / span 2;
   }
 
@@ -40,10 +40,10 @@ $lightColor: #f7f7ed;
     gap: 2rem;
   }
 
-  .map__container {
+  .map_container {
     grid-column: auto;
     order: 1;
-    height: 300px;
+    height: 250px;
   }
 
   .brewery-container {
@@ -54,19 +54,16 @@ $lightColor: #f7f7ed;
   #dropdown,
   #searchInput,
   #searchBtn{
-    height: 1.75rem;
     width: 9rem;
     margin-right: 0rem;
     margin-bottom: 0.5rem;
   }
   
   .search-bar{
-    height: 7rem;
-    margin: 0rem;
+    height: 6rem;
     padding: 0px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     margin-top: 2rem;
   }
 
@@ -76,5 +73,8 @@ $lightColor: #f7f7ed;
 
   .nav-bar {
     height: 2.5rem;
+  }
+  .favorites-page{
+    padding-top: 4rem;
   }
 }

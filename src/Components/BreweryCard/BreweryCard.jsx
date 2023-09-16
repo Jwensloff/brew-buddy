@@ -47,7 +47,6 @@ function BreweryCard({ brewery}) {
     return (
     <article tabIndex="0"  onKeyDown={(e)=>{focusElement(e)}} className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(brewery.id)}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h2 className='card-text name'>{name}</h2>
-      <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
      
