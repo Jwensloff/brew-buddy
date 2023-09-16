@@ -81,7 +81,7 @@ describe('URL Routing', () => {
     cy.get('.see-all-favorites-btn').click();
     cy.url().should('eq', 'http://localhost:3000/favorites')
     
-    cy.get('.navLink').contains('search').click();
+    cy.get('.nav-link').contains('search').click();
     cy.url().should('eq', 'http://localhost:3000/')
   })
 });
