@@ -7,11 +7,15 @@ export async function getBreweriesByCity(city) {
       `https://api.openbrewerydb.org/v1/breweries?by_city=${city}&per_page=100`
     );
     if (!response.ok) {
-      throw new Error('Custom error for now');
+      if (response.status === 404) {
+        throw new Error('Resource Not Found');
+      } else {
+        throw new Error('Something Went Wrong');
+      }
     }
     return await response.json();
   } catch (error) {
-    return error
+    return error;
   }
 }
 
@@ -22,10 +26,14 @@ export async function getBreweriesByState(state) {
       `https://api.openbrewerydb.org/v1/breweries?by_state=${state}&per_page=100`
     );
     if (!response.ok) {
-      throw new Error('Custom error for now');
+      if (response.status === 404) {
+        throw new Error('Resource Not Found');
+      } else {
+        throw new Error('Something Went Wrong');
+      }
     }
     return await response.json();
   } catch (error) {
-    return error
+    return error;
   }
 }
