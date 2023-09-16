@@ -20,7 +20,7 @@ export function BreweryContextProvider({ children }) {
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
       case 'SET_BREWERIES':
-        const noResults = action.breweries.length ? false : true;    
+        const noResults = !action.breweries.length;   
         return { ...state, breweries: action.breweries, noResults: noResults };
       case 'SET_ERROR':
         return {...state, error: action.error}
@@ -52,7 +52,7 @@ export function BreweryContextProvider({ children }) {
       breweryData = await getBreweriesByCity(city);
     }
     
-    const isError = breweryData.name === 'Error' ? true : false;   
+    const isError = breweryData.name === 'Error';  
     dispatch({type: 'SET_ERROR', error: isError}) 
     if (isError) {
       return
