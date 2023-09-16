@@ -37,7 +37,6 @@ export function FavoriteContextProvider({ children }) {
         );
         return { ...state, favorites: updatedFavorites };
       case 'UPDATE_BY_FAVORITES':
-           
         const favesByLocation = action.breweries.filter(brewery => {
           const favoriteBrewery = state.favorites.find(
             favorite => favorite.id === brewery.id,
@@ -48,7 +47,7 @@ export function FavoriteContextProvider({ children }) {
         });
         return { ...state, filteredBreweries: favesByLocation };
       case 'UPDATE_WITHOUT_FAVORITES':
-        return { ...state, filteredBreweries: action.breweries};
+        return { ...state, filteredBreweries: action.breweries };
       default:
         return state;
     }
@@ -64,7 +63,7 @@ export function FavoriteContextProvider({ children }) {
     filteredBreweries: state.filteredBreweries,
     favorites: state.favorites,
     toggleFavorite: brewery => {
-      if (state.favorites.includes(brewery)) {
+      if (state.favorites.find(favBrewery => favBrewery.id === brewery.id)) {
         dispatch({ type: 'DELETE_FAVORITE', brewery });
       } else {
         dispatch({ type: 'ADD_FAVORITE', brewery });
@@ -75,7 +74,7 @@ export function FavoriteContextProvider({ children }) {
     },
     updateFilteredBreweries: () => {
       if (state.isFaveFilterOn) {
-        dispatch({ type: 'UPDATE_BY_FAVORITES', breweries: breweries});
+        dispatch({ type: 'UPDATE_BY_FAVORITES', breweries: breweries });
       } else {
         dispatch({ type: 'UPDATE_WITHOUT_FAVORITES', breweries: breweries });
       }
