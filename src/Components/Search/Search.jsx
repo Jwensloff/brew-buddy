@@ -45,7 +45,7 @@ function Search() {
   const { city, state, formIsReady } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
-  const { obtainBreweries, setIsSelected} = useBreweries();
+  const { obtainBreweries, setIsSelected, isSelected, setContextSelected } = useBreweries();
   const location = useLocation();
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function Search() {
   }, [formIsReady]);
 
   const states = require('us-state-converter');
-  const listOfStates = states();
+  const listOfStates = states().slice(0, 52);
   const regex = /^[a-zA-Z\s-]*$/;
 
   const noDuplicates = () => {
@@ -123,7 +123,7 @@ function Search() {
       return;
     } else {
       const formattedCity = city.trim();
-      setIsSelected(false);
+      setContextSelected();
       navigate(`/?city=${formattedCity}&state=${state}`);
       obtainBreweries(formattedCity, state);
     }

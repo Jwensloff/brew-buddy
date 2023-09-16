@@ -1,6 +1,7 @@
 import './BreweryCard.scss';
 import { useEffect, useState, useRef} from 'react';
 import { useBreweries } from '../../Context/BreweryContext';
+import {useLocation} from 'react-router-dom'
 import { useFavorites } from '../../Context/FavoriteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +16,7 @@ function BreweryCard({ brewery}) {
   const [isFavorite, setIsFavorite] = useState(false);
   const {setContextSelected, selectedBrewery} = useBreweries();
   const cardRefs = useRef({})
-
+  const location = useLocation();
   useEffect(() => {
     if (favorites.find((favBrewery) => favBrewery.id === brewery.id)) {
       setIsFavorite(true);
@@ -37,7 +38,8 @@ function BreweryCard({ brewery}) {
   }
 
     return (
-    <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} onClick={() => {setContextSelected(brewery.id)}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
+    <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} 
+      onClick={() => {if(location.pathname !=='/favorites'){setContextSelected(brewery.id)}}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h3 className='card-text name'>{name}</h3>
       <p className='card-text type'>{brewery_type}</p>
       {street && <p className='card-text'>{street + ', ' + city}</p>}

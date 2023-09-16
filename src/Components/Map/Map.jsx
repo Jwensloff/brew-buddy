@@ -40,7 +40,10 @@ function Map() {
         14,
       );
     }
-  }, [filteredBreweries]);
+    else if(mapRef.current && filteredBreweries.length === 1){
+      mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
+    }
+  }, [filteredBreweries, mapRef.current, isSelected]);
 
   useEffect(() => {
     if (isSelected && mapRef.current) {
