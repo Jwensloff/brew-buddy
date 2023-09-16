@@ -15,9 +15,8 @@ function Map() {
   const markersRef = useRef({});
 
   useEffect(() => {
-    
-    setValidBreweries(filteredBreweries);
-    if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
+    setValidBreweries(filteredBreweries)
+    if (filteredBreweries.length >= 2 && mapRef.current && !isSelected ) {
       const center = calculateCenter(filteredBreweries);
       const distanceObject = calculateFurthestDistance(filteredBreweries);
       let cornerA = L.latLng(distanceObject.corner1);
@@ -28,7 +27,7 @@ function Map() {
     else if(mapRef.current && filteredBreweries.length === 1){
       mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
     }
-  }, [filteredBreweries]);
+  }, [filteredBreweries, mapRef.current, isSelected]);
 
   useEffect(() => {
     if(isSelected && mapRef.current){

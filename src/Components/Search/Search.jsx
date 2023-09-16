@@ -45,7 +45,7 @@ function Search() {
   const { city, state, formIsReady } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
-  const { obtainBreweries, setIsSelected, isSelected } = useBreweries();
+  const { obtainBreweries, setIsSelected, isSelected, setContextSelected } = useBreweries();
   const location = useLocation();
 
   useEffect(() => {
@@ -123,7 +123,7 @@ function Search() {
       return;
     } else {
       const formattedCity = city.trim();
-      setIsSelected(false);
+      setContextSelected();
       navigate(`/?city=${formattedCity}&state=${state}`);
       obtainBreweries(formattedCity, state);
     }
