@@ -4,14 +4,14 @@ import logo from '../../Assets/logo.jpeg';
 
 function NavBar() {
   return (
-    <nav className='navBar'>
+    <nav className='nav-bar'>
       <h1>
         <img className='logo' src={logo} alt='Brew Buddy Logo' />
       </h1>
-      <NavLink className={'navLink'} to='/'>
+      <NavLink className={'nav-link'} to='/'>
         search
       </NavLink>
-      <NavLink className='see-all-favorites-btn navLink' to='/favorites'>
+      <NavLink className='see-all-favorites-btn nav-link' to='/favorites'>
         favorites
       </NavLink>
     </nav>
