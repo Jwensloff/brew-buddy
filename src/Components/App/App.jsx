@@ -13,7 +13,6 @@ function App() {
   const [isLegal, setisLegal] = useState(() => {
     const legalStatus = localStorage.getItem('isLegal');
     const parsedItem = JSON.parse(legalStatus);
-    console.log(parsedItem)
     return parsedItem || '';
   });
 
