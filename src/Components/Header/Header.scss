@@ -15,23 +15,11 @@
   width: 100%;
 }
 
-// .mainHeader {
-//   min-height: 20vh;
-//   padding: 1rem;
-//   background-color: rgba(125, 170, 64, 0.35);
-
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: end;
-// }
-
 .main-header {
   position: relative;
-  min-height: 20vh;
+  min-height: 10rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: end;
+  align-items: center; 
 }

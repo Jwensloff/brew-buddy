@@ -1,21 +1,17 @@
 @import '../../index.scss';
 
 .brewery-card {
-  background-color: #e3e3c4;
-  height: fit-content;
+  background-color: #D5D5A7;
   max-width: 100%;
   padding: 1rem;
   position: relative;
-
-  .name {
-    margin-right: 2rem;
-  }
 }
+
 .card-a {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  margin: 0.5rem;
   padding: 0.5rem;
   height: 2rem;
   width: 5rem;
@@ -44,5 +40,5 @@
 }
 
 .selected{
-  background-color: #BAB86C;
+  background-color: #AEAD56;
 }

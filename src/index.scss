@@ -6,7 +6,7 @@
 
 @mixin btn {
   width: 6rem;
-  border-radius: 3px;
+  border-radius: 5px;
   color: $lightColor;
 }
 
@@ -25,11 +25,11 @@ $brightColor: #7daa40;
 $lightColor: #f7f7ed;
 
 @media screen and (max-width: 1080px) {
-  .map__container {
+  .map_container {
     grid-column: 3 / span 2;
   }
 
-  .breweryContainer {
+  .brewery-container {
     grid-column: 1 / span 2;
   }
 }
@@ -40,14 +40,41 @@ $lightColor: #f7f7ed;
     gap: 2rem;
   }
 
-  .map__container {
+  .map_container {
     grid-column: auto;
     order: 1;
-    height: 300px;
+    height: 250px;
   }
 
-  .breweryContainer {
+  .brewery-container {
     grid-column: auto;
     order: 2;
+  }
+
+  #dropdown,
+  #searchInput,
+  #searchBtn{
+    width: 9rem;
+    margin-right: 0rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search-bar{
+    height: 6rem;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .logo {
+    height: 4rem;
+  }
+
+  .nav-bar {
+    height: 2.5rem;
+  }
+  .favorites-page{
+    padding-top: 4rem;
   }
 }

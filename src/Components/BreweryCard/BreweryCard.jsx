@@ -37,11 +37,18 @@ function BreweryCard({ brewery}) {
     }
   }
 
+  function focusElement(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); 
+      e.target.focus(); 
+      e.target.click(); 
+    }
+  }
+
     return (
-    <article className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} 
+    <article tabIndex="0"  onKeyDown={(e)=>{focusElement(e)}} className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} 
       onClick={() => {if(location.pathname !=='/favorites'){setContextSelected(brewery.id)}}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
-      <h3 className='card-text name'>{name}</h3>
-      <p className='card-text type'>{brewery_type}</p>
+      <h2 className='card-text name'>{name}</h2>
       {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
      
@@ -68,6 +75,7 @@ function BreweryCard({ brewery}) {
         )}
       </div>
       <button
+        aria-label='Toggle favorites button'
         className='brewery-card-favorites-btn'
         onClick={(e) => {
           e.stopPropagation();
@@ -76,9 +84,9 @@ function BreweryCard({ brewery}) {
         }}
       >
         {isFavorite ? (
-          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' />
+          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' aria-label="Remove from favorites button"/>
         ) : (
-          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' />
+          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' aria-label="Add to favorites button"/>
         )}
       </button>
     </article>

@@ -146,7 +146,7 @@ function Map() {
   });
 
   return (
-    <div className='map__container'>
+    <div className='map_container'>
       <MapContainer
         ref={mapRef}
         center={defaultPosition}

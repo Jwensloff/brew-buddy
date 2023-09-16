@@ -45,7 +45,7 @@ function Search() {
   const { city, state, formIsReady } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
-  const { obtainBreweries, setIsSelected, isSelected, setContextSelected } = useBreweries();
+  const { obtainBreweries, setIsSelected } = useBreweries();
   const location = useLocation();
 
   useEffect(() => {
@@ -130,8 +130,8 @@ function Search() {
   }
 
   return (
-    <div className='search-container'>
-      <form className='search-bar' onSubmit={submitForm}>
+    <div className='search-container' aria-label='Enter a location'>
+      <form className='search-bar' onSubmit={submitForm} >
         <input
           id='searchInput'
           type='search'
