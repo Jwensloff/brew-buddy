@@ -13,7 +13,6 @@
 body {
   font-family: 'Lato', sans-serif;
   height: 100vh;
-
 }
 
 $accentColor: #562007;
@@ -53,13 +52,13 @@ $lightColor: #f7f7ed;
 
   #dropdown,
   #searchInput,
-  #searchBtn{
+  #searchBtn {
     width: 9rem;
     margin-right: 0rem;
     margin-bottom: 0.5rem;
   }
-  
-  .search-bar{
+
+  .search-bar {
     height: 6rem;
     padding: 0px;
     display: flex;
@@ -74,7 +73,11 @@ $lightColor: #f7f7ed;
   .nav-bar {
     height: 2.5rem;
   }
-  .favorites-page{
+  .favorites-page {
     padding-top: 4rem;
   }
+ #ageQ {
+    font-size: 2rem;
+  }
+
 }
