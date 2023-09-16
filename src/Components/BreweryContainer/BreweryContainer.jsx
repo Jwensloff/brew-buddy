@@ -79,7 +79,7 @@ useFavorites.propTypes = {
 }
 
 useBreweries.propTypes = {
-  breweries: PropTypes.object.isRequired,
+  breweries: PropTypes.arrayOf(PropTypes.object).isRequired,
   noResults: PropTypes.bool.isRequired,
 }
 

@@ -106,7 +106,7 @@ BreweryCard.propTypes = {
 
 useFavorites.propTypes = {
   toggleFavorite: PropTypes.func.isRequired,
-  favorites: PropTypes.object.isRequired,
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default BreweryCard;

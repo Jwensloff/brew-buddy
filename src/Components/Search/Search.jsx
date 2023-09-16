@@ -45,7 +45,7 @@ function Search() {
   const { city, state, formIsReady } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
-  const { obtainBreweries, setIsSelected, isSelected } = useBreweries();
+  const { obtainBreweries, setIsSelected} = useBreweries();
   const location = useLocation();
 
   useEffect(() => {
@@ -171,7 +171,7 @@ function Search() {
   );
 }
 
-Search.propTypes = {
+useBreweries.propTypes = {
   obtainBreweries: PropTypes.func
 };
 
