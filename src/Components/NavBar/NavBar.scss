@@ -1,10 +1,10 @@
 @import '../../index.scss';
 
 .navBar {
-  display: block;
+  display: flex;
   position: absolute;
   top: 0;
-  background-color: rgba(39, 63, 29, .6);
+  background-color: rgba(39, 63, 29, .7);
   width: 100%;
   z-index: 1;
 }

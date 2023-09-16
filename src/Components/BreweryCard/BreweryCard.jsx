@@ -66,6 +66,7 @@ function BreweryCard({ brewery}) {
         )}
       </div>
       <button
+        aria-label='Toggle favorites button'
         className='brewery-card-favorites-btn'
         onClick={(e) => {
           e.stopPropagation();
@@ -74,9 +75,9 @@ function BreweryCard({ brewery}) {
         }}
       >
         {isFavorite ? (
-          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' />
+          <FontAwesomeIcon icon={faBookmark} color={'#273f1d'} size='xl' aria-label="Remove from favorites button"/>
         ) : (
-          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' />
+          <FontAwesomeIcon icon={farBookmark} color={'#273f1d'} size='xl' aria-label="Add to favorites button"/>
         )}
       </button>
     </article>
