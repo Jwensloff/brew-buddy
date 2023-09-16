@@ -1,9 +1,61 @@
 @import '../../index.scss';
 
-.error-page-wrapper{
-  border: 2rem solid #e0cc99;
-  height: 80vh;
+.error-page-wrapper {
+  background-color: #e0cc99;
+  height: 100vh;
+  width: 100vw;
+  font-size: 40px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .error-text-container {
+    margin-left: 40%;
+
+    p {
+      padding-bottom: 5%;
+    }
+  }
+}
+
+.error-page-beer-image {
+  background: url('../../Assets/error_page_beer.png') no-repeat center;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 25vw;
+  width: 100%;
+  margin: 10px;
+}
+
+// Tablet
+@media screen and (max-width: 900px) {
+  .error-page-wrapper {
+    .error-text-container {
+      margin: auto auto 10% auto;
+      font-size: 25px;
+    }
+  }
+
+  .error-page-beer-image {
+    background-size: 25%;
+    right: 0;
+    bottom: 5rem;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 480px) {
+  .error-page-wrapper {
+    .error-text-container {
+      font-size: 20px;
+      padding-bottom: 15%;
+    }
+  }
+
+  .error-page-beer-image {
+    background-size: 50%;
+  }
 }

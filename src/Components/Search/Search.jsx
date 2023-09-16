@@ -56,7 +56,7 @@ function Search() {
     if (cityParam || stateParam) {
       dispatchForm({
         type: 'SET_CITY',
-        payload: cityParam
+        payload: cityParam || ''
       });
       dispatchForm({
         type: 'SET_STATE',
@@ -123,8 +123,8 @@ function Search() {
       return;
     } else {
       const formattedCity = city.trim();
-      setContextSelected();
-      navigate(`/?city=${formattedCity}&state=${state}`);
+      setIsSelected(false);
+      navigate(`${formattedCity ? `/?city=${formattedCity}&` : '?'}state=${state}`);
       obtainBreweries(formattedCity, state);
     }
   }

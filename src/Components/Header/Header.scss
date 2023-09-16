@@ -1,9 +1,11 @@
 @import '../../index.scss';
 
 .hero-img {
-  background-image: url('../../Assets/hops.jpeg');
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url('../../Assets/hops.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -14,17 +16,17 @@
 }
 
 // .mainHeader {
-  //   min-height: 20vh;
-  //   padding: 1rem;
-  //   background-color: rgba(125, 170, 64, 0.35);
-  
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: center;
-  //   justify-content: end;
-  // }
-  
-  .main-header {
+//   min-height: 20vh;
+//   padding: 1rem;
+//   background-color: rgba(125, 170, 64, 0.35);
+
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: end;
+// }
+
+.main-header {
   position: relative;
   min-height: 20vh;
   padding: 1rem;

@@ -7,7 +7,7 @@ describe('Error messages should lead the user to enter the correct data', () => 
     cy.get('.yes-button').click();
   });
 
-  it('If a location and State is not entered a message should alert user to enter a location.', () => {
+  it('Displays error when form is empty', () => {
     cy.get('.location-error-message').should('not.exist');
     cy.get('.search-bar').get('#searchBtn').click();
     cy.get('.location-error-message')
@@ -15,13 +15,22 @@ describe('Error messages should lead the user to enter the correct data', () => 
       .contains('Please specify a location to get started.');
   });
 
-  it('If a State is not selected a message should alert user to select State.', () => {
+  it('Display error when state is missing', () => {
     cy.get('.location-error-message').should('not.exist');
     cy.get('.search-bar').find('#searchInput').type('San Diego');
     cy.get('.search-bar').find('#searchBtn').click();
     cy.get('.location-error-message')
       .should('exist')
       .contains('Please select a state to get started');
+  });
+
+  it('Displays error when city is invalid', () => {
+    cy.get('#searchInput').type('Santa Cruz!');
+    cy.get('#searchBtn').click();
+
+    cy.get('.location-error-message')
+      .should('exist')
+      .and('contain', 'Please enter a valid city.');
   });
 
   it('should tell a user if there are no search results that match their input', () => {
@@ -35,7 +44,7 @@ describe('Error messages should lead the user to enter the correct data', () => 
     cy.get('.search-bar').find('#searchBtn').click();
     cy.get('.no-results-message').should('exist');
     cy.get('.no-results-message').contains(
-      "We're sorry, we didn't find any breweries."
+      "The beer trail is calling! 🍺 But we might need your help. Check your search and give it another shot."
     );
   });
 });
