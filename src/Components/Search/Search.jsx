@@ -171,7 +171,7 @@ function Search() {
   );
 }
 
-Search.propTypes = {
+useBreweries.propTypes = {
   obtainBreweries: PropTypes.func
 };
 

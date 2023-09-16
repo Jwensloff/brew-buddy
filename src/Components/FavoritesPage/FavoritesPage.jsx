@@ -1,5 +1,6 @@
 import { useFavorites } from '../../Context/FavoriteContext';
 import BreweryCard from '../BreweryCard/BreweryCard';
+import PropTypes from 'prop-types'
 import './FavoritesPage.scss';
 
 export function FavoritesPage() {
@@ -17,3 +18,7 @@ export function FavoritesPage() {
 }
 
 export default FavoritesPage;
+
+useFavorites.propTypes = {
+  favorites: PropTypes.arrayOf(PropTypes.object).isRequired
+}
