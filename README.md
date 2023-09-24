@@ -1,6 +1,6 @@
 # Brew Buddy
 ## 📝 Description
-Are you exploring a new area and need help finding a brew? We're your buddy! With Brew Buddy, you can search locations within the United States by City and state. A list of brewereis will appear, and you will have the ability to favorite breweries to re-visit later, visit the brewery website, and navigate to the brewery using Google maps. 
+Are you exploring a new area and need help finding a brew? We're your buddy! With Brew Buddy, you can search locations within the United States by City and state. A list of breweries will appear, and you will have the ability to favorite breweries to re-visit later, visit the brewery website, and navigate to the brewery using Google maps. 
 
 Visit the app [here!](https://brew-buddy.vercel.app/)
 
