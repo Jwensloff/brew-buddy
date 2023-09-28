@@ -5,7 +5,6 @@ import {
   Marker,
   Popup,
 } from 'react-leaflet';
-import L from 'leaflet';
 import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types'
 import { useBreweries } from '../../Context/BreweryContext';
@@ -68,28 +67,8 @@ function Map() {
     }
   }, [selectedBrewery]);
 
-  function calculateFurthestDistance(filteredBreweries) {
-    let largestDistance = filteredBreweries.reduce(
-      (acc, currentBrewery, index) => {
-        filteredBreweries.slice(index + 1).forEach(brewery => {
-          let distance = calculateDistance(
-            currentBrewery.latitude,
-            currentBrewery.longitude,
-            brewery.latitude,
-            brewery.longitude,
-          );
-          if (distance > acc.distance) {
-            acc.distance = distance;
-            acc.corner1 = [currentBrewery.latitude, currentBrewery.longitude];
-            acc.corner2 = [brewery.latitude, brewery.longitude];
-          }
-        });
-        return acc;
-      },
-      { distance: 0, corner1: [], corner2: [] },
-    );
-    return largestDistance;
-  }
+ 
+  
 
   function findCorners(filteredBreweries){
     const corners = filteredBreweries.reduce((acc, currentBrewery) => {
