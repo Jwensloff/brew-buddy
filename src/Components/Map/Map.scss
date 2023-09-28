@@ -1,8 +1,11 @@
 @import '../../index.scss';
 
-.map_container {
+.map-container {
   height: 100%;
   grid-column: 2 / span 3;
+  position: relative;
+
+  
 }
 
 .leaflet-container {

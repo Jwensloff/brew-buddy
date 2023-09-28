@@ -20,6 +20,7 @@ function Map() {
     isSelected,
     setContextSelected,
     setIsSelected,
+    getUserLocation
   } = useBreweries();
   const { filteredBreweries } = useFavorites();
   const [validBreweries, setValidBreweries] = useState([]);
@@ -146,7 +147,8 @@ function Map() {
   });
 
   return (
-    <div className='map_container'>
+    <div className='map-container'>
+      <button onClick={getUserLocation} >Search by Location</button>
       <MapContainer
         ref={mapRef}
         center={defaultPosition}

@@ -10,24 +10,28 @@ export function BreweryContextProvider({ children }) {
     isSelected: false,
     breweries: [],
     noResults: false,
-    error: ''
+    error: '',
+    userLocation: [],
   };
 
   const breweryReducer = (state, action) => {
     switch (action.type) {
       case 'SET_SELECTED_BREWERY':
-        if(action.id){
-        return { ...state, selectedBrewery: action.id, isSelected: true };}
-        else {
-          return {...state, selectedBrewery: '', isSelected: false};
+        if (action.id) {
+          return { ...state, selectedBrewery: action.id, isSelected: true };
+        } else {
+          return { ...state, selectedBrewery: '', isSelected: false };
         }
       case 'SET_IS_SELECTED':
         return { ...state, isSelected: action.status };
       case 'SET_BREWERIES':
-        const noResults = !action.breweries.length;   
+        const noResults = !action.breweries.length;
         return { ...state, breweries: action.breweries, noResults: noResults };
       case 'SET_ERROR':
-        return {...state, error: action.error}
+        return { ...state, error: action.error };
+      case 'SET_USER_LOCATION':
+        console.log(action.userLocation)
+        return { ...state, userLocation: action.userLocation };
       default:
         return state;
     }
@@ -44,8 +48,7 @@ export function BreweryContextProvider({ children }) {
       validData = validData.filter(brewery => brewery.state === state);
     }
 
-    dispatch({ type: 'SET_BREWERIES', breweries: validData});
-
+    dispatch({ type: 'SET_BREWERIES', breweries: validData });
   }
 
   async function obtainBreweries(city, state) {
@@ -55,14 +58,25 @@ export function BreweryContextProvider({ children }) {
     } else {
       breweryData = await getBreweriesByCity(city);
     }
-    
-    const isError = breweryData.name === 'Error';  
-    dispatch({type: 'SET_ERROR', error: isError}) 
+
+    const isError = breweryData.name === 'Error';
+    dispatch({ type: 'SET_ERROR', error: isError });
     if (isError) {
-      return
+      return;
     }
 
     cleanData(breweryData, city, state);
+  }
+
+  function getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(location =>
+        dispatch({
+          type: 'SET_USER_LOCATION',
+          userLocation: [location.coords.latitude, location.coords.longitude],
+        })
+      );
+    }
   }
 
   const value = {
@@ -78,6 +92,7 @@ export function BreweryContextProvider({ children }) {
     setContextSelected: id => {
       dispatch({ type: 'SET_SELECTED_BREWERY', id });
     },
+    getUserLocation
   };
 
   return (
