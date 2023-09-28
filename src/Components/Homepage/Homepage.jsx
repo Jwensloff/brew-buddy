@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Map from '../Map/Map';
 import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Header from '../Header/Header';
-import Location from '../Location/Location';
 
 function Homepage() {
   const { error } = useBreweries();
@@ -21,7 +20,6 @@ function Homepage() {
   return (
     <>
       <Header />
-      <Location/>
       <main className='homepage'>
         <BreweryContainer />
         <Map />
