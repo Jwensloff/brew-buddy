@@ -1,0 +1,36 @@
+.auto-complete{
+    width: 500px;
+    border: 1px solid rgb(212, 212, 212);
+    border-radius: 10px;
+}
+
+.city-input{
+    width: 100%;
+    border: none;
+    margin: 10px 0;
+    font-size: 16px;
+    padding: 10px 10px 0 10px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.suggestions {
+    border-top: 1px solid rgb(212, 212, 212);
+    background-color: rgb(247, 247, 247);
+    border-radius: 0 0 10px 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.suggestions li {
+    padding: 10px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.auto-complete li:hover {
+    background-color: rgb(212, 212, 212);
+}
