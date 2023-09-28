@@ -28,14 +28,6 @@ function Map() {
   useEffect(() => {
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
-      // const distanceObject = calculateFurthestDistance(filteredBreweries);
-      // console.log("corner A ",distanceObject.corner1)
-      // console.log("corner B ",distanceObject.corner2)
-      // let cornerA = L.latLng(distanceObject.corner1);
-      // let cornerB = L.latLng(distanceObject.corner2);
-      // console.log("corner A ",cornerA)
-      // console.log("corner B ",cornerB)
-      // let bounds = L.latLngBounds(cornerA, cornerB);
       const bounds = findCorners(filteredBreweries)
       mapRef.current.flyToBounds([bounds.northEast, bounds.southWest],{
         duration: 1, 
