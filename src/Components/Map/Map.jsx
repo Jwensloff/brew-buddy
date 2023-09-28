@@ -5,7 +5,6 @@ import {
   Marker,
   Popup,
 } from 'react-leaflet';
-import L from 'leaflet';
 import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types'
 import { useBreweries } from '../../Context/BreweryContext';
@@ -29,11 +28,11 @@ function Map() {
   useEffect(() => {
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
-      const distanceObject = calculateFurthestDistance(filteredBreweries);
-      let cornerA = L.latLng(distanceObject.corner1);
-      let cornerB = L.latLng(distanceObject.corner2);
-      let bounds = L.latLngBounds(cornerA, cornerB);
-      mapRef.current.flyToBounds(bounds);
+      const bounds = findCorners(filteredBreweries)
+      mapRef.current.flyToBounds([bounds.northEast, bounds.southWest],{
+        duration: 1, 
+        easeLinearity: .1,
+      });
     } else if (mapRef.current && filteredBreweries.length === 1) {
       mapRef.current.flyTo(
         [filteredBreweries[0].latitude, filteredBreweries[0].longitude],
@@ -60,27 +59,37 @@ function Map() {
     }
   }, [selectedBrewery]);
 
-  function calculateFurthestDistance(filteredBreweries) {
-    let largestDistance = filteredBreweries.reduce(
-      (acc, currentBrewery, index) => {
-        filteredBreweries.slice(index + 1).forEach(brewery => {
-          let distance = calculateDistance(
-            currentBrewery.latitude,
-            currentBrewery.longitude,
-            brewery.latitude,
-            brewery.longitude,
-          );
-          if (distance > acc.distance) {
-            acc.distance = distance;
-            acc.corner1 = [currentBrewery.latitude, currentBrewery.longitude];
-            acc.corner2 = [brewery.latitude, brewery.longitude];
-          }
-        });
-        return acc;
-      },
-      { distance: 0, corner1: [], corner2: [] },
-    );
-    return largestDistance;
+ 
+  
+
+  function findCorners(filteredBreweries){
+    const corners = filteredBreweries.reduce((acc, currentBrewery) => {
+      const lat = currentBrewery.latitude;
+      const long = currentBrewery.longitude;
+      if(Object.keys(acc).length === 0){
+        return {
+          maxLat: lat,
+          minLat: lat,
+          maxLong: long,
+          minLong: long,
+        }
+      }
+
+      return {
+        maxLat: Math.max(acc.maxLat, lat),
+        minLat: Math.min(acc.minLat, lat),
+        maxLong: Math.max(acc.maxLong, long),
+        minLong: Math.min(acc.minLong, long),
+      };
+
+
+      
+  },{})
+    
+    let northEast = [corners.maxLat, corners.maxLong]
+    let southWest = [corners.minLat, corners.minLong];
+    return {northEast, southWest}
+
   }
 
   function zoomToBrewery({ lat, lng }) {
