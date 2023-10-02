@@ -3,6 +3,7 @@ import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { cities } from '../AutoComplete/cities';
 
 const initialErrorMessage = '';
 
@@ -10,6 +11,7 @@ const initialFormData = {
   city: '',
   state: 'Select State',
   formIsReady: false,
+  showSuggestions: false
 };
 
 function errorMessageReducer(state, action) {
@@ -31,6 +33,8 @@ function formReducer(state, action) {
       return { ...state, state: action.payload };
     case 'SET_FORM_IS_READY':
       return { ...state, formIsReady: action.payload };
+    case 'SET_SHOW_SUGGESTIONS':
+      return { ...state, showSuggestions: action.payload };
     default:
       return state;
   }
@@ -42,9 +46,10 @@ function Search() {
     initialErrorMessage
   );
   const [formState, dispatchForm] = useReducer(formReducer, initialFormData);
-  const { city, state, formIsReady } = formState;
+  const { city, state, formIsReady, showSuggestions } = formState;
   const navigate = useNavigate();
   const searchBtnRef = useRef(null);
+  const inputRef = useRef(null);
   const { obtainBreweries, setIsSelected } = useBreweries();
   const location = useLocation();
 
@@ -54,18 +59,9 @@ function Search() {
     const stateParam = queryParams.get('state');
 
     if (cityParam || stateParam) {
-      dispatchForm({
-        type: 'SET_CITY',
-        payload: cityParam || '',
-      });
-      dispatchForm({
-        type: 'SET_STATE',
-        payload: stateParam,
-      });
-      dispatchForm({
-        type: 'SET_FORM_IS_READY',
-        payload: true,
-      });
+      dispatchForm({ type: 'SET_CITY', payload: cityParam || '' });
+      dispatchForm({ type: 'SET_STATE', payload: stateParam });
+      dispatchForm({ type: 'SET_FORM_IS_READY', payload: true });
     }
   }, [location]);
 
@@ -81,7 +77,7 @@ function Search() {
 
   const noDuplicates = () => {
     return listOfStates.reduce((uniqueStates, state) => {
-      if (!uniqueStates.some((s) => s.name === state.name)) {
+      if (!uniqueStates.some(s => s.name === state.name)) {
         uniqueStates.push(state);
       }
       return uniqueStates;
@@ -89,7 +85,7 @@ function Search() {
   };
 
   const filteredStates = noDuplicates();
-  const dropdownList = filteredStates.map((state) => {
+  const dropdownList = filteredStates.map(state => {
     return (
       <option className='dropdown-item' key={state.name} value={state.name}>
         {state.usps}
@@ -105,20 +101,20 @@ function Search() {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please enter a valid city.',
-        errorType: 'city',
+        errorType: 'city'
       });
       return;
     } else if (city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
         error: 'Please select a state to get started.',
-        errorType: 'state',
+        errorType: 'state'
       });
       return;
     } else if (!city && (!state || state === 'Select State')) {
       dispatchErrorMsg({
         type: 'SET_ERROR_MESSAGE',
-        error: 'Please specify a location to get started.',
+        error: 'Please specify a location to get started.'
       });
       return;
     } else {
@@ -131,9 +127,49 @@ function Search() {
     }
   }
 
+  function selectSuggestion(suggestion) {
+    // suggestion format: "city, state"
+    const [city, state] = suggestion.split(',');
+
+    dispatchForm({ type: 'SET_CITY', payload: city });
+    dispatchForm({ type: 'SET_STATE', payload: state.trim() });
+    dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: false });
+  }
+
+  const suggestions = () => {
+    const suggestions = cities.filter(c =>
+      c.toLowerCase().startsWith(city.toLowerCase())
+    );
+    return (
+      <ul className='suggestions'>
+        {suggestions.map(suggestion => (
+          <li key={suggestion} onClick={() => selectSuggestion(suggestion)}>
+            {suggestion}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  function handleCityInputUnfocusEvent(e) {
+    if (!inputRef.current.contains(e.target)) {
+      dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: false });
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleCityInputUnfocusEvent);
+
+    return () => {
+      document.removeEventListener('click', handleCityInputUnfocusEvent);
+    };
+  }, []);
+
   return (
     <div className='search-container'>
-      <form className='search-bar' onSubmit={submitForm}>
+      {/* ref might not work on this form so make sure it does and 
+      add a div like Banjo did if it doesn't */}
+      <form ref={inputRef} className='search-bar' onSubmit={submitForm}>
         <input
           aria-label='Enter a location'
           id='searchInput'
@@ -141,18 +177,20 @@ function Search() {
           key='search'
           name='city'
           value={city}
-          placeholder='City (optional)'
-          onChange={(e) =>
-            dispatchForm({ type: 'SET_CITY', payload: e.target.value })
-          }
+          placeholder='Select a city (optional)'
+          onChange={e => {
+            dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: true });
+            dispatchForm({ type: 'SET_CITY', payload: e.target.value });
+          }}
         />
+        {showSuggestions && suggestions()}
         <select
           aria-label='Select a state'
           id='dropdown'
           name='state'
           className='dropdown'
           value={state}
-          onChange={(e) =>
+          onChange={e =>
             dispatchForm({ type: 'SET_STATE', payload: e.target.value })
           }
         >
@@ -176,7 +214,7 @@ function Search() {
 }
 
 useBreweries.propTypes = {
-  obtainBreweries: PropTypes.func,
+  obtainBreweries: PropTypes.func
 };
 
 export default Search;

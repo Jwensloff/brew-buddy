@@ -21,25 +21,26 @@
   position: absolute;
   top: 75%;
   left: 0;
-
-  color: red;
   margin: 1rem 0;
   padding: 0.5rem;
+  
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  
+  color: red;
   border-radius: 5px;
 
   input {
     border-radius: 5px;
   }
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-}
-
-.location-error-message.state-error {
-  left: 42%;
-}
-
-.location-error-message.city-error {
-  left: 10%;
+  
+  &.state-error {
+    left: 42%;
+  }
+  
+  &.city-error {
+    left: 10%;
+  }
 }
 
 #searchInput {
@@ -61,4 +62,21 @@
   margin-right: 1rem;
   width: 6.5rem;
   border-radius: 5px;
+}
+
+.suggestions {
+  position: absolute;
+  border-top: 1px solid rgb(212, 212, 212);
+  background-color: rgb(247, 247, 247);
+  border-radius: 0 0 10px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  // z-index: 100; // not working
+
+  li {
+    padding: 10px;
+    cursor: pointer;
+    list-style: none;
+  }
 }
