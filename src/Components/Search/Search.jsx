@@ -3,7 +3,7 @@ import './Search.scss';
 import { useBreweries } from '../../Context/BreweryContext';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { cities } from '../AutoComplete/cities';
+import { cities } from './cities';
 
 const initialErrorMessage = '';
 

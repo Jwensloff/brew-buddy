@@ -87,3 +87,9 @@
     cursor: pointer;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .suggestions {
+    min-height: 30vh;
+  }
+}
