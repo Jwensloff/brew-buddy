@@ -6,6 +6,7 @@
 }
 
 .search-bar {
+  position: relative;
   height: 3.2rem;
   max-width: 40rem;
   padding: 0.5rem;
@@ -23,21 +24,21 @@
   left: 0;
   margin: 1rem 0;
   padding: 0.5rem;
-  
+
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
-  
+
   color: red;
   border-radius: 5px;
 
   input {
     border-radius: 5px;
   }
-  
+
   &.state-error {
     left: 42%;
   }
-  
+
   &.city-error {
     left: 10%;
   }
@@ -66,17 +67,23 @@
 
 .suggestions {
   position: absolute;
-  border-top: 1px solid rgb(212, 212, 212);
-  background-color: rgb(247, 247, 247);
-  border-radius: 0 0 10px 10px;
+  top: 100%;
+  left: 0;
   margin: 0;
   padding: 0;
+
+  min-height: 50vh;
+  overflow: scroll;
+  
+  background-color: rgb(247, 247, 247);
+  border-top: 1px solid rgb(212, 212, 212);
+  border-radius: 0 0 10px 10px;
+  
   list-style: none;
-  // z-index: 100; // not working
+  z-index: 999;
 
   li {
     padding: 10px;
     cursor: pointer;
-    list-style: none;
   }
 }
