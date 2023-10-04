@@ -137,8 +137,8 @@ function Search() {
   }
 
   const suggestions = () => {
-    const suggestions = cities.filter(c =>
-      c.toLowerCase().startsWith(city.toLowerCase())
+    const suggestions = (cities.filter(c =>
+      c.toLowerCase().startsWith(city.toLowerCase()))
     );
     return (
       <ul className='suggestions'>
