@@ -5,7 +5,16 @@
   grid-column: 2 / span 3;
   position: relative;
 
-  
+  button {
+    &:hover {
+      background-color: aqua;
+      cursor: pointer;
+    }
+
+    &:disabled {
+      cursor:not-allowed;
+    }
+  }
 }
 
 .leaflet-container {
