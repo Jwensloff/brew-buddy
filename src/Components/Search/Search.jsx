@@ -11,7 +11,9 @@ const initialFormData = {
   city: '',
   state: 'Select State',
   formIsReady: false,
-  showSuggestions: false
+  showSuggestions: false,
+  suggestions: [],
+  focusedIndex: -1
 };
 
 function errorMessageReducer(state, action) {
@@ -35,6 +37,10 @@ function formReducer(state, action) {
       return { ...state, formIsReady: action.payload };
     case 'SET_SHOW_SUGGESTIONS':
       return { ...state, showSuggestions: action.payload };
+    case 'SET_SUGGESTIONS':
+      return { ...state, suggestions: action.payload };
+    case 'SET_FOCUSED_INDEX':
+      return { ...state, focusedIndex: action.payload };
     default:
       return state;
   }
@@ -46,12 +52,20 @@ function Search() {
     initialErrorMessage
   );
   const [formState, dispatchForm] = useReducer(formReducer, initialFormData);
-  const { city, state, formIsReady, showSuggestions } = formState;
-  const navigate = useNavigate();
+  const {
+    city,
+    state,
+    formIsReady,
+    showSuggestions,
+    suggestions,
+    focusedIndex
+  } = formState;
   const searchBtnRef = useRef(null);
   const inputRef = useRef(null);
+  const listRef = useRef(null);
   const { obtainBreweries, setIsSelected } = useBreweries();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -134,26 +148,75 @@ function Search() {
     dispatchForm({ type: 'SET_CITY', payload: city });
     dispatchForm({ type: 'SET_STATE', payload: state.trim() });
     dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: false });
-  }
+  };
 
-  const suggestions = () => {
-    const suggestions = cities.filter(c =>
+  useEffect(() => {
+    const suggestionsArray = cities.filter(c =>
       c.toLowerCase().startsWith(city.toLowerCase())
     );
-    return (
-      <ul className='suggestions'>
-        {suggestions.map(suggestion => (
-          <li key={suggestion} onClick={() => selectSuggestion(suggestion)}>
-            {suggestion}
+
+    const suggestionsWithIDs = suggestionsArray.reduce((acc, curr, index) => {
+      return [
+        ...acc,
+        {
+          id: index,
+          location: curr
+        }
+      ];
+    }, []);
+    dispatchForm({ type: 'SET_SUGGESTIONS', payload: suggestionsWithIDs });
+  }, [city]);
+
+  const suggestionsJSX = suggestions && (
+    <ul className='suggestions' ref={listRef}>
+      {suggestions.map((suggestion, index) => {
+        const { id, location } = suggestion;
+        const isFocused = focusedIndex === index;
+
+        return (
+          <li
+            key={id}
+            id={id}
+            onClick={() => selectSuggestion(location)}
+            className={isFocused ? 'focused' : ''}
+            onMouseEnter={() =>
+              dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: index })
+            }
+            onMouseLeave={() =>
+              dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: -1 })
+            }
+            tabIndex={0}
+          >
+            {location}
           </li>
-        ))}
-      </ul>
-    );
-  };
+        );
+      })}
+    </ul>
+  );
 
   function handleCityInputUnfocusEvent(e) {
     if (!inputRef.current.contains(e.target)) {
       dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: false });
+    }
+  }
+
+  function handleInputKeyDown(e) {
+    if (e.key === 'ArrowDown' && focusedIndex === -1) {
+      dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: 0 });
+    } else if (e.key === 'ArrowDown') {
+      const nextIndex =
+        focusedIndex < suggestions.length - 1 ? focusedIndex + 1 : 0;
+
+      dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: nextIndex });
+    } else if (e.key === 'ArrowUp') {
+      const prevIndex =
+        focusedIndex > 0 ? focusedIndex - 1 : suggestions.length - 1;
+
+      dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: prevIndex });
+    } else if (e.key === 'Enter') {
+      if (focusedIndex !== -1) {
+        listRef.current.children[focusedIndex].click();
+      }
     }
   }
 
@@ -167,8 +230,6 @@ function Search() {
 
   return (
     <div className='search-container'>
-      {/* ref might not work on this form so make sure it does and 
-      add a div like Banjo did if it doesn't */}
       <form ref={inputRef} className='search-bar' onSubmit={submitForm}>
         <input
           aria-label='Enter a location'
@@ -178,12 +239,14 @@ function Search() {
           name='city'
           value={city}
           placeholder='Select a city (optional)'
+          autoComplete='off'
+          onKeyDown={e => handleInputKeyDown(e)}
           onChange={e => {
             dispatchForm({ type: 'SET_SHOW_SUGGESTIONS', payload: true });
             dispatchForm({ type: 'SET_CITY', payload: e.target.value });
           }}
         />
-        {showSuggestions && suggestions()}
+        {showSuggestions && suggestionsJSX}
         <select
           aria-label='Select a state'
           id='dropdown'

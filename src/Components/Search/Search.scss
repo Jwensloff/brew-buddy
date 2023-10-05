@@ -85,6 +85,10 @@
   li {
     padding: 10px;
     cursor: pointer;
+
+    &.focused {
+      background-color: green;
+    }
   }
 }
 
