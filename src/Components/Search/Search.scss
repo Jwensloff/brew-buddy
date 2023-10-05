@@ -67,18 +67,19 @@
 
 .suggestions {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 78%;
+  left: 5;
   margin: 0;
   padding: 0;
+  width: 50.5%;
 
-  min-height: 50vh;
-  overflow: scroll;
-  
+  height: auto;
+  overflow: auto;
+
   background-color: rgb(247, 247, 247);
   border-top: 1px solid rgb(212, 212, 212);
   border-radius: 0 0 10px 10px;
-  
+
   list-style: none;
   z-index: 999;
 
@@ -87,7 +88,7 @@
     cursor: pointer;
 
     &.focused {
-      background-color: green;
+      background-color: #d5d5a7;
     }
   }
 }
