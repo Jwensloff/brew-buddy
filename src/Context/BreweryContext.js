@@ -53,7 +53,6 @@ export function BreweryContextProvider({ children }) {
   async function obtainBreweries(city, state, coords) {
     let breweryData = [];
     if (coords) {
-      // how can I wait for the coords
       breweryData = await getBreweriesByCoords(coords);
     } else if (!city) {
       breweryData = await getBreweriesByState(state);
