@@ -10,7 +10,6 @@ export function FavoritesPage() {
     return <BreweryCard brewery={brewery} key={brewery.id}></BreweryCard>;
   });
 
-  console.log('cards', cards);
 
   return (
     <div className='favorites-page'>

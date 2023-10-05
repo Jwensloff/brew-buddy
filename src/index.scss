@@ -31,6 +31,9 @@ $lightColor: #f7f7ed;
   .brewery-container {
     grid-column: 1 / span 2;
   }
+  .no-results-message{
+    grid-column: 1 / span 2;
+  }
 }
 
 @media screen and (max-width: 600px) {

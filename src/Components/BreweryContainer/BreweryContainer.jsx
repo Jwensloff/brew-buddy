@@ -53,8 +53,7 @@ function BreweryContainer() {
     <>
       {noResults ? (
         <section className='no-results-message'>
-          The beer trail is calling! 🍺 But we might need your help. Check your
-          search and give it another shot.
+          Sorry bud, we don't see any 🍺 in that area. Try a different search.  
         </section>
       ) : (
         <section className='brewery-container'>
@@ -65,7 +64,7 @@ function BreweryContainer() {
           >
             {`Filter Local Breweries by Favorite: ${filterBtnMessage}`}
           </button>
-          {cards.length ? cards : 'Start by inputting a location!'}
+          {cards.length ? cards : <p className='start-message'>Start by inputting a location!</p>}
         </section>
       )}
     </>
