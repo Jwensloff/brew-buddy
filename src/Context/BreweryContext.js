@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useReducer } from 'react';
+import { createContext, useContext, useState, useReducer, useEffect } from 'react';
 import { getBreweriesByCity, getBreweriesByCoords, getBreweriesByState } from '../apiCalls';
 import PropTypes from 'prop-types';
 
@@ -85,6 +85,10 @@ export function BreweryContextProvider({ children }) {
       });
     })
   }
+
+  useEffect(() => {
+    getUserLocation()
+  }, [])
 
   const value = {
     breweries: state.breweries,

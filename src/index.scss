@@ -24,7 +24,7 @@ $brightColor: #7daa40;
 $lightColor: #f7f7ed;
 
 @media screen and (max-width: 1080px) {
-  .map_container {
+  .map-container {
     grid-column: 3 / span 2;
   }
 
@@ -39,7 +39,7 @@ $lightColor: #f7f7ed;
     gap: 2rem;
   }
 
-  .map_container {
+  .map-container {
     grid-column: auto;
     order: 1;
     height: 250px;

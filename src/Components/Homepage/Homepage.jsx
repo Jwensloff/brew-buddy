@@ -17,10 +17,6 @@ function Homepage() {
     }
   }, [error]);
 
-  useEffect(() => {
-   getUserLocation()
-  }, [])
-
   return (
     <>
       <Header />

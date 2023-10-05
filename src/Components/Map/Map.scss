@@ -4,16 +4,27 @@
   height: 100%;
   grid-column: 2 / span 3;
   position: relative;
+}
 
-  button {
-    &:hover {
-      background-color: aqua;
-      cursor: pointer;
-    }
+.search-by-user-location-btn {
+  position: absolute;
+  @include btn;
+  background-color: $mediumColor;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  padding: .5rem;
+  text-transform: uppercase;
 
-    &:disabled {
-      cursor:not-allowed;
-    }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $accentColor;
+  }
+
+  &:disabled {
+    background-color: $oliveGreen;
+    cursor:not-allowed;
   }
 }
 
