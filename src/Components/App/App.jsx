@@ -15,7 +15,7 @@ function App() {
     const parsedItem = JSON.parse(legalStatus);
     return parsedItem || '';
   });
-
+  
   return (
     <BreweryContextProvider>
       <FavoriteContextProvider>

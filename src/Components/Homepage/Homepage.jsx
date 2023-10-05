@@ -8,7 +8,7 @@ import BreweryContainer from '../BreweryContainer/BreweryContainer';
 import Header from '../Header/Header';
 
 function Homepage() {
-  const { error } = useBreweries();
+  const { error, getUserLocation, obtainBreweries, userLocation} = useBreweries();
   const navigate = useNavigate();
 
   useEffect(() => {
