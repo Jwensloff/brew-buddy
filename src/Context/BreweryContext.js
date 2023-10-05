@@ -1,5 +1,15 @@
-import { createContext, useContext, useState, useReducer, useEffect } from 'react';
-import { getBreweriesByCity, getBreweriesByCoords, getBreweriesByState } from '../apiCalls';
+import {
+  createContext,
+  useContext,
+  useState,
+  useReducer,
+  useEffect,
+} from 'react';
+import {
+  getBreweriesByCity,
+  getBreweriesByCoords,
+  getBreweriesByState,
+} from '../apiCalls';
 import PropTypes from 'prop-types';
 
 export const BreweryContext = createContext(null);
@@ -12,6 +22,8 @@ export function BreweryContextProvider({ children }) {
     noResults: false,
     error: '',
     userLocation: [],
+    locationError: '',
+    locationPermission: false
   };
 
   const breweryReducer = (state, action) => {
@@ -31,6 +43,10 @@ export function BreweryContextProvider({ children }) {
         return { ...state, error: action.error };
       case 'SET_USER_LOCATION':
         return { ...state, userLocation: action.userLocation };
+      case 'SET_USER_LOCATION_ERROR':
+        return { ...state, userLocationError: action.error };
+      case 'SET_LOCATION_PERMISSION': 
+        return { ...state, locationPermission: action.status}
       default:
         return state;
     }
@@ -60,7 +76,6 @@ export function BreweryContextProvider({ children }) {
       breweryData = await getBreweriesByCity(city);
     }
 
-    // Test this error behavior => previously error set to isError
     const isError = breweryData.name === 'Error';
     dispatch({ type: 'SET_ERROR', error: breweryData.message });
     if (isError) {
@@ -72,22 +87,42 @@ export function BreweryContextProvider({ children }) {
 
   async function getUserLocation() {
     return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(location => {
-        dispatch({
-          type: 'SET_USER_LOCATION',
-          userLocation: [location.coords.latitude, location.coords.longitude],
-        })
-        return [location.coords.latitude, location.coords.longitude];
-      }, error => {
-        console.log('oops, we couldnt find your location!')
-        // dispatch({type: 'SET_ERROR', error: "Oops! We couldn't find your location. Try searching by city instead."})
-      });
-    })
+      navigator.geolocation.getCurrentPosition(
+        location => {
+          dispatch({
+            type: 'SET_USER_LOCATION',
+            userLocation: [location.coords.latitude, location.coords.longitude],
+          });
+          return [location.coords.latitude, location.coords.longitude];
+        },
+        error => {
+          dispatch({
+            type: 'SET_USER_LOCATION_ERROR',
+            error:
+              "Oops! We couldn't find your location. Try searching by city instead.",
+          });
+        },
+      );
+    });
   }
 
   useEffect(() => {
-    getUserLocation()
-  }, [])
+    navigator.permissions
+      .query({ name: 'geolocation' })
+      .then(permissionStatus => {
+        dispatch({type: 'SET_LOCATION_PERMISSION', status: permissionStatus.state})
+        permissionStatus.onchange = () => {
+          dispatch({type: 'SET_LOCATION_PERMISSION', status: permissionStatus.state})
+          if (permissionStatus.state === 'granted') {
+            getUserLocation();
+          } else  {
+            dispatch({type: 'SET_USER_LOCATION', userLocation: [] })
+          }
+        };
+      });
+
+        getUserLocation();
+  }, []);
 
   const value = {
     breweries: state.breweries,
@@ -103,7 +138,7 @@ export function BreweryContextProvider({ children }) {
       dispatch({ type: 'SET_SELECTED_BREWERY', id });
     },
     userLocation: state.userLocation,
-    getUserLocation
+    getUserLocation,
   };
 
   return (
