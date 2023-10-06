@@ -71,7 +71,7 @@
   left: 5;
   margin: 0;
   padding: 0;
-  width: 50.5%;
+  width: 50%;
 
   height: auto;
   overflow: auto;
@@ -95,6 +95,11 @@
 
 @media screen and (max-width: 600px) {
   .suggestions {
-    min-height: 30vh;
+    max-height: 30vh;
+    width: 100%;
+
+    li {
+      font-size: .75em;
+    }
   }
 }
