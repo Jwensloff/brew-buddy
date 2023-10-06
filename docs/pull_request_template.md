@@ -1,11 +1,13 @@
-What I did:
+## What I did:
 
-Did this break anything?
+## Issues (if applicable)
+
+## Did this break anything?
 
 - [ ] No
 - [ ]  Yes
 
-Type of change
+## Type of change
 
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ]  Styling 
@@ -14,7 +16,7 @@ Type of change
 - [ ]  Super small fix (Corrected a typo, removed a comment, etc.)
 - [ ]  Skip all the other stuff and briefly explain the fix.
 
-Checklist:
+## Checklist:
 
 - [ ]  If this code needs to be tested, all tests are passing
 - [ ]  The code runs locally
@@ -22,4 +24,4 @@ Checklist:
 - [ ]  The code is DRY. If it's not, I tried my best
 - [ ]  I reviewed my code before pushing
 
-What's next?
+## What's next?
