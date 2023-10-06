@@ -164,7 +164,7 @@ function Search() {
         }
       ];
     }, []);
-    dispatchForm({ type: 'SET_SUGGESTIONS', payload: suggestionsWithIDs.slice(0, 10) });
+    dispatchForm({ type: 'SET_SUGGESTIONS', payload: suggestionsWithIDs.slice(0, 6) });
   }, [city]);
 
   const suggestionsJSX = suggestions && (
