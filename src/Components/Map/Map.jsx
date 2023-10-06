@@ -1,12 +1,7 @@
 import './Map.scss';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
 
@@ -19,6 +14,9 @@ function Map() {
     isSelected,
     setContextSelected,
     setIsSelected,
+    userLocation,
+    obtainBreweries,
+    locationError,
   } = useBreweries();
   const { filteredBreweries } = useFavorites();
   const [validBreweries, setValidBreweries] = useState([]);
@@ -28,19 +26,21 @@ function Map() {
   useEffect(() => {
     setValidBreweries(filteredBreweries);
     if (filteredBreweries.length >= 2 && mapRef.current && !isSelected) {
-      const bounds = findCorners(filteredBreweries)
-      mapRef.current.flyToBounds([bounds.northEast, bounds.southWest],{
-        duration: 1, 
-        easeLinearity: .1,
+      const bounds = findCorners(filteredBreweries);
+      mapRef.current.flyToBounds([bounds.northEast, bounds.southWest], {
+        duration: 1,
+        easeLinearity: 0.1,
       });
     } else if (mapRef.current && filteredBreweries.length === 1) {
       mapRef.current.flyTo(
         [filteredBreweries[0].latitude, filteredBreweries[0].longitude],
         14,
       );
-    }
-    else if(mapRef.current && filteredBreweries.length === 1){
-      mapRef.current.flyTo([filteredBreweries[0].latitude,filteredBreweries[0].longitude], 14)
+    } else if (mapRef.current && filteredBreweries.length === 1) {
+      mapRef.current.flyTo(
+        [filteredBreweries[0].latitude, filteredBreweries[0].longitude],
+        14,
+      );
     }
   }, [filteredBreweries, mapRef.current, isSelected]);
 
@@ -59,20 +59,17 @@ function Map() {
     }
   }, [selectedBrewery]);
 
- 
-  
-
-  function findCorners(filteredBreweries){
+  function findCorners(filteredBreweries) {
     const corners = filteredBreweries.reduce((acc, currentBrewery) => {
       const lat = currentBrewery.latitude;
       const long = currentBrewery.longitude;
-      if(Object.keys(acc).length === 0){
+      if (Object.keys(acc).length === 0) {
         return {
           maxLat: lat,
           minLat: lat,
           maxLong: long,
           minLong: long,
-        }
+        };
       }
 
       return {
@@ -81,15 +78,11 @@ function Map() {
         maxLong: Math.max(acc.maxLong, long),
         minLong: Math.min(acc.minLong, long),
       };
+    }, {});
 
-
-      
-  },{})
-    
-    let northEast = [corners.maxLat, corners.maxLong]
+    let northEast = [corners.maxLat, corners.maxLong];
     let southWest = [corners.minLat, corners.minLong];
-    return {northEast, southWest}
-
+    return { northEast, southWest };
   }
 
   function zoomToBrewery({ lat, lng }) {
@@ -118,7 +111,7 @@ function Map() {
     setIsSelected(true);
   }
 
-  const mapPoints = validBreweries.map((brewery) => {
+  const mapPoints = validBreweries.map(brewery => {
     let formattedNumber;
     if (brewery.phone) {
       const strNum = brewery.phone;
@@ -155,7 +148,16 @@ function Map() {
   });
 
   return (
-    <div className='map_container'>
+    <div className='map-container'>
+      <button
+        className='search-by-user-location-btn'
+        disabled={!userLocation.length}
+        onClick={() => {
+          obtainBreweries(undefined, undefined, userLocation);
+        }}
+      >
+        Near Me
+      </button>
       <MapContainer
         ref={mapRef}
         center={defaultPosition}
@@ -179,9 +181,9 @@ useBreweries.propTypes = {
   selectedBrewery: PropTypes.object.isRequired,
   isSelected: PropTypes.bool.isRequired,
   setContextSelected: PropTypes.func.isRequired,
-  setIsSelected: PropTypes.func.isRequired
-}
+  setIsSelected: PropTypes.func.isRequired,
+};
 
 useFavorites.propTypes = {
-  filteredBreweries: PropTypes.arrayOf(PropTypes.object).isRequired
-}
+  filteredBreweries: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
