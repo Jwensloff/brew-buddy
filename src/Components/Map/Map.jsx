@@ -145,9 +145,9 @@ function Map() {
       >
         <Popup>
           <div className='brewery-popup'>
-            <p>{brewery.name}</p>
-            <p>{brewery.address_1}</p>
-            <p>{formattedNumber}</p>
+            <p className='brew-name'>{brewery.name}</p>
+            <p className='address'>{brewery.address_1}</p>
+            <p className='phone'>{formattedNumber}</p>
           </div>
         </Popup>
       </Marker>
