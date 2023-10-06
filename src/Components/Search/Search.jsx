@@ -185,7 +185,6 @@ function Search() {
             onMouseLeave={() =>
               dispatchForm({ type: 'SET_FOCUSED_INDEX', payload: -1 })
             }
-            tabIndex={0}
           >
             {location}
           </li>
