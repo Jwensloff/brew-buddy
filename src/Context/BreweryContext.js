@@ -57,7 +57,7 @@ export function BreweryContextProvider({ children }) {
   function cleanData(data, city, state) {
     let validData = data.filter(
       brewery => brewery.latitude && brewery.longitude,
-    );
+    ).filter(brewery => brewery.brewery_type !== 'closed')
 
     if (city) {
       validData = validData.filter(brewery => brewery.state === state);

@@ -4,10 +4,10 @@ import { useBreweries } from '../../Context/BreweryContext';
 import logo from '../../Assets/logo.jpeg';
 
 function NavBar() {
-  const {setContextSelected} = useBreweries();
+  const { setContextSelected } = useBreweries();
 
-  function resetSelected(){
-    setContextSelected()
+  function resetSelected() {
+    setContextSelected();
   }
 
   return (
@@ -18,7 +18,11 @@ function NavBar() {
       <NavLink className={'nav-link'} to='/'>
         search
       </NavLink>
-      <NavLink className='see-all-favorites-btn nav-link' onClick={resetSelected} to='/favorites'>
+      <NavLink
+        className='see-all-favorites-btn nav-link'
+        onClick={resetSelected}
+        to='/favorites'
+      >
         favorites
       </NavLink>
     </nav>

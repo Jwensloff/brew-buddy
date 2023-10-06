@@ -41,4 +41,20 @@
 
 .leaflet-popup-content-wrapper {
   background-color: $lightAccentColor;
+  border: 1.5px solid white;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color:white;
+}
+
+
+.brew-name{
+  font-size: 1.1em;
+  color: white;
+}
+
+.address,
+.phone{
+  font-style: italic;
 }
