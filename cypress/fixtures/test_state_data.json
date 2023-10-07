@@ -38,7 +38,7 @@
     {
         "id": "3",
         "name": "Firestone Walker Brewing Company",
-        "brewery_type": "closed",
+        "brewery_type": "micro",
         "address_1": "1400 Ramada Dr",
         "address_2": null,
         "address_3": null,

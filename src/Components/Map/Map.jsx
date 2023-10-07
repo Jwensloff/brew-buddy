@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useBreweries } from '../../Context/BreweryContext';
 import { useFavorites } from '../../Context/FavoriteContext';
+import { useNavigate } from 'react-router-dom';
 
 function Map() {
   const defaultPosition = [39.82, -98.57];
@@ -22,6 +23,7 @@ function Map() {
   const [validBreweries, setValidBreweries] = useState([]);
   const mapRef = useRef(null);
   const markersRef = useRef({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     setValidBreweries(filteredBreweries);
@@ -153,7 +155,9 @@ function Map() {
         className='search-by-user-location-btn'
         disabled={!userLocation.length}
         onClick={() => {
-          obtainBreweries(undefined, undefined, userLocation);
+          navigate(
+            `/?lat=${userLocation[0]}&lon=${userLocation[1]}`
+          );
         }}
       >
         Near Me
