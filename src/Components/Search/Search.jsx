@@ -71,12 +71,22 @@ function Search() {
     const queryParams = new URLSearchParams(window.location.search);
     const cityParam = queryParams.get('city');
     const stateParam = queryParams.get('state');
+    const latParam = queryParams.get('lat');
+    const lonParam = queryParams.get('lon');
 
     if (cityParam || stateParam) {
       dispatchForm({ type: 'SET_CITY', payload: cityParam || '' });
       dispatchForm({ type: 'SET_STATE', payload: stateParam });
       dispatchForm({ type: 'SET_FORM_IS_READY', payload: true });
     }
+
+    if(latParam && lonParam) {
+      dispatchForm({ type: 'SET_CITY', payload: '' });
+      dispatchForm({ type: 'SET_STATE', payload: '' });
+      dispatchForm({ type: 'SET_FORM_IS_READY', payload: false });
+      obtainBreweries(undefined, undefined, [latParam, lonParam]);
+    }
+
   }, [location]);
 
   useEffect(() => {
