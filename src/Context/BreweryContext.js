@@ -23,7 +23,8 @@ export function BreweryContextProvider({ children }) {
     error: '',
     userLocation: [],
     locationError: '',
-    locationPermission: false
+    locationPermission: false,
+    showDistance: false,
   };
 
   const breweryReducer = (state, action) => {
@@ -46,7 +47,9 @@ export function BreweryContextProvider({ children }) {
       case 'SET_USER_LOCATION_ERROR':
         return { ...state, userLocationError: action.error };
       case 'SET_LOCATION_PERMISSION': 
-        return { ...state, locationPermission: action.status}
+        return { ...state, locationPermission: action.status};
+      case 'SET_DISTANCE_ON':
+      return {...state, showDistance: action.status};
       default:
         return state;
     }
@@ -139,6 +142,9 @@ export function BreweryContextProvider({ children }) {
     },
     userLocation: state.userLocation,
     getUserLocation,
+    setDistanceOn: status => {
+      dispatch({ type: 'SET_DISTANCE_ON', status });
+    }
   };
 
   return (
