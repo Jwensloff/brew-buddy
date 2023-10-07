@@ -18,6 +18,7 @@ function Map() {
     userLocation,
     obtainBreweries,
     locationError,
+    setDistanceOn
   } = useBreweries();
   const { filteredBreweries } = useFavorites();
   const [validBreweries, setValidBreweries] = useState([]);
@@ -37,13 +38,12 @@ function Map() {
       mapRef.current.flyTo(
         [filteredBreweries[0].latitude, filteredBreweries[0].longitude],
         14,
+        {
+          duration: 1,
+        }
       );
-    } else if (mapRef.current && filteredBreweries.length === 1) {
-      mapRef.current.flyTo(
-        [filteredBreweries[0].latitude, filteredBreweries[0].longitude],
-        14,
-      );
-    }
+    } 
+    
   }, [filteredBreweries, mapRef.current, isSelected]);
 
   useEffect(() => {
@@ -155,6 +155,7 @@ function Map() {
         className='search-by-user-location-btn'
         disabled={!userLocation.length}
         onClick={() => {
+          setDistanceOn(true)
           navigate(
             `/?lat=${userLocation[0]}&lon=${userLocation[1]}`
           );

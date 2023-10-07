@@ -5,7 +5,7 @@ import { useFavorites } from '../../Context/FavoriteContext';
 import PropTypes from 'prop-types';
 
 function BreweryContainer() {
-  const { breweries, noResults } = useBreweries();
+  const { breweries, noResults, showDistance } = useBreweries();
   const { filteredBreweries, toggleFavoritesFilter, isFaveFilterOn } =
     useFavorites();
 

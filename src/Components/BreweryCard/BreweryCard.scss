@@ -5,6 +5,12 @@
   max-width: 28rem;
   padding: 1rem;
   position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out
+}
+
+.brewery-card:hover{
+  background-color:#AEAD56;
 }
 
 .card-a {
@@ -22,6 +28,10 @@
   cursor: pointer;
 }
 
+.card-a:hover{
+  background-color: $accentColor;
+}
+
 .card-a-box {
   display: flex;
   justify-content: space-evenly;
@@ -31,8 +41,8 @@
   cursor: pointer;
   background-color: transparent;
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: .5rem;
+  right: .5rem;
 }
 
 .card-text {
@@ -41,4 +51,11 @@
 
 .selected{
   background-color: #AEAD56;
+}
+
+.distance{
+  position: relative;
+  right: 1em;
+  top: 10.2em;
+  font-style: italic;
 }

@@ -14,7 +14,7 @@ function BreweryCard({ brewery}) {
   const directionsURL = `https://www.google.com/maps/dir/${name},${street}+${city}`;
   const { toggleFavorite, favorites } = useFavorites();
   const [isFavorite, setIsFavorite] = useState(false);
-  const {setContextSelected, selectedBrewery} = useBreweries();
+  const {setContextSelected, selectedBrewery, userLocation, locationPermission, breweries} = useBreweries();
   const cardRefs = useRef({})
   const location = useLocation();
   useEffect(() => {
@@ -45,13 +45,43 @@ function BreweryCard({ brewery}) {
     }
   }
 
+  function calcDistanceFromSelected() {
+    const brews = [...breweries];
+    const userLat = userLocation[0];
+    const userLong = userLocation[1]
+    const breweriesWithDistance = brews.map(brewery => {
+      const distance = calculateDistance(
+        userLat,
+        userLong,
+        brewery.latitude,
+        brewery.longitude,
+      );
+
+      return { ...brewery, distance };
+    });
+  }
+
+  function calculateDistance(lat1, long1, lat2, long2) {
+    let latRad1 = (Number(lat1) * Math.PI) / 180;
+    let latRad2 = (Number(lat2) * Math.PI) / 180;
+    let longRad1 = (Number(long1) * Math.PI) / 180;
+    let longRad2 = (Number(long2) * Math.PI) / 180;
+    const distance =
+      3958 *
+      Math.acos(
+        Math.sin(latRad1) * Math.sin(latRad2) +
+          Math.cos(latRad1) * Math.cos(latRad2) * Math.cos(longRad2 - longRad1),
+      );
+    return distance;
+  }
+
     return (
     <article tabIndex="0"  onKeyDown={(e)=>{focusElement(e)}} className={brewery.id === selectedBrewery ? 'brewery-card selected' : 'brewery-card'} 
       onClick={() => {if(location.pathname !=='/favorites'){setContextSelected(brewery.id)}}} ref={(ref) => cardRefs.current[brewery.id] = ref} >
       <h2 className='card-text name'>{name}</h2>
       {street && <p className='card-text'>{street + ', ' + city}</p>}
       {phone && <p className='card-text'>{formatPhoneNumber(phone)}</p>}
-     
+      
       <div className='card-a-box'>
         {website_url && (
           <a
